@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Minecraft Server Operators",
+  "type": "array",
+  "description": "The ops.json is a server configuration file that stores the usernames of operator players. As well as manually editing the file, the command /op can also be used by operators.\nhttps://minecraft.fandom.com/wiki/Commands/op",
+  "items": {
+    "$ref": "#/definitions/minecraft-server-ops-entry"
+  },
+  "definitions": {
+    "minecraft-server-ops-entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "level",
+        "name",
+        "uuid"
+      ],
+      "properties": {
+        "bypassesPlayerLimit": {
+          "type": "boolean",
+          "description": ""
+        },
+        "level": {
+          "type": "integer",
+          "description": "Permission level of the operator player.",
+          "minimum": 1,
+          "maximum": 4
+        },
+        "name": {
+          "type": "string",
+          "description": "Username of the operator player.",
+          "examples": ["vensti94"]
+        },
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the operator player.",
+          "examples": ["2ce24e87-a5be-46db-916c-b3f2bba2b751"]
+        }
+      },
+      "examples": [
+        {
+          "bypassesPlayerLimit": true,
+          "level": 4,
+          "name": "vensti94",
+          "uuid": "2ce24e87-a5be-46db-916c-b3f2bba2b751"
+        }
+      ]
+    }
+  }
+}

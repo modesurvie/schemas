@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Minecraft Server Cache of player UUIDs",
+  "type": "array",
+  "description": "The usercache.json is a server configuration file that stores UUIDs of recently logged in players.",
+  "items": {
+    "$ref": "#/definitions/minecraft-server-usercache-entry"
+  },
+  "definitions": {
+    "minecraft-server-usercache-entry": {
+      "type": "object",
+      "description": "Usercache entry.",
+      "additionalProperties": false,
+      "required": [
+        "expiresOn",
+        "name",
+        "uuid"
+      ],
+      "properties": {
+        "expiresOn": {
+          "type": "string",
+          "description": "UTC time after which this entry expires (a request to retrieve the UUID will be fired on the next player login).",
+          "examples": ["2023-05-18 01:01:20 +0000"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Username of the player recently logged in.",
+          "examples": ["vensti94"]
+        },
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the player recently logged in.",
+          "examples": ["2ce24e87-a5be-46db-916c-b3f2bba2b751"]
+        }
+      },
+      "examples": [
+        {
+          "name": "vensti94",
+          "uuid": "2ce24e87-a5be-46db-916c-b3f2bba2b751",
+          "expiresOn": "2023-05-18 01:01:20 +0000"
+        }
+      ]
+    }
+  }
+}

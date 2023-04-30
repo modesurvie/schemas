@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Minecraft Server Banned Players",
+  "type": "array",
+  "description": "The banned-players.json is a server configuration file that stores UUIDs and usernames of players who have been banned on a server. As well as manually editing the file, the command /ban can also be used by operators.\nhttps://minecraft.fandom.com/wiki/Commands/ban#ban",
+  "items": {
+    "$ref": "#/definitions/minecraft-server-banned-players-entry"
+  },
+  "definitions": {
+    "minecraft-server-banned-players-entry": {
+      "type": "object",
+      "description": "Banned player entry.",
+      "additionalProperties": false,
+      "required": [
+        "created",
+        "expires",
+        "name",
+        "source",
+        "uuid"
+      ],
+      "properties": {
+        "created": {
+          "type": "string",
+          "description": "UTC time when this ban was created.",
+          "examples": ["2023-02-15 16:30:00 +0200"]
+        },
+        "expires": {
+          "type": "string",
+          "description": "UTC time (or \"forever\") after which this ban expires (expiration date after which the banned player will no longer be banned).",
+          "examples": ["forever", "2023-03-15 16:30:00 +0200"]
+        },
+        "name": {
+          "type": "string",
+          "description": "Username of the banned player.",
+          "examples": ["Gnajom"]
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for the ban.",
+          "examples": ["Log4J attempt"]
+        },
+        "source": {
+          "type": "string",
+          "description": "Source of the ban.",
+          "examples": ["Server"]
+        },
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the banned player.",
+          "examples": ["0253d141-5dd5-447c-ada3-b7d3a0de4dec"]
+        }
+      },
+      "examples": [
+        {
+          "created": "2023-02-15 16:30:00 +0200",
+          "expires": "forever",
+          "name": "Gnajom",
+          "uuid": "0253d141-5dd5-447c-ada3-b7d3a0de4dec",
+          "reason": "Banned by an operator.",
+          "source": "Server"
+        }
+      ]
+    }
+  }
+}

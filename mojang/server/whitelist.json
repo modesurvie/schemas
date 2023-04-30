@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Minecraft Server Whitelist",
+  "type": "array",
+  "description": "The whitelist.json is a server configuration file that stores the usernames of players who have been whitelisted on a server. This file is only used on multiplayer servers. To activate the whitelist, the white-list value in server.properties must be changed to true: 'white-list=true'. Then only the named users are allowed to connect to the server. As well as manually editing the file, the command /whitelist can also be used by operators.\nhttps://minecraft.fandom.com/wiki/Whitelist.json\nhttps://minecraft.fandom.com/wiki/Commands/whitelist\nhttps://minecraft.fandom.com/wiki/Server.properties",
+  "items": {
+    "$ref": "#/definitions/minecraft-server-whitelist-entry"
+  },
+  "definitions": {
+    "minecraft-server-whitelist-entry": {
+      "type": "object",
+      "description": "Whitelist entry.",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "uuid"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Username of the whitelisted player.",
+          "examples": ["vensti94"]
+        },
+        "uuid": {
+          "type": "string",
+          "description": "UUID of the whitelisted player.",
+          "examples": ["2ce24e87-a5be-46db-916c-b3f2bba2b751"]
+        }
+      },
+      "examples": [
+        {
+          "name": "vensti94",
+          "uuid": "2ce24e87-a5be-46db-916c-b3f2bba2b751"
+        }
+      ]
+    }
+  }
+}

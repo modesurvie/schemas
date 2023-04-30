@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Minecraft Server Settings (server.properties)",
+  "type": "object",
+  "description": "The server.properties is the file that stores all the settings for a multiplayer (Minecraft or Minecraft Classic) server.\nhttps://minecraft.fandom.com/wiki/Server.properties#Java_Edition_3",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "allow-flight": {
+      "type": "boolean",
+      "description": "Allows users to use flight on the server while in Survival mode, if they have a mod[1] that provides flight installed.\n\nWith allow-flight enabled, griefers[2] may become more common, because it makes their work easier. In Creative mode, this has no effect.\n\nfalse - Flight is not allowed (players in air for at least 5 seconds get kicked).\ntrue - Flight is allowed, and used if the player has a fly mod installed.\n[1]:https://minecraft.fandom.com/wiki/Mod\n[2]:https://minecraft.fandom.com/wiki/Griefers",
+      "default": false
+    },
+    "allow-nether": {
+      "type": "boolean",
+      "description": "Allows players to travel to the Nether[1].\nfalse - Nether portals do not work.\ntrue - The server allows portals[2] to send players to the Nether.\n[1]:https://minecraft.fandom.com/wiki/Nether\n[2]:https://minecraft.fandom.com/wiki/Portal",
+      "default": true
+    },
+    "broadcast-console-to-ops": {
+      "type": "boolean",
+      "description": "Send console command outputs to all online operators\nhttps://minecraft.fandom.com/wiki/Server#Managing_and_maintaining_a_server.",
+      "default": true
+    },
+    "broadcast-rcon-to-ops": {
+      "type": "boolean",
+      "description": "Send rcon console command outputs to all online operators.",
+      "default": true
+    },
+    "debug": {
+      "type": "boolean",
+      "description": "Enables debug",
+      "default": false
+    },
+    "difficulty": {
+      "$ref": "#/definitions/minecraft-difficulty",
+      "description": "Defines the difficulty (such as damage dealt by mobs and the way hunger and poison affects players) of the server.\n\nIf a legacy difficulty number is specified, it is silently converted to a difficulty name.\n\npeaceful (0)\neasy (1)\nnormal (2)\nhard (3)\nhttps://minecraft.fandom.com/wiki/Difficulty",
+      "default": "easy"
+    },
+    "enable-command-block": {
+      "type": "boolean",
+      "description": "Enables command blocks",
+      "default": false
+    },
+    "enable-jmx-monitoring": {
+      "type": "boolean",
+      "description": "Exposes an MBean with the Object name 'net.minecraft.server:type=Server' and two attributes 'averageTickTime' and 'tickTimes' exposing the tick times in milliseconds.\n\nIn order for enabling JMX on the Java runtime you also need to add a couple of JVM flags to the startup as documented here: https://docs.oracle.com/javase/8/docs/technotes/guides/management/agent.html",
+      "default": false
+    },
+    "enable-rcon": {
+      "type": "boolean",
+      "description": "Enables remote access to the server console.\nIt's not recommended to expose RCON to the Internet, because RCON protocol transfers everything without encryption. Everything (including RCON password) communicated between the RCON server and client can be leaked to someone listening in on your connection.",
+      "default": false
+    },
+    "enable-status": {
+      "type": "boolean",
+      "description": "Makes the server appear as \"online\" on the server list.\n\nIf set to false, it will suppress replies from clients. This means it will appear as offline, but will still accept connections.",
+      "default": true
+    },
+    "enable-query": {
+      "type": "boolean",
+      "description": "Enables GameSpy4 protocol server listener. Used to get information about server.",
+      "default": false
+    },
+    "enforce-secure-profile": {
+      "type": "boolean",
+      "description": "(Added in 1.19 22w17a) If set to true, players without a Mojang-signed public key will not be able to connect to the server.",
+      "default": true
+    },
+    "enforce-whitelist": {
+      "type": "boolean",
+      "description": "Enforces the whitelist on the server.\n\nWhen this option is enabled, users who are not present on the whitelist (if it's enabled) get kicked from the server after the server reloads the whitelist file.\n\nfalse - No user gets kicked if not on the whitelist.\ntrue - Online users not on the whitelist get kicked.",
+      "default": false
+    },
+    "entity-broadcast-range-percentage": {
+      "type": "integer",
+      "description": "(10-1000) Controls how close entities need to be before being sent to clients. Higher values means they'll be rendered from farther away, potentially causing more lag. This is expressed the percentage of the default value. For example, setting to 50 will make it half as usual. This mimics the function on the client video settings (not unlike Render Distance, which the client can customize so long as it's under the server's setting).",
+      "minimum": 10,
+      "maximum": 1000,
+      "default": 100
+    },
+    "force-gamemode": {
+      "type": "boolean",
+      "description": "Force players to join in the default game mode.\nfalse - Players join in the gamemode they left in.\ntrue - Players always join in the default gamemode.\nhttps://minecraft.fandom.com/wiki/Game_mode",
+      "default": false
+    },
+    "function-permission-level": {
+      "$ref": "#/definitions/minecraft-permission-level",
+      "description": "(1-4) Sets the default permission level for functions: 1 (moderator), 2 (gamemaster), 3 (admin), and 4 (owner).\nhttps://minecraft.fandom.com/wiki/Permission_level\nhttps://minecraft.fandom.com/wiki/Function_(Java_Edition)",
+      "minimum": 1,
+      "default": 2
+    },
+    "gamemode": {
+      "$ref": "#/definitions/minecraft-gamemode",
+      "description": "Defines the mode of gameplay.\n\nIf a legacy gamemode number is specified, it is silently converted to a gamemode name.\n\nsurvival (0) https://minecraft.fandom.com/wiki/Survival\ncreative (1) https://minecraft.fandom.com/wiki/Creative\nadventure (2) https://minecraft.fandom.com/wiki/Adventure\nspectator (3) https://minecraft.fandom.com/wiki/Spectator\n\nhttps://minecraft.fandom.com/wiki/Game_mode",
+      "default": "survival"
+    },
+    "generate-structures": {
+      "type": "boolean",
+      "description": "Defines whether structures (such as villages) can be generated.\nfalse - Structures are not generated in new chunks.\ntrue - Structures are generated in new chunks.\n\nNote: Dungeons still generate if this is set to false.\nhttps://minecraft.fandom.com/wiki/Structures",
+      "default": true
+    },
+    "generator-settings": {
+      "type": "string",
+      "description": "The settings used to customize world generation. Follow its format[1] and write the corresponding JSON string. Remember to escape all \":\" with \"\\:\"\n[1]:https://minecraft.fandom.com/wiki/Java_Edition_level_format#generatorOptions_tag_format",
+      "default": "{}"
+    },
+    "hardcore": {
+      "type": "boolean",
+      "description": "If set to true, server difficulty is ignored and set to hard and players are set to spectator mode if they die.",
+      "default": false
+    },
+    "hide-online-players": {
+      "type": "boolean",
+      "description": "(Added in 1.18 21w44a) If set to true, a player list is not sent on status requests.",
+      "default": false
+    },
+    "initial-disabled-packs": {
+      "type": "string",
+      "description": "(Added in 1.19.3 22w42a) Comma-separated list of datapacks to not be auto-enabled on world creation.",
+      "default": ""
+    },
+    "initial-enabled-packs": {
+      "type": "string",
+      "description": "(Added in 1.19.3 22w42a) Comma-separated list of datapacks to be enabled during world creation. Feature packs need to be explicitly enabled.",
+      "default": "vanilla"
+    },
+    "level-name": {
+      "type": "string",
+      "description": "The \"level-name\" value is used as the world name and its folder name. The player may also copy their saved game folder here, and change the name to the same as that folder's to load it instead.\nCharacters such as ' (apostrophe) may need to be escaped by adding a backslash before them.",
+      "default": "world"
+    },
+    "level-seed": {
+      "type": "string",
+      "description": "Sets a world seed for the player's world, as in Singleplayer. The world generates with a random seed if left blank.\nhttps://minecraft.fandom.com/wiki/Seed_(level_generation)",
+      "default": "",
+      "examples": [
+        "minecraft",
+        "404",
+        "1a2b3c"
+      ]
+    },
+    "level-type": {
+      "type": "string",
+      "description": "Determines the world preset that is generated.\n\nEscaping \":\" is required when using a world preset ID, and the vanilla world preset ID's namespace ('minecraft:') can be omitted.\n\nminecraft:normal - Standard world with hills, valleys, water, etc.\nminecraft:[flat](https://minecraft.fandom.com/wiki/Superflat) - A flat world with no features, can be modified with generator-settings.\nminecraft:[large_biomes](https://minecraft.fandom.com/wiki/Large_Biomes) - Same as default but all biomes are larger.\nminecraft:[amplified](https://minecraft.fandom.com/wiki/Amplified) - Same as default but world-generation height limit is increased.\nminecraft:[single_biome_surface](https://minecraft.fandom.com/wiki/Single_Biome) - A buffet world which the entire overworld consists of one biome, can be modified with generator-settings.\n[buffet](https://minecraft.fandom.com/wiki/Buffet) - Only for 1.15 or before. Same as default unless generator-settings is set.\ndefault_1_1 - Only for 1.15 or before. Same as default, but counted as a different world type.\n[customized](https://minecraft.fandom.com/wiki/Old_Customized) - Only for 1.15 or before. After 1.13, this value is no different than default, but in 1.12 and before, it could be used to create a completely custom world.",
+      "default": "minecraft\\:normal"
+    },
+    "max-chained-neighbor-updates": {
+      "type": "integer",
+      "description": "(Added in 1.19 22w11a) Limiting the amount of consecutive neighbor updates before skipping additional ones. Negative values remove the limit.",
+      "default": 1000000
+    },
+    "max-players": {
+      "type": "integer",
+      "description": "(0-(2^31 - 1)) The maximum number of players that can play on the server at the same time. Note that more players on the server consume more resources. Note also, op player connections are not supposed to count against the max players, but ops currently cannot join a full server. However, this can be changed by going to the file called ops.json in the player's server directory, opening it, finding the op that the player wants to change, and changing the setting called bypassesPlayerLimit to true (the default is false). This means that that op does not have to wait for a player to leave in order to join. Extremely large values for this field result in the client-side user list being broken.",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "default": 20
+    },
+    "max-tick-time": {
+      "type": "integer",
+      "description": "(0-(2^63 - 1)) The maximum number of milliseconds a single tick may take before the server watchdog stops the server with the message, A single server tick took 60.00 seconds (should be max 0.05); Considering it to be crashed, server will forcibly shutdown. Once this criterion is met, it calls System.exit(1).\n-1 - disable watchdog entirely (this disable option was added in 14w32a)",
+      "minimum": 0,
+      "maximum": 9223372036854775999,
+      "default": 60000
+    },
+    "max-world-size": {
+      "type": "integer",
+      "description": "(1-29999984) This sets the maximum possible size in blocks, expressed as a radius, that the world border can obtain. Setting the world border bigger causes the commands to complete successfully but the actual border does not move past this block limit. Setting the max-world-size higher than the default doesn't appear to do anything.\n\nExamples:\n\nSetting max-world-size to 1000 allows the player to have a 2000×2000 world border.\nSetting max-world-size to 4000 gives the player an 8000×8000 world border.",
+      "minimum": 1,
+      "maximum": 29999984,
+      "default": 29999984
+    },
+    "motd": {
+      "type": "string",
+      "description": "This is the message that is displayed in the server list of the client, below the name.\nThe MOTD supports color and formatting codes[1].\nThe MOTD supports special characters, such as \"♥\". However, such characters must be converted to escaped Unicode form. An online converter can be found here[2].\nIf the MOTD is over 59 characters, the server list may report a communication error.\n[1]:https://minecraft.fandom.com/wiki/Formatting_codes#Use_in_server.properties_and_pack.mcmeta\n[2]:http://www.freeformatter.com/string-utilities.html#charinfo",
+      "default": "A Minecraft Server"
+    },
+    "network-compression-threshold": {
+      "type": "integer",
+      "description": "By default it allows packets that are n-1 bytes big to go normally, but a packet of n bytes or more gets compressed down. So, a lower number means more compression but compressing small amounts of bytes might actually end up with a larger result than what went in.\n-1 - disable compression entirely\n0 - compress everything\n\nNote: The Ethernet spec requires that packets less than 64 bytes become padded to 64 bytes. Thus, setting a value lower than 64 may not be beneficial. It is also not recommended to exceed the MTU, typically 1500 bytes.",
+      "minimum": -1,
+      "maximum": 256,
+      "default": 256
+    },
+    "online-mode": {
+      "type": "boolean",
+      "description": "Server checks connecting players against Minecraft account database. Set this to false only if the player's server is NOT connected to the Internet. Hackers with fake accounts can connect if this is set to false! If minecraft.net is down or inaccessible, no players can connect if this is set to true. Setting this variable to off purposely is called \"cracking\" a server, and servers that are present with online mode off are called \"cracked\" servers, allowing players with unlicensed copies of Minecraft to join.\ntrue - Enabled. The server assumes it has an Internet connection and checks every connecting player.\nfalse - Disabled. The server does not attempt to check connecting players.",
+      "default": true
+    },
+    "op-permission-level": {
+      "$ref": "#/definitions/minecraft-permission-level",
+      "description": "(0-4) Sets the default permission level for ops when using /op: 0 (all), 1 (moderator), 2 (gamemaster), 3 (admin), and 4 (owner).\nhttps://minecraft.fandom.com/wiki/Permission_level\nhttps://minecraft.fandom.com/wiki/Commands/op",
+      "default": 4
+    },
+    "player-idle-timeout": {
+      "type": "integer",
+      "description": "If non-zero, players are kicked from the server if they are idle for more than that many minutes.\nNote: Idle time is reset when the server receives one of the following packets:\nClick Window http://wiki.vg/Protocol#Click_Window\nEnchant Item http://wiki.vg/Protocol#Enchant_Item\nUpdate Sign http://wiki.vg/Protocol#Update_Sign\nPlayer Digging http://wiki.vg/Protocol#Player_Digging\nPlayer Block Placement http://wiki.vg/Protocol#Player_Block_Placement\nHeld Item Change http://wiki.vg/Protocol#Held_Item_Change_.28serverbound.29\nAnimation http://wiki.vg/Protocol#Animation_.28serverbound.29 (swing arm)\nEntity Action http://wiki.vg/Protocol#Entity_Action\nClient Status http://wiki.vg/Protocol#Client_Status\nChat Message http://wiki.vg/Protocol#Chat_Message_.28serverbound.29\nUse Entity http://wiki.vg/Protocol#Use_Entity",
+      "default": 0
+    },
+    "prevent-proxy-connections": {
+      "type": "boolean",
+      "description": "If the ISP/AS sent from the server is different from the one from Mojang Studios' authentication server, the player is kicked.",
+      "default": false
+    },
+    "previews-chat": {
+      "type": "boolean",
+      "description": "(Added in 1.19 22w19a) If set to true, chat preview will be enabled.\ntrue - Enabled. When enabled, a server-controlled preview appears above the chat edit box, showing how the message will look when sent.\nfalse - Disabled.",
+      "default": false
+    },
+    "pvp": {
+      "type": "boolean",
+      "description": "Enable PvP on the server. Players shooting themselves with arrows receive damage only if PvP is enabled.\ntrue - Players can kill each other.\nfalse - Players cannot kill other players (also known as Player versus Environment (PvE)).\n\nNote: Indirect damage sources spawned by players (such as lava, fire, TNT and to some extent water, sand and gravel) still deal damage to other players.",
+      "default": true
+    },
+    "query.port": {
+      "type": "integer",
+      "description": "(1-(2^16 - 2)) Sets the port for the query server (see 'enable-query').",
+      "minimum": 1,
+      "maximum": 65534,
+      "default": 25565
+    },
+    "rate-limit": {
+      "type": "integer",
+      "description": "Sets the maximum amount of packets a user can send before getting kicked. Setting to 0 disables this feature.",
+      "default": 0
+    },
+    "rcon.password": {
+      "type": "string",
+      "description": "Sets the password for RCON: a remote console protocol that can allow other applications to connect and interact with a Minecraft server over the internet.",
+      "default": ""
+    },
+    "rcon.port": {
+      "type": "integer",
+      "description": "(1-(2^16 - 2)) Sets the RCON network port.",
+      "minimum": 1,
+      "maximum": 65534,
+      "default": 25575
+    },
+    "resource-pack": {
+      "type": "string",
+      "description": "Optional URI to a resource pack. The player may choose to use it.\n\nNote that (in some versions before 1.15.2), the \":\" and \"=\" characters need to be escaped with a backslash (\\), e.g. http\\://somedomain.com/somepack.zip?someparam\\=somevalue\n\nThe resource pack may not have a larger file size than 250 MiB (Before 1.18: 100 MiB (≈ 100.8 MB)) (Before 1.15: 50 MiB (≈ 50.4 MB)). Note that download success or failure is logged by the client, and not by the server.\nhttps://minecraft.fandom.com/wiki/Resource_pack",
+      "default": ""
+    },
+    "resource-pack-prompt": {
+      "type": "string",
+      "description": "Optional, adds a custom message to be shown on resource pack prompt when 'require-resource-pack' is used.\n\nExpects chat component syntax, can contain multiple lines.",
+      "default": ""
+    },
+    "resource-pack-sha1": {
+      "type": "string",
+      "description": "Optional SHA-1 digest of the resource pack, in lowercase hexadecimal. It is recommended to specify this, because it is used to verify the integrity of the resource pack.\n\nNote: If the resource pack is any different, a yellow message \"Invalid sha1 for resource-pack-sha1\" appears in the console when the server starts. Due to the nature of hash functions, errors have a tiny probability of occurring, so this consequence has no effect.",
+      "default": ""
+    },
+    "require-resource-pack": {
+      "type": "boolean",
+      "description": "When this option is enabled (set to true), players will be prompted for a response and will be disconnected if they decline the required pack.",
+      "default": false
+    },
+    "server-ip": {
+      "type": "string",
+      "description": "The player should set this if they want the server to bind to a particular IP. It is strongly recommended that the player leaves server-ip blank.\nSet to blank, or the IP the player want their server to run (listen) on.",
+      "default": ""
+    },
+    "server-name": {
+      "type": "string",
+      "description": "The name of the server. This is displayed in the server list and when someone is joining the server\nA single line of text. Characters such as ' (apostrophe) may need to be escaped by adding a backslash before them.",
+      "default": "Dedicated Server"
+    },
+    "server-port": {
+      "type": "integer",
+      "description": "(1-(2^16 - 2)) Changes the port the server is hosting (listening) on. This port must be forwarded[1] if the server is hosted in a network using NAT[2] (if the player has a home router/firewall).\n[1]:https://en.wikipedia.org/wiki/Port_forwarding\n[2]:https://en.wikipedia.org/wiki/Network_address_translation",
+      "minimum": 1,
+      "maximum": 65534,
+      "default": 25565
+    },
+    "simulation-distance": {
+      "type": "integer",
+      "description": "(Added in 1.18 21w44a) (3-32) Sets the maximum distance from players that living entities may be located in order to be updated by the server, measured in chunks in each direction of the player (radius, not diameter). If entities are outside of this radius, then they will not be ticked by the server nor will they be visible to players.\n\n10 is the default/recommended. If the player has major lag, this value is recommended to be reduced.",
+      "minimum": 3,
+      "maximum": 32,
+      "default": 10
+    },
+    "snooper-enabled": {
+      "deprecated": true,
+      "type": "boolean",
+      "description": "(Removed in 1.18 21w43a) Sets whether the server sends snoop data regularly to http://snoop.minecraft.net.\nfalse - disable snooping.\ntrue - enable snooping.\nThis feature was removed globally in 1.13 because of the European Union's General Data Protection Regulations.\nhttps://bugs.mojang.com/browse/MC-130179?focusedId=455305&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-455305",
+      "default": true
+    },
+    "spawn-animals": {
+      "type": "boolean",
+      "description": "Determines if animals can spawn.\ntrue - Animals spawn as normal.\nfalse - Animals immediately vanish.\n\nIf the player has major lag, it is recommended to turn this off/set to false.",
+      "default": true
+    },
+    "spawn-monsters": {
+      "type": "boolean",
+      "description": "Determines if monsters can spawn.\ntrue - Enabled. Monsters appear at night and in the dark.\nfalse - Disabled. No monsters.\n\nThis setting has no effect if difficulty = 0 (peaceful). If difficulty is not = 0, a monster can still spawn from a monster spawner.\n\nIf the player has major lag, it is recommended to turn this off/set to false.\nhttps://minecraft.fandom.com/wiki/Monster_spawner",
+      "default": true
+    },
+    "spawn-npcs": {
+      "type": "boolean",
+      "description": "Determines whether villagers can spawn.\ntrue - Enabled. Villagers spawn.\nfalse - Disabled. No villagers.",
+      "default": true
+    },
+    "spawn-protection": {
+      "type": "integer",
+      "description": "Determines the side length of the square spawn protection[1] area as 2x+1. Setting this to 0 disables the spawn protection. A value of 1 protects a 3×3 square centered on the spawn point. 2 protects 5×5, 3 protects 7×7, etc. This option is not generated on the first server start and appears when the first player joins. If there are no ops[2] set on the server, the spawn protection is disabled automatically as well.\n[1]:https://minecraft.fandom.com/wiki/Spawn_protection\n[2]:https://minecraft.fandom.com/wiki/Server#Managing_and_maintaining_a_server",
+      "default": 16
+    },
+    "sync-chunk-writes": {
+      "type": "boolean",
+      "description": "Enables synchronous chunk writes.",
+      "default": true
+    },
+    "text-filtering-config": {
+      "type": "string",
+      "description": "more information needed: https://minecraft.fandom.com/wiki/Talk:Server.properties",
+      "default": ""
+    },
+    "use-native-transport": {
+      "type": "boolean",
+      "description": "Linux server performance improvements: optimized packet sending/receiving on Linux\ntrue - Enabled. Enable Linux packet sending/receiving optimization\nfalse - Disabled. Disable Linux packet sending/receiving optimization",
+      "default": true
+    },
+    "view-distance": {
+      "type": "integer",
+      "description": "(3-32) Sets the amount of world data the server sends the client, measured in chunks in each direction of the player (radius, not diameter). It determines the server-side viewing distance.\n\n10 is the default/recommended. If the player has major lag, this value is recommended to be reduced.\nWarning: This setting is only applied to a Vanilla or Forge server. For Bukkit, Spigot and Paper Spigot, the value must be set in their own config.",
+      "minimum": 3,
+      "maximum": 32,
+      "default": 10
+    },
+    "white-list": {
+      "type": "boolean",
+      "description": "Enables a whitelist on the server.\n\nWith a whitelist enabled, users not on the whitelist cannot connect. Intended for private servers, such as those for real-life friends or strangers carefully selected via an application process, for example.\n\nfalse - No white list is used.\ntrue - The file whitelist.json is used to generate the white list.\n\nNote: Ops are automatically whitelisted, and there is no need to add them to the whitelist.",
+      "default": false
+    }
+  },
+  "definitions": {
+    "minecraft-difficulty": {
+      "type": "string",
+      "description": "Minecraft Difficulty\nhttps://minecraft.fandom.com/wiki/Difficulty",
+      "enum": [
+        "peaceful",
+        "easy",
+        "normal",
+        "hard"
+      ]
+    },
+    "minecraft-gamemode": {
+      "type": "string",
+      "description": "Minecraft Game mode\nhttps://minecraft.fandom.com/wiki/Game_mode",
+      "enum": [
+        "survival",
+        "creative",
+        "adventure",
+        "spectator"
+      ]
+    },
+    "minecraft-permission-level": {
+      "description": "Minecraft Permission level\n0 (all)\n1 (moderator)\n2 (gamemaster)\n3 (admin)\n4 (owner)\nhttps://minecraft.fandom.com/wiki/Permission_level",
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4
+    }
+  }
+}

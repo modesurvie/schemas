@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Minecraft Classic Server Settings (server.properties)",
+  "type": "object",
+  "description": "The server.properties is the file that stores all the settings for a multiplayer (Minecraft or Minecraft Classic) server.\nhttps://minecraft.fandom.com/wiki/Server.properties#Minecraft_Classic_server_properties",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "admin-slot": {
+      "type": "boolean",
+      "description": "Allow ops to join even if the server is full.",
+      "default": false
+    },
+    "grow-trees": {
+      "type": "boolean",
+      "description": "Whether or not the server allows planted saplings to grow into trees.\ntrue - the server allows saplings to grow into trees.\nfalse - the server does not allow saplings to grow into trees."
+    },
+    "max-connections": {
+      "type": "integer",
+      "description": "The max number of connections the server accepts from the same IP.\n\nNote: If set higher than 3, it is changed back to 3.",
+      "minimum": 1,
+      "maximum": 3
+    },
+    "public": {
+      "type": "boolean",
+      "description": "Whether the server should be displayed in the server list, or not.\ntrue - The server appears in the server list - anyone can see it.\nfalse - Only people with the URL that can be found in externalurl.txt and people who know the IP and port can join the server"
+    },
+    "verify-names": {
+      "type": "boolean",
+      "description": "[unofficial name] If enabled, the server ensures that the client is logged in with the same IP address seen on Minecraft.net. This has caused problems for people trying to play on the same computer they are hosting the server on as the server sees the local IP (127.0.0.1) while Minecraft.net sees the external IP. It is recommended that this is enabled unless the player want to play on the player's server from the same computer the player is hosting it on.\ntrue - Enabled. The server checks all names with Minecraft.net\nfalse - Disabled. The server makes sure the IP matches",
+      "default": true
+    }
+  }
+}

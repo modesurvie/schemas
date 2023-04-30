@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Minecraft Server Banned IPs",
+  "type": "array",
+  "description": "The banned-ips.json is a server configuration file that stores the IPs of players who have been banned on a server. As well as manually editing the file, the command /ban-ip can also be used by operators.\nhttps://minecraft.fandom.com/wiki/Commands/ban#ban-ip",
+  "items": {
+    "$ref": "#/definitions/minecraft-server-banned-ips-entry"
+  },
+  "definitions": {
+    "minecraft-server-banned-ips-entry": {
+      "type": "object",
+      "description": "Banned IP entry.",
+      "additionalProperties": false,
+      "required": [
+        "created",
+        "expires",
+        "ip",
+        "source"
+      ],
+      "properties": {
+        "created": {
+          "type": "string",
+          "description": "UTC time when this ban was created.",
+          "examples": ["2023-02-15 16:30:00 +0200"]
+        },
+        "expires": {
+          "type": "string",
+          "description": "UTC time (or \"forever\") after which this ban expires (expiration date after which the banned ip will no longer be banned).",
+          "examples": ["forever", "2023-03-15 16:30:00 +0200"]
+        },
+        "ip": {
+          "type": "string",
+          "description": "IP of the ban.",
+          "examples": ["172.16.5.128"]
+        },
+        "reason": {
+          "type": "string",
+          "description": "Reason for the ban.",
+          "examples": ["Log4J attempt"]
+        },
+        "source": {}
+      },
+      "examples": [
+        {
+          "created": "2023-02-15 16:30:00 +0200",
+          "expires": "forever",
+          "ip": "172.16.5.128",
+          "reason": "Banned by an operator.",
+          "source": "Server"
+        }
+      ]
+    }
+  }
+}

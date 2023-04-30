@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Minecraft server.jar command-line arguments",
+  "type": "object",
+  "description": "The server.jar is the jar file to execute with java to start Minecraft server.\nhttps://minecraft.fandom.com/wiki/Tutorials/Setting_up_a_server#Minecraft_options",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "--bonusChest": {
+      "type": "boolean",
+      "description": "If a bonus chest should be generated, when the world is first generated.\nhttps://minecraft.fandom.com/wiki/Bonus_chest"
+    },
+    "--demo": {
+      "type": "boolean",
+      "description": "If the server is in demo mode. (Shows the players a demo pop-up, and players cannot break or place blocks or eat if the demo time has expired)\nEquivalent to playing minecraft without a account, you have about 5 in-game days before your trial ends.\nhttps://minecraft.fandom.com/wiki/Demo_Mode"
+    },
+    "--eraseCache": {
+      "type": "boolean",
+      "description": "Erases the lighting caches, etc. Same option as when optimizing single player worlds."
+    },
+    "--forceUpgrade": {
+      "type": "boolean",
+      "description": "Forces upgrade on all the chunks, such that the data version of all chunks matches the current server version (same as with sp worlds). This option significantly increases the time needed to start the server."
+    },
+    "--help": {
+      "type": "boolean",
+      "description": "Shows this help."
+    },
+    "--initSettings": {
+      "type": "boolean",
+      "description": "Initializes 'server.properties' and 'eula.txt', then quits."
+    },
+    "--jfrProfile": {
+      "type": "boolean",
+      "description": "Initializes the Java Flight Recorder on the server. Only available on 1.18+."
+    },
+    "--nogui": {
+      "type": "boolean",
+      "description": "Doesn't open the GUI when launching the server.\nYou will still be able to interact with your server, but you must use the cmd or Terminal if enabled."
+    },
+    "--pidFile": {
+      "type": "string"
+    },
+    "--port": {
+      "type": "integer",
+      "description": "Which port to listen on, overrides the server.properties value (default: -1, read from server.properties). See server.properties for restrictions on this value.\nhttps://minecraft.fandom.com/wiki/Server.properties",
+      "default": -1
+    },
+    "--safeMode": {
+      "type": "boolean",
+      "description": "Loads level with vanilla datapack only"
+    },
+    "--serverId <String>": {
+      "type": "string",
+      "description": "Gives an ID to the server. (??) Gives an ID to the server. (??)"
+    },
+    "--singleplayer <String>": {
+      "type": "string",
+      "description": "Runs the server in offline mode (unknown where <String> is used for, probably used internally by mojang?)"
+    },
+    "--universe <String>": {
+      "type": "string",
+      "description": "The folder in which to look for world folders. (default: .)",
+      "default": "."
+    },
+    "--world <String>": {
+      "type": "string",
+      "description": "The name of the world folder in which the level.dat resides."
+    }
+  }
+}
