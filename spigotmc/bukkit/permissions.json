@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "CraftBukkit Server Permissions (permissions.yml)",
+  "type": "object",
+  "description": "The permissions.yml is the default permission definition YAML file, automatically generated on startup. Its main function is to group permission nodes together into one file so that it can be used across the system by permissions plugins (and plugins utilising permissions alike). WARNING: permissions.yml is NOT a replacement Permission awarding/checking system and any permissions should continue to be handled by a plugin.\nhttps://bukkit.fandom.com/wiki/Permissions.yml",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    }
+  },
+  "additionalProperties": {
+    "$ref": "#/definitions/permissions-entry"
+  },
+  "examples": [
+    {
+      "server.basics": {
+        "description": "Basic permissions for My Cool Server.",
+        "default": true,
+        "children": {
+          "BukkitWiki.cmd1": true,
+          "BukkitWiki.cmd2": true,
+          "BukkitWiki.cmd4": true,
+          "BukkitWiki.cmd5": true
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "permissions-entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "default": {
+          "type": "boolean"
+        },
+        "children": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

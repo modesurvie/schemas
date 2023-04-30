@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "CraftBukkit Server Command Aliases (commands.yml)",
+  "type": "object",
+  "description": "The commands.yml is a configuration file that houses custom defined aliases and command block overrides for your CraftBukkit server. https://bukkit.fandom.com/wiki/Commands.yml",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "aliases": {
+      "type": "object",
+      "description": "Define custom aliases for commands on your server. At its core, an alias allows you to create custom commands that can perform multiple functions at once. This is a powerful tool that allows you to define easier to remember commands for your server staff.",
+      "additionalProperties": {
+        "type": "array",
+        "description": "Alias which performs multiple commands when is used.",
+        "items": {
+          "type": "string",
+          "description": "A command performed when its alias is used."
+        }
+      },
+      "examples": [
+        {
+          "icanhasbukkit": ["version"]
+        },
+        {
+          "summon": []
+        },
+        {
+          "icanhasversion": ["bukkit:version"],
+          "version": []
+        }
+      ]
+    },
+    "command-block-overrides": {
+      "type": "array",
+      "description": "The command block override system provides a quick and easy way to force the server to use the commands provided by Mojang (as opposed to the ones built into Bukkit) for command blocks specifically, leaving all other commands untouched. Commands used outside of command blocks will use the Bukkit (or plugin) version as usual. Using a * allow to block all Bukkit versions of Mojang commands.",
+      "items": {
+        "type": "string",
+        "description": "A command name which force the server to use the version provided by Mojang instead of Bukkit (or plugin).",
+        "examples": ["summon", "give", "*"]
+      },
+      "examples": [
+        [],
+        ["summon", "give"],
+        ["*"]
+      ]
+    },
+    "ignore-vanilla-permissions": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "default": {
+    "command-block-overrides": [],
+    "aliases": {
+      "icanhasbukkit": ["version $1-"]
+    }
+  }
+}

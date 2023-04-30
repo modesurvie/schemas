@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "CraftBukkit Server Help (help.yml)",
+  "type": "object",
+  "description": "The help.yml is a file that provides you with a wide variety of options for configuring the help system in your CraftBukkit server. The help system can be accessed from the chat window or server console by typing the /help command. https://bukkit.fandom.com/wiki/Help.yml",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "general-topics": {
+      "type": "object",
+      "description": "The general-topics section is made up of a list of topics with attributes describing them. General topics are added the internal help index as separate items along with all the plugin command topics.",
+      "additionalProperties": {
+        "type": "object",
+        "description": "This is the name the /help command will use to locate a topic. Spaces are allowed and can be used to create sub-topics. Note: \"Topic Name\" is not the name of a yaml key. Use the actual name of your topic instead.",
+        "properties": {
+          "shortText": {
+            "type": "string",
+            "description": "The short text is a brief description of a topic displayed next to the topic name in help indexes."
+          },
+          "fullText": {
+            "type": "string",
+            "description": "The full text is the full description of a help topic displayed when the user requests the help topic. This text can be as long as you like. The help system will automatically break it up into multiple pages."
+          },
+          "permission": {
+            "description": "The permission node required to see a help topic. If left blank (Ex: permission: [] ), the help topic will be visible to all players.",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 0
+              }
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "Rules": {
+            "shortText": "Rules of the server",
+            "fullText": "|\n      &61. Be kind to your fellow players.\n      &B2. No griefing.\n      &D3. No swearing.",
+            "permission": "topics.rules"
+          }
+        }
+      ]
+    },
+    "index-topics": {
+      "type": "object",
+      "description": "Index topics are similar to general topics, except instead of displaying pages of information they display a list of more help topics. Index topics are added to the internal help index as separate items along with all the plugin command topics.\n\nIndex topics are automatically security trimmed so that no player sees any commands requiring permissions they do not have. When an index topic is displayed, the user's permission set is compared against the permission requirements of each topic in the index and any that do not match are omitted. Note: Note: To override the default help index displayed when /help is called with no arguments, create an index topic called \"Default\".",
+      "additionalProperties": {
+        "type": "object",
+        "description": "This is the name the /help command will use to locate a topic. Spaces are allowed and can be used to create sub-topics. Note: \"Topic Name\" is not the name of a yaml key. Use the actual name of your topic instead.",
+        "properties": {
+          "shortText": {
+            "type": "string",
+            "description": "The short text is a brief description of a topic displayed when an index topic is included in another index topic."
+          },
+          "preamble": {
+            "type": "string",
+            "description": "A message to display on the first page of an index topic before any of the topics in the index."
+          },
+          "permission": {
+            "description": "The permission node required to see a help topic. If left blank (Ex: permission: [] ), the help topic will be visible to all players.",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 0
+              }
+            ]
+          },
+          "commands": {
+            "type": "array",
+            "description": "A list of help topic names included in the index. Any command that can be displayed using the /help command can be included here. Use the same name here as you would use to display a topic in the /help command.",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "examples": [
+        {
+          "Ban Commands": {
+            "shortText": "Player banning commands",
+            "preamble": "Moderator - do not abuse these commands",
+            "permission": "op",
+            "commands": [
+              "/ban",
+              "/ban-ip",
+              "/banlist",
+              "Rules"
+            ]
+          }
+        }
+      ]
+    },
+    "amend-topics": {
+      "type": "object",
+      "description": "Topic amendments are used to modify or replace the contents or permission requirement for any automatically generated help topic. You can use topic amendments to complete the help topics for plugins that do not yet properly support the Bukkit help system or augment those topics with your own commentary. Note: Note: When amending a topic's short or full text, you can use the string <text> to insert the existing topic text.",
+      "additionalProperties": {
+        "type": "object",
+        "description": "This is the name of the topic you wish to amend. This topic name must match the name used to display the help topic exactly.",
+        "properties": {
+          "shortText": {
+            "type": "string",
+            "description": "The new short text for the topic. Can be omitted."
+          },
+          "fullText": {
+            "type": "string",
+            "description": "The new short text for the topic. Can be omitted."
+          },
+          "permission": {
+            "description": "A new permission node to apply to the topic. Can be left blank (Ex: permission: [] ).",
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "minItems": 0,
+                "maxItems": 0
+              }
+            ]
+          }
+        }
+      },
+      "examples": [
+        {
+          "/stop": {
+            "shortText": "Stops the server cold....in its tracks!",
+            "fullText": "<text> - This kills the server.",
+            "permission": "you.dont.have"
+          }
+        }
+      ]
+    },
+    "ignore-plugins": {
+      "type": "array",
+      "description": "The ignored plugins list is a list of plugins that the help system will skip when generating automatic help topics. Ignored plugin names must exactly match the plugin name as displayed in the /plugins command. Ignore \"Bukkit\" to skip the standard Bukkit commands. Ignore \"All\" to completely disable automatic help topic generation.",
+      "items": {
+        "type": "string"
+      },
+      "examples": [
+        "PluginName",
+        "Bukkit",
+        "All"
+      ]
+    }
+  }
+}
