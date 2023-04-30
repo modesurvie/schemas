@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Velocity Configuration",
+  "description": "Every Velocity file is stored in velocity.toml, located in the directory where you started the proxy.\nhttps://docs.papermc.io/velocity/configuration",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "config-version": {
+      "type": "string",
+      "description": "This is the current config version used by Velocity. You should not alter this setting.",
+      "examples": ["2.6"]
+    },
+    "bind": {
+      "$ref": "#/definitions/Address",
+      "description": "This tells the proxy to accept connections on a specific IP. By default, Velocity will listen for connections on all IP addresses on the computer on port 25577.",
+      "default": "0.0.0.0:25577"
+    },
+    "motd": {
+      "$ref": "#/definitions/Chat",
+      "description": "This allows you to change the message shown to players when they add your server to their server list. You can use MiniMessage format.",
+      "default": "<#09add3>A Velocity Server"
+    },
+    "show-max-players": {
+      "type": "integer",
+      "description": "This allows you to customize the number of \"maximum\" players in the player's server list. Note that Velocity doesn't have a maximum number of players it supports.",
+      "default": 500
+    },
+    "online-mode": {
+      "type": "boolean",
+      "description": "Should we authenticate players with Mojang? By default, this is on.",
+      "default": true
+    },
+    "force-key-authentication": {
+      "type": "boolean",
+      "description": "Should the proxy enforce the new public key security standard? By default, this is on.",
+      "default": true
+    },
+    "prevent-client-proxy-connections": {
+      "type": "boolean",
+      "description": "If client's ISP/AS sent from this proxy is different from the one from Mojang's authentication server, the player is kicked. This disallows some VPN and proxy connections but is a weak form of protection.",
+      "default": false
+    },
+    "player-info-forwarding-mode": {
+      "type": "string",
+      "description": "Should we forward IP addresses and other data to backend servers?\nAvailable options:\n- \"none\": No forwarding will be done. All players will appear to be connecting from the proxy and will have offline-mode UUIDs.\n- \"legacy\": Forward player IPs and UUIDs in a BungeeCord-compatible format. Use this if you run servers using Minecraft 1.12 or lower.\n- \"bungeeguard\": Forward player IPs and UUIDs in a format supported by the BungeeGuard plugin. Use this if you run servers using Minecraft 1.12 or lower, and are unable to implement network level firewalling (on a shared host).\n- \"modern\": Forward player IPs and UUIDs as part of the login process using Velocity's native forwarding. Only applicable for Minecraft 1.13 or higher.",
+      "enum": [
+        "NONE",
+        "none",
+        "LEGACY",
+        "legacy",
+        "BUNGEEGUARD",
+        "bungeeguard",
+        "MODERN",
+        "modern"
+      ],
+      "default": "NONE"
+    },
+    "forwarding-secret": {
+      "deprecated": true,
+      "type": "string",
+      "description": "(DEPRECATED) This setting is used as a secret to ensure that player info forwarded by Velocity comes from your proxy and not from someone pretending to run Velocity. See the \"Player info forwarding\" section for more info.\nhttps://docs.papermc.io/velocity/player-information-forwarding",
+      "default": "randomly_generated_string"
+    },
+    "forwarding-secret-file": {
+      "type": "string",
+      "description": "If you are using modern or BungeeGuard IP forwarding, configure a file that contains a unique secret here. The file is expected to be UTF-8 encoded and not empty.",
+      "default": "forwarding.secret"
+    },
+    "announce-forge": {
+      "type": "boolean",
+      "description": "This setting determines whether Velocity should present itself as a Forge/FML-compatible server. By default, this is disabled.",
+      "default": false
+    },
+    "kick-existing-players": {
+      "type": "boolean",
+      "description": "Allows restoring the vanilla behavior of kicking users on the proxy if they try to reconnect (e.g. lost internet connection briefly).",
+      "default": false
+    },
+    "ping-passthrough": {
+      "type": "string",
+      "description": "Allows forwarding nothing (the default), the MODS (for Forge), the DESCRIPTION, or everything (ALL) from the try list (or forced host server connection order).",
+      "enum": [
+        "DISABLED",
+        "disabled",
+        "MODS",
+        "mods",
+        "DESCRIPTION",
+        "description",
+        "ALL",
+        "all"
+      ],
+      "default": "DISABLED"
+    },
+    "enable-player-address-logging": {
+      "type": "boolean",
+      "description": "If not enabled (default is true) player IP addresses will be replaced by <ip address withheld> in logs",
+      "default": true
+    },
+    "servers": {
+      "type": "object",
+      "description": "Configure your servers here. Each key represents the server's name, and the value represents the IP address of the server to connect to.",
+      "additionalProperties": {
+        "$ref": "#/definitions/Address",
+        "description": "<A server name> This makes the proxy aware of a server that it can connect to.",
+        "examples": ["127.0.0.1:30066"]
+      },
+      "properties": {
+        "try": {
+          "type": "array",
+          "description": "This specifies what servers Velocity should try to connect to upon player login and when a player is kicked from a server.",
+          "items": {
+            "type": "string"
+          },
+          "examples": [["lobby"]]
+        }
+      },
+      "examples": [
+        {
+          "lobby": "127.0.0.1:30066",
+          "factions": "127.0.0.1:30067",
+          "minigames": "127.0.0.1:30068",
+          "try": ["lobby"]
+        }
+      ]
+    },
+    "forced-hosts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "description": "This configures the proxy to create a forced host for the specified hostname. An array of servers to try for the specified hostname is the value.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "examples": [
+        {
+          "lobby.example.com": ["lobby"],
+          "factions.example.com": ["factions"],
+          "minigames.example.com": ["minigames"]
+        }
+      ]
+    },
+    "advanced": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "compression-threshold": {
+          "type": "integer",
+          "description": "This is the minimum size (in bytes) that a packet must be before the proxy compresses it. Minecraft uses 256 bytes by default.",
+          "default": 256
+        },
+        "compression-level": {
+          "type": "integer",
+          "description": "This setting indicates what zlib compression level the proxy should use to compress packets. The default value uses the default zlib level.",
+          "default": -1
+        },
+        "login-ratelimit": {
+          "type": "integer",
+          "description": "This setting determines the minimum amount of time (in milliseconds) that must pass before a connection from the same IP address will be accepted by the proxy. A value of 0 disables the rate limit.",
+          "default": 3000
+        },
+        "connection-timeout": {
+          "type": "integer",
+          "description": "This setting determines how long the proxy will wait to connect to a server before timing out.",
+          "default": 5000
+        },
+        "read-timeout": {
+          "type": "integer",
+          "description": "This setting determines how long the proxy will wait to receive data from the server before timing out.",
+          "default": 30000
+        },
+        "haproxy-protocol": {
+          "type": "boolean",
+          "description": "This setting determines whether or not Velocity should receive HAProxy PROXY messages. If you don't use HAProxy, leave this setting off.",
+          "default": false
+        },
+        "tcp-fast-open": {
+          "type": "boolean",
+          "description": "This setting allows you to enable TCP Fast Open support in Velocity. Your proxy must run on Linux kernel >=4.14 for this setting to apply.",
+          "default": false
+        },
+        "bungee-plugin-message-channel": {
+          "type": "boolean",
+          "description": "This setting allows you to enable or disable support for the BungeeCord plugin messaging channel.",
+          "default": true
+        },
+        "show-ping-requests": {
+          "type": "boolean",
+          "description": "This setting allows you to log ping requests sent by clients to the proxy.",
+          "default": false
+        },
+        "announce-proxy-commands": {
+          "type": "boolean",
+          "description": "This setting allows you to enable or disable explicitly sending proxy commands to the client (for Minecraft 1.13+ tab completion).",
+          "default": true
+        },
+        "failover-on-unexpected-server-disconnect": {
+          "type": "boolean",
+          "description": "This setting allows you to determine if the proxy should failover or disconnect the user in the event of an unclean disconnect.",
+          "default": false
+        },
+        "log-command-executions": {
+          "type": "boolean",
+          "description": "Determines whether or not the proxy should log all commands run by the user.",
+          "default": false
+        },
+        "log-player-connections": {
+          "type": "boolean",
+          "description": "Enables logging of player connections when connecting to the proxy, switching servers and disconnecting from the proxy.",
+          "default": true
+        }
+      }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether or not Velocity should reply to Minecraft query protocol requests. You can usually leave this false.",
+          "default": false
+        },
+        "port": {
+          "type": "integer",
+          "description": "Specifies which port that Velocity should listen on for GameSpy 4 (Minecraft query protocol) requests.",
+          "default": 25577
+        },
+        "map": {
+          "type": "string",
+          "description": "Specifies the map name to be shown to clients.",
+          "default": "Velocity"
+        },
+        "show-plugins": {
+          "type": "boolean",
+          "description": "Whether or not Velocity plugins are included in the query responses.",
+          "default": false
+        }
+      }
+    },
+    "metrics": {
+      "deprecated": "true",
+      "type": "object",
+      "description": "These metrics section move into `plugins/bStats/config.txt`",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether or not Velocity should send metrics to bStats.",
+          "default": true
+        },
+        "id": {
+          "type": "string",
+          "description": "A randomly generated UUID that uniquely identifies your Velocity server. Do not alter this setting.",
+          "default": "randomly_generated_uuid"
+        },
+        "log-failure": {
+          "type": "boolean",
+          "description": "Whether or not Velocity should log whenever it fails to connect to bStats.",
+          "default": false
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Chat": {
+      "type": "string",
+      "description": "Chat messages may be provided in MiniMessage format. RGB support is available for Minecraft 1.16 and later versions.\nhttps://docs.advntr.dev/minimessage/format.html"
+    },
+    "Address": {
+      "type": "string",
+      "description": "An address is a pairing of an IP address or hostname, and a port, separated by a colon (:). For instance, 127.0.0.1:25577 and server01.example.com:25565 are valid addresses."
+    }
+  }
+}

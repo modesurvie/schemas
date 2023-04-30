@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Paper version history (version_history.json)",
+  "description": "The version_history.json file stores the version of a running Paper server.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "currentVersion": {
+      "type": "string"
+    }
+  },
+  "examples": [
+    {
+      "currentVersion": "git-Paper-510 (MC: 1.19.4)"
+    }
+  ]
+}

@@ -1,0 +1,1262 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Paper World Configuration",
+  "description": "World configuration options in paper-world.yml will affect a world (or all worlds for paper-world-defaults.yml) on a server.\nhttps://docs.papermc.io/paper/reference/world-configuration",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "_version": {
+      "type": "number"
+    },
+    "anticheat": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "anti-xray": {
+          "type": "object",
+          "description": "Recommended configuration for both engine-mode 1 and 2 can be found in the Configuring Anti-Xray guide. https://docs.papermc.io/paper/anti-xray",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Controls the on/off state for the Anti-Xray system.",
+              "default": false
+            },
+            "engine-mode": {
+              "type": "number",
+              "description": "Sets the Anti-Xray engine mode. 1 replaces specified blocks (hidden-blocks) with other \"fake\" blocks, stone (deepslate at y < 0), netherrack, or end_stone based on the dimension. In contrast, 2 will replace both hidden-blocks and replacement-blocks with randomly generated hidden-blocks.",
+              "default": 1
+            },
+            "max-block-height": {
+              "type": "number",
+              "description": "Sets the maximum height (y coordinate, starting from the bottom of the world) to which anti-xray will operate. Only integer multiples of 16 are accepted. All other values will be rounded down. The Minecraft Wiki page about Ore (https://minecraft.fandom.com/wiki/Ore) may be helpful in determining the best value for you.",
+              "default": 64
+            },
+            "update-radius": {
+              "type": "number",
+              "description": "Radius for block updates which will be sent containing real block data when the client interacts with a block. Only values 0, 1, and 2 are accepted. Values smaller than 0 will be rounded up to 0, while values larger than 2 will be rounded down to 2. 0 is only designed for testing purposes. Do not use it in production.",
+              "default": 2
+            },
+            "lava-obscures": {
+              "type": "boolean",
+              "description": "Whether to obfuscate blocks touching lava. Does not work well with non-stone-like ore textures. This is because lava, while being mostly opaque, does not cover blocks fully at the surface.",
+              "default": false
+            },
+            "use-permission": {
+              "type": "boolean",
+              "description": "Whether to allow players with the paper.antixray.bypass permission to bypass anti-xray. Checking this permission is disabled by default as legacy permission plugins may struggle with the number of checks made. This should only be used with modern permission plugins.",
+              "default": false
+            },
+            "hidden-blocks": {
+              "type": "array",
+              "description": "With engine-mode: 1, these blocks will be replaced by stone (deepslate at y < 0), netherrack, or end_stone, based on the dimension. All types of air are ignored on this list.With engine-mode: 2, these blocks will be randomly placed in the world, replacing both hidden-blocks and replacement-blocks. Tile entities, such as chests or spawners, are not allowed on this list. Individual blocks may be added multiple times, increasing their chance of being placed. The default block states are placed.",
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "copper_ore",
+                "deepslate_copper_ore",
+                "gold_ore",
+                "deepslate_gold_ore",
+                "iron_ore",
+                "deepslate_iron_ore",
+                "coal_ore",
+                "deepslate_coal_ore",
+                "lapis_ore",
+                "deepslate_lapis_ore",
+                "mossy_cobblestone",
+                "obsidian",
+                "chest",
+                "diamond_ore",
+                "deepslate_diamond_ore",
+                "redstone_ore",
+                "deepslate_redstone_ore",
+                "clay",
+                "emerald_ore",
+                "deepslate_emerald_ore",
+                "ender_chest"
+              ]
+            },
+            "replacement-blocks": {
+              "type": "array",
+              "description": "With engine-mode: 1, replacement blocks are not used. Changing this list will have no effect.With engine-mode: 2, both replacement-blocks and hidden-blocks are randomly replaced by hidden-blocks. While tile entities are ignored in the hidden-blocks list, they may be added to the replacement-blocks list. All types of air blocks are ignored here.",
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "stone",
+                "oak_planks",
+                "deepslate"
+              ]
+            }
+          }
+        },
+        "obfuscation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "hide-durability": {
+                  "type": "boolean",
+                  "description": "Controls whether durability information is sent to other players' clients. This may break resource packs that rely on durability values when observing other players.",
+                  "default": false
+                },
+                "hide-itemmeta": {
+                  "type": "boolean",
+                  "description": "Controls whether unnecessary item information (such as enchantments, items in a shulker box/bundle, etc.) that can give cheat clients an advantage should be sent to other players' clients. This may break resource packs that rely on information such as enchantments, lore or item names when observing other players.",
+                  "default": false
+                },
+                "hide-itemmeta-with-visual-effects": {
+                  "type": "boolean",
+                  "description": "Controls whether item information that affects how an item is displayed (such as lodestone compass positions) should be sent to other players' clients. This information could be used by cheat clients to give another advantage to the cheating player. However, this will affect how certain items look when held by another player.",
+                  "default": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "chunks": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "auto-save-interval": {
+          "description": "Configures the world saving interval in ticks. Overrides ticks-per.autosave in bukkit.yml for this world. A value of -1 will use the global ticks-per.autosave in bukkit.yml.",
+          "default": -1,
+          "oneOf": [
+            {
+              "const": "default"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        },
+        "delay-chunk-unloads-by": {
+          "type": "string",
+          "description": "Delays chunk unloads by the specified time.",
+          "default": "10s"
+        },
+        "entity-per-chunk-save-limit": {
+          "type": "object",
+          "description": "Limits the number of any type of entity that will be saved/loaded per chunk. A value of -1 disables the limit for a specific entity. Any entity may be added to the list, beyond the enumerated defaults.",
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "default": {
+            "arrow": -1,
+            "ender_pearl": -1,
+            "experience_orb": -1,
+            "fireball": -1,
+            "small_fireball": -1,
+            "snowball": -1
+          }
+        },
+        "fixed-chunk-inhabited-time": {
+          "type": "number",
+          "description": "If 0 or greater, set the chunk inhabited time to a fixed number. Fixed in this instance means static or unchanging. This is not fixing a bug. The timer is increased when chunks are kept loaded because of player activity.",
+          "default": -1
+        },
+        "max-auto-save-chunks-per-tick": {
+          "type": "number",
+          "description": "The maximum number of chunks the auto-save system will save in a single tick.",
+          "default": 24
+        },
+        "prevent-moving-into-unloaded-chunks": {
+          "type": "boolean",
+          "description": "Sets whether the server will prevent players from moving into unloaded chunks or not.",
+          "default": false
+        }
+      }
+    },
+    "collisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allow-player-cramming-damage": {
+          "type": "boolean",
+          "description": "Allows players to take damage from cramming when colliding with more entities than set in the maxEntityCramming game rule.",
+          "default": false
+        },
+        "allow-vehicle-collisions": {
+          "type": "boolean",
+          "description": "Whether vehicles should also be able to collide while only-players-collide is enabled.",
+          "default": false
+        },
+        "fix-climbing-bypassing-cramming-rule": {
+          "type": "boolean",
+          "description": "Sets whether climbing should bypass the entity cramming limit(maxEntityCramming game rule). If set to true, climbing entities will also be counted towards the entity cramming limit so that they can take suffocation damage.",
+          "default": false
+        },
+        "max-entity-collisions": {
+          "type": "number",
+          "description": "Instructs the server to stop processing collisions after this value is reached.",
+          "default": 8
+        },
+        "only-players-collide": {
+          "type": "boolean",
+          "description": "Only calculate collisions if a player is one of the two entities colliding.",
+          "default": false
+        }
+      }
+    },
+    "entities": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "armor-stands": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "do-collision-entity-lookups": {
+              "type": "boolean",
+              "description": "Instructs armor stand entities to do entity collision checks.",
+              "default": true
+            },
+            "tick": {
+              "type": "boolean",
+              "description": "Disable to prevent armor stands from ticking. Can improve performance with many armor stands.",
+              "default": true
+            }
+          }
+        },
+        "markers": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "tick": {
+              "type": "boolean",
+              "description": "Disable to prevent markers from ticking. This may affect how they behave as passengers of other entities.",
+              "default": true
+            }
+          }
+        },
+        "behavior": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "baby-zombie-movement-modifier": {
+              "type": "number",
+              "description": "Modifies the speed that baby zombies move at, where 0.5 is 50% faster than the mob base speed, and -0.4 would be 40% slower.",
+              "default": 0.5
+            },
+            "disable-chest-cat-detection": {
+              "type": "boolean",
+              "description": "Allows you to open chests even if they have a cat sitting on top of them.",
+              "default": false
+            },
+            "disable-creeper-lingering-effect": {
+              "type": "boolean",
+              "description": "Disables creepers randomly leaving behind a lingering area effect cloud.",
+              "default": false
+            },
+            "disable-player-crits": {
+              "type": "boolean",
+              "description": "Instructs the server to disable critical hits in PvP, treating them as normal hits instead.",
+              "default": false
+            },
+            "allow-spider-world-border-climbing": {
+              "type": "boolean",
+              "description": "Whether spiders should be able to climb on the world border, as if it were a regular wall.",
+              "default": true
+            },
+            "door-breaking-difficulty": {
+              "type": "object",
+              "description": "Takes a list of difficulties at which each entity will attempt to break doors.",
+              "additionalProperties": false,
+              "properties": {
+                "husk": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/paper-world-door-breaking-difficulty",
+                    "default": ["HARD"]
+                  }
+                },
+                "vindicator": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/paper-world-door-breaking-difficulty",
+                    "default": ["NORMAL", "HARD"]
+                  }
+                },
+                "zombie": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/paper-world-door-breaking-difficulty",
+                    "default": ["HARD"]
+                  }
+                },
+                "zombie_villager": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/paper-world-door-breaking-difficulty",
+                    "default": ["HARD"]
+                  }
+                },
+                "zombified_piglin": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/paper-world-door-breaking-difficulty",
+                    "default": ["HARD"]
+                  }
+                }
+              },
+              "default": {
+                "husk": ["HARD"],
+                "vindicator": ["NORMAL", "HARD"],
+                "zombie": ["HARD"],
+                "zombie_villager": ["HARD"],
+                "zombified_piglin": ["HARD"]
+              }
+            },
+            "ender-dragons-death-always-places-dragon-egg": {
+              "type": "boolean",
+              "description": "Controls whether ender dragons should always drop dragon eggs on death.",
+              "default": false
+            },
+            "experience-merge-max-value": {
+              "type": "number",
+              "description": "Instructs the server to put a maximum value on experience orbs, preventing them all from merging down into 1 single orb. A value of -1 instructs the server to use no max value, allowing them to merge down into a single orb. This is especially noticeable when defeating boss monsters.",
+              "default": -1
+            },
+            "mobs-can-always-pick-up-loot": {
+              "description": "Controls whether zombies or skeletons (each configurable individually) will always be able to pick up loot. If set to false, the probability that a zombie picks up items depends on the world's difficulty (vanilla behavior).",
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "skeletons": {
+                      "type": "boolean",
+                      "default": false
+                    },
+                    "zombies": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  }
+                }
+              ],
+              "default": {
+                "skeletons": false,
+                "zombies": false
+              }
+            },
+            "nerf-pigmen-from-nether-portals": {
+              "type": "boolean",
+              "description": "Removes AI from pigmen spawned via nether portals",
+              "default": false
+            },
+            "parrots-are-unaffected-by-player-movement": {
+              "type": "boolean",
+              "description": "Makes parrots \"sticky\" so they do not fall off a player's shoulder when they move. Use crouch to shake them off.",
+              "default": false
+            },
+            "phantoms-do-not-spawn-on-creative-players": {
+              "type": "boolean",
+              "description": "Disables spawning of phantoms on players in creative mode",
+              "default": true
+            },
+            "phantoms-only-attack-insomniacs": {
+              "type": "boolean",
+              "description": "Prevents phantoms from attacking players who have slept",
+              "default": true
+            },
+            "phantoms-spawn-attempt-max-seconds": {
+              "type": "integer",
+              "default": 119
+            },
+            "phantoms-spawn-attempt-min-seconds": {
+              "type": "integer",
+              "default": 60
+            },
+            "piglins-guard-chests": {
+              "type": "boolean",
+              "description": "If piglins should attempt to guard chests when angered.",
+              "default": true
+            },
+            "pillager-patrols": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "disable": {
+                  "type": "boolean",
+                  "description": "Disables Pillager patrols and associated AI.",
+                  "default": false
+                },
+                "spawn-chance": {
+                  "type": "number",
+                  "description": "Modify the spawn changes for patrols.",
+                  "default": 0.2
+                },
+                "spawn-delay": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "per-player": {
+                      "type": "boolean",
+                      "description": "Makes spawn-delay per player.",
+                      "default": false
+                    },
+                    "ticks": {
+                      "type": "number",
+                      "description": "Delay in ticks between spawn chance.",
+                      "default": 12000
+                    }
+                  }
+                },
+                "start": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "per-player": {
+                      "type": "boolean",
+                      "description": "Makes days per player.",
+                      "default": false
+                    },
+                    "day": {
+                      "type": "number",
+                      "description": "Days between raid spawns.",
+                      "default": 5
+                    }
+                  }
+                }
+              }
+            },
+            "player-insomnia-start-ticks": {
+              "type": "integer",
+              "default": 72000
+            },
+            "should-remove-dragon": {
+              "type": "boolean",
+              "description": "Sets whether to remove the dragon if it exists without a portal.",
+              "default": false
+            },
+            "spawner-nerfed-mobs-should-jump": {
+              "type": "boolean",
+              "description": "Determines if spawner nerfed mobs should attempt to float (jump) in water.",
+              "default": false
+            },
+            "zombie-villager-infection-chance": {
+              "type": "number",
+              "description": "Sets the chance for villager conversion to zombie villager. Set to -1.0 for default behavior based on game difficulty. Set to 0.0 to always have villagers die when killed by zombies. Set to 100.0 to always convert villagers to zombie villagers.",
+              "default": -1
+            },
+            "zombies-target-turtle-eggs": {
+              "type": "boolean",
+              "description": "Sets whether zombies and zombified piglins should target turtle eggs. Setting this to false may help with performance, as they won't search for nearby eggs.",
+              "default": true
+            }
+          }
+        },
+        "entities-target-with-follow-range": {
+          "type": "boolean",
+          "description": "Sets whether the server should use follow range when targeting entities",
+          "default": false
+        },
+        "mob-effects": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "immune-to-wither-effect": {
+              "type": "object",
+              "description": "If the specified entity should be immune to the wither effect.",
+              "additionalProperties": {
+                "type": "boolean"
+              },
+              "default": {
+                "wither": true,
+                "wither-skeleton": true
+              }
+            },
+            "spiders-immune-to-poison-effect": {
+              "type": "boolean",
+              "description": "If spiders should be immune to poison.",
+              "default": true
+            },
+            "undead-immune-to-certain-effects": {
+              "type": "boolean",
+              "description": "If undead mobs should be immune to regeneration and poison.",
+              "default": true
+            }
+          }
+        },
+        "spawning": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "all-chunks-are-slime-chunks": {
+              "type": "boolean",
+              "description": "Instructs the server to treat all chunks like slime chunks, allowing them to spawn in any chunk. This may actually decrease your chances of running into a Slime as they now have a much larger potential spawn area.",
+              "default": false
+            },
+            "alt-item-despawn-rate": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Determines if items will have different despawn rates.",
+                  "default": false
+                },
+                "items": {
+                  "type": "object",
+                  "description": "Determines how long each respective item despawns in ticks. The item ids are the same as those used in the /give command. They can be viewed by enabling advanced item tooltips in-game by pressing F3 + H; the item id will appear at the bottom of the tooltip that appears when you hover over an item.",
+                  "additionalItems": {
+                    "type": "integer"
+                  },
+                  "default": {
+                    "cobblestone": 300
+                  }
+                }
+              }
+            },
+            "count-all-mobs-for-spawning": {
+              "type": "boolean",
+              "description": "Determines whether spawner mobs and other misc mobs are counted towards the global mob limit.",
+              "default": false
+            },
+            "creative-arrow-despawn-rate": {
+              "description": "The rate, in ticks, at which arrows shot from players in creative mode are despawned.",
+              "default": -1,
+              "oneOf": [
+                {
+                  "const": "default"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "despawn-ranges": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "ambient": {
+                  "$ref": "#/definitions/paper-world-despawn-range"
+                },
+                "axolotls": {
+                  "$ref": "#/definitions/paper-world-despawn-range"
+                },
+                "creature": {
+                  "$ref": "#/definitions/paper-world-despawn-range"
+                },
+                "misc": {
+                  "$ref": "#/definitions/paper-world-despawn-range"
+                },
+                "monster": {
+                  "$ref": "#/definitions/paper-world-despawn-range"
+                },
+                "underground_water_creature": {
+                  "$ref": "#/definitions/paper-world-despawn-range"
+                },
+                "water_ambient": {
+                  "$ref": "#/definitions/paper-world-despawn-range",
+                  "default": {
+                    "hard": 64,
+                    "soft": 32
+                  }
+                },
+                "water_creature": {
+                  "$ref": "#/definitions/paper-world-despawn-range"
+                }
+              }
+            },
+            "disable-mob-spawner-spawn-egg-transformation": {
+              "type": "boolean",
+              "description": "Whether to block players from changing the type of mob spawners with a spawn egg.",
+              "default": false
+            },
+            "duplicate-uuid": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "mode": {
+                  "type": "string",
+                  "description": "Specifies the method the server uses to resolve entities with duplicate UUIDs. This can be one of the following values:\nsaferegen: Regenerate a UUID for the entity, or delete it if they are close.\ndelete: Delete the entity.silent: Does nothing, not printing logs.warn: Does nothing, printing logs.",
+                  "enum": [
+                    "SAFEREGEN",
+                    "saferegen",
+                    "DELETE",
+                    "delete",
+                    "SILENT",
+                    "silent",
+                    "WARN",
+                    "warn"
+                  ],
+                  "default": "saferegen"
+                },
+                "safe-regen-delete-range": {
+                  "type": "number",
+                  "description": "If multiple entities with duplicate UUIDs are within this many blocks, saferegen will delete all but 1 of them.",
+                  "default": 32
+                }
+              }
+            },
+            "filter-bad-tile-entity-nbt-from-falling-blocks": {
+              "type": "boolean",
+              "description": "Instructs the server to remove certain NBT data from falling blocks.\nnote: Some adventure maps may require this to be turned off to function correctly, but we do not recommend turning it off on a public server.",
+              "default": true
+            },
+            "filtered-entity-tag-nbt-paths": {
+              "type": "array",
+              "description": "A list of nbt tags that will be removed from the EntityTag tag on items which spawn entities. The format of these strings follows the same format used to select nbt tags in vanilla commands. If the spawning was directly caused by a player and the player has the minecraft.nbt.place permission, the filter list will be ignored. The defaults are set to prevent entities from spawning or moving to a place other than the location they were placed. For example, if Pos wasn't included, a spawn egg could place an entity at any location.\nnote: Some adventure maps may require this to be an empty list to function correctly, but we do not recommend turning it off on a public server.",
+              "items": {
+                "type": "string"
+              },
+              "default": [
+                "Pos",
+                "Motion",
+                "SleepingX",
+                "SleepingY",
+                "SleepingZ"
+              ]
+            },
+            "iron-golems-can-spawn-in-air": {
+              "type": "boolean",
+              "description": "Sets whether iron golems can spawn in the air. Iron farms may break depending on this setting",
+              "default": false
+            },
+            "monster-spawn-max-light-level": {
+              "type": "number",
+              "description": "When set to -1, the Vanilla default will be used (=0). Set to 15 or greater to revert to pre-1.18 behavior.",
+              "default": -1
+            },
+            "non-player-arrow-despawn-rate": {
+              "type": "string",
+              "description": "The rate, in ticks, at which arrows shot from non-player entities are despawned. The default value instructs the server to use the same default arrow despawn rate from spigot.yml that is used for all arrows.",
+              "default": "default"
+            },
+            "per-player-mob-spawns": {
+              "type": "boolean",
+              "description": "Determines whether the mob limit (in bukkit.yml) is counted per player or for the entire server. Enabling this setting results in roughly the same number of mobs, but with a more even distribution that prevents one player from using the entire mob cap and provides a more single-player like experience.",
+              "default": true
+            },
+            "scan-for-legacy-ender-dragon": {
+              "type": "boolean",
+              "description": "Determines if the server attempts to start the ender dragon fight. Setting this to false will make the ender dragon not spawn in the end, even with a new world.",
+              "default": true
+            },
+            "skeleton-horse-thunder-spawn-chance": {
+              "description": "Sets the chance that a \"Skeleton Trap\" (4 skeleton horsemen) will spawn in a thunderstorm.",
+              "default": 0.01,
+              "oneOf": [
+                {
+                  "const": "default"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "slime-spawn-height": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "slime-chunk": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "maximum": {
+                      "type": "number",
+                      "description": "Sets the maximum Y position for natural Slime spawn in Slime Chunks.",
+                      "default": 40
+                    }
+                  }
+                },
+                "surface-biome": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "maximum": {
+                      "type": "number",
+                      "description": "Sets the maximum Y position for natural Slime spawn in Swamp Biomes.",
+                      "default": 70
+                    },
+                    "minimum": {
+                      "type": "number",
+                      "description": "Sets the minimum Y position for natural Slime spawn in Swamp Biomes.",
+                      "default": 50
+                    }
+                  }
+                }
+              }
+            },
+            "spawn-limits": {
+              "type": "object",
+              "description": "The constant used to determine how many of each entity type (set individually) will be naturally spawned per world. This is identical to the value set in bukkit.yml, except that it can be configured per world. A value of -1 will use the value in bukkit.yml.",
+              "additionalProperties": {
+                "type": "number",
+                "default": -1
+              },
+              "default": {
+                "ambient": -1,
+                "axolotls": -1,
+                "creature": -1,
+                "monster": -1,
+                "underground_water_creature": -1,
+                "water_ambient": -1,
+                "water_creature": -1
+              }
+            },
+            "wandering-trader": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "spawn-chance-failure-increment": {
+                  "type": "number",
+                  "description": "How much the spawn chance will be increased on every failed wandering trader spawn.",
+                  "default": 25
+                },
+                "spawn-chance-max": {
+                  "type": "number",
+                  "description": "The maximum chance that a wandering trader will be spawned.",
+                  "default": 75
+                },
+                "spawn-chance-min": {
+                  "type": "number",
+                  "description": "The minimum chance that a wandering trader will be spawned.",
+                  "default": 25
+                },
+                "spawn-day-length": {
+                  "type": "number",
+                  "description": "Time between wandering trader spawn attempts in ticks.",
+                  "default": 24000
+                },
+                "spawn-minute-length": {
+                  "type": "number",
+                  "description": "The length of the wandering trader spawn minute in ticks.",
+                  "default": 1200
+                }
+              }
+            },
+            "wateranimal-spawn-height": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "maximum": {
+                  "description": "The maximum height at which water animals will spawn.\nnote: The default value defers to Minecraft's default setting, which as of 1.12 is the sea level of the world (usually Y: 64).",
+                  "default": "default",
+                  "oneOf": [
+                    {
+                      "const": "default"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "minimum": {
+                  "description": "The minimum height at which water animals will spawn. note: The default value defers to Minecraft's default setting, which as of 1.12 is the sea level of the world (usually Y: 64).",
+                  "default": "default",
+                  "oneOf": [
+                    {
+                      "const": "default"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "environment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "disable-explosion-knockback": {
+          "type": "boolean",
+          "description": "Instructs the server to completely block any knockback that occurs as a result of an explosion.",
+          "default": false
+        },
+        "disable-ice-and-snow": {
+          "type": "boolean",
+          "description": "Disables ice and snow formation. This also causes cauldrons to no longer be filled by rain or snow.",
+          "default": false
+        },
+        "disable-teleportation-suffocation-check": {
+          "type": "boolean",
+          "description": "Disables the suffocation check the server performs before teleporting a player.\nnote: While useful to keep your players out of walls, leaving this feature on may allow players to teleport through solid materials by logging out in specific locations.",
+          "default": false
+        },
+        "disable-thunder": {
+          "type": "boolean",
+          "description": "Disables thunderstorms.",
+          "default": false
+        },
+        "fire-tick-delay": {
+          "type": "integer",
+          "default": 30
+        },
+        "frosted-ice": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "delay": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "max": {
+                  "type": "number",
+                  "description": "Maximum RNG value to apply frosted-ice effects at.",
+                  "default": 40
+                },
+                "min": {
+                  "type": "number",
+                  "description": "Minimum RNG value to apply frosted-ice effects at.",
+                  "default": 20
+                }
+              }
+            },
+            "enabled": {
+              "type": "boolean",
+              "description": "Instructs the server to enable (and tick) frosted ice blocks.",
+              "default": true
+            }
+          }
+        },
+        "generate-flat-bedrock": {
+          "type": "boolean",
+          "description": "Instructs the server to generate bedrock as a single flat layer.",
+          "default": false
+        },
+        "nether-ceiling-void-damage-height": {
+          "type": "string",
+          "description": "Sets the level above which players in the nether will take void damage. This is a vanilla-friendly way to restrict players from using the nether ceiling as a buildable area. Setting to disabled disables this feature.",
+          "default": "disabled"
+        },
+        "optimize-explosions": {
+          "type": "boolean",
+          "description": "Instructs the server to cache entity lookups during an explosion, rather than recalculating throughout the process. This speeds up explosions significantly.",
+          "default": false
+        },
+        "portal-create-radius": {
+          "type": "number",
+          "description": "The maximum range the server will try to create a portal around when generating a new portal.",
+          "default": 16
+        },
+        "portal-search-radius": {
+          "type": "number",
+          "description": "The maximum range the server will use to look for an existing nether portal. If it can't find one in that range, it will generate a new one.",
+          "default": 128
+        },
+        "portal-search-vanilla-dimension-scaling": {
+          "type": "boolean",
+          "description": "Whether to apply vanilla dimension scaling to portal-search-radius.",
+          "default": true
+        },
+        "treasure-maps": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "If villagers should trade treasure maps and treasure maps from chests should lead to a feature.",
+              "default": true
+            },
+            "find-already-discovered": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "loot-tables": {
+                  "type": "string",
+                  "description": "Overrides the loot table-configured check for undiscovered structures. default allows loot tables to individually determine if the map should allow discovered locations in its search. All vanilla loot tables default to skipping discovered locations so changing this to false would override that behavior and force them to search discovered locations.",
+                  "default": "default"
+                },
+                "villager-trade": {
+                  "type": "boolean",
+                  "description": "Instructs the server to target the first treasure location found for maps obtained via trading with villagers.",
+                  "default": false
+                }
+              }
+            }
+          }
+        },
+        "water-over-lava-flow-speed": {
+          "type": "number",
+          "description": "Sets the speed at which water flows while over lava.",
+          "default": 5
+        }
+      }
+    },
+    "feature-seeds": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "generate-random-seeds-for-all": {
+          "type": "boolean",
+          "description": "Enables autofilling random seeds for all available features you haven't already set a seed to. Using this in a controlled environment is also a good way of receiving a full list of features you can set seeds for.",
+          "default": false
+        },
+        "additionalProperties": {
+          "type": "integer",
+          "description": "<feature-namespace> Sets the population seed for the specified feature. If set to -1, the Vanilla population seed stays unchanged and will not be overridden by the autofill option."
+        }
+      }
+    },
+    "fishing-time-range": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maximum": {
+          "type": "number",
+          "description": "The maximum number of RNG ticks before catching a fish.",
+          "default": 600
+        },
+        "minimum": {
+          "type": "number",
+          "description": "The minimum number of RNG ticks needed to catch a fish.",
+          "default": 100
+        }
+      }
+    },
+    "fixes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "disable-unloaded-chunk-enderpearl-exploit": {
+          "type": "boolean",
+          "description": "Prevent enderpearls from storing the thrower when in an unloaded chunk.",
+          "default": true
+        },
+        "falling-block-height-nerf": {
+          "type": "string",
+          "description": "The height at which falling blocks will be removed from the server. A value of disabled will disable this feature.",
+          "default": "disabled"
+        },
+        "fix-curing-zombie-villager-discount-exploit": {
+          "type": "boolean",
+          "description": "Fixes the exploit used to gain massive discounts by infecting and curing a zombie villager.",
+          "default": true
+        },
+        "fix-items-merging-through-walls": {
+          "type": "boolean",
+          "description": "Whether items should be prevented from merging through walls. Enabling this will incur a performance degradation. This is only necessary when merge-radius.item (spigot.yml) is large enough to merge items through walls.",
+          "default": false
+        },
+        "prevent-tnt-from-moving-in-water": {
+          "type": "boolean",
+          "description": "Instructs the server to keep Primed TNT entities from moving in flowing water.",
+          "default": false
+        },
+        "split-overstacked-loot": {
+          "type": "boolean",
+          "description": "When set to false, loot tables will not attempt to split items with a stack size higher than the maximum into items of smaller stack sizes. This will prevent overstacked items from being lost or causing a chunk to become uninhabitable (due to players getting constantly kicked because of oversized packets) when a shulker box is broken in survival.",
+          "default": true
+        },
+        "tnt-entity-height-nerf": {
+          "type": "string",
+          "description": "The height at which Primed TNT entities will be removed from the server. A value of disabled will disable this feature.",
+          "default": "disabled"
+        }
+      }
+    },
+    "hopper": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cooldown-when-full": {
+          "type": "boolean",
+          "description": "Instructs the server to apply a short cooldown when the hopper is full, instead of constantly trying to pull new items.",
+          "default": true
+        },
+        "disable-move-event": {
+          "type": "boolean",
+          "description": "Completely disables the InventoryMoveItemEvent for hoppers. Dramatically improves hopper performance but will break protection plugins and any others that depend on this event.",
+          "default": false
+        },
+        "ignore-occluding-blocks": {
+          "type": "boolean",
+          "description": "Determines if hoppers will ignore containers inside occluding blocks, like a hopper minecart inside a sand block. Enabling this will improve performance for hoppers checking where to insert items.",
+          "default": false
+        }
+      }
+    },
+    "lootables": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "auto-replenish": {
+          "type": "boolean",
+          "description": "Instructs the server to automatically replenish lootable containers. This feature is useful for long-term worlds in which players are not expected to constantly explore to generate new chunks.",
+          "default": false
+        },
+        "max-refills": {
+          "type": "integer",
+          "description": "Sets the maximum number of times a lootable may be refilled.\nnote: The default value will allow a lootable to refill an infinite number of times.",
+          "default": -1
+        },
+        "refresh-max": {
+          "type": "string",
+          "description": "The maximum amount of time that can pass before a lootable is refilled.",
+          "default": "2d"
+        },
+        "refresh-min": {
+          "type": "string",
+          "description": "The minimum amount of time that must pass before a lootable will be eligible to be refilled.",
+          "default": "12h"
+        },
+        "reset-seed-on-fill": {
+          "type": "boolean",
+          "description": "Resets the loot seed each time the lootable is refilled, effectively randomizing the new loot items on each refill.",
+          "default": true
+        },
+        "restrict-player-reloot": {
+          "type": "boolean",
+          "description": "Prevents the same players from coming back and re-looting the same containers over and over.",
+          "default": true
+        }
+      }
+    },
+    "maps": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "item-frame-cursor-limit": {
+          "type": "number",
+          "description": "The number of cursors (markers) allowed per map. A large number of cursors may be used to lag clients.",
+          "default": 128
+        },
+        "item-frame-cursor-update-interval": {
+          "type": "number",
+          "description": "The interval in ticks at which cursors on maps in item frames are updated. Setting this to a number less than 1 will disable updates altogether.",
+          "default": 10
+        }
+      }
+    },
+    "max-growth-height": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "bamboo": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "max": {
+              "type": "number",
+              "description": "Maximum height bamboo will naturally grow to.",
+              "default": 16
+            },
+            "min": {
+              "type": "number",
+              "description": "Minimum height bamboo will naturally grow to.",
+              "default": 11
+            }
+          }
+        },
+        "cactus": {
+          "type": "number",
+          "description": "Maximum height cactus blocks will naturally grow to.",
+          "default": 3
+        },
+        "reeds": {
+          "type": "number",
+          "description": "Maximum height sugar cane/reeds blocks will naturally grow to.",
+          "default": 3
+        }
+      }
+    },
+    "misc": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "disable-end-credits": {
+          "type": "boolean",
+          "description": "Instructs the server to never send the end game credits when leaving the end.",
+          "default": false
+        },
+        "disable-relative-projectile-velocity": {
+          "type": "boolean",
+          "description": "Instructs the server to ignore shooter velocity when calculating the velocity of a fired arrow.",
+          "default": false
+        },
+        "disable-sprint-interruption-on-attack": {
+          "type": "boolean",
+          "description": "Determines if the server will interrupt a sprinting player if they are attacked.",
+          "default": false
+        },
+        "light-queue-size": {
+          "type": "number",
+          "description": "Sets how large the queue of light updates off the main thread for each world should be. Vanilla uses 5, but this causes issues especially with plugins such as WorldEdit.",
+          "default": 20
+        },
+        "max-leash-distance": {
+          "type": "number",
+          "description": "Configure the maximum distance of a leash. If the distance to the leashed entity is greater, the leash will break.",
+          "default": 10
+        },
+        "redstone-implementation": {
+          "type": "string",
+          "description": "CAUTION: Alternative implementations are ultimately experimental, and as such, could be removed between updates or even permanently if issues are found.\nSpecifies the redstone implementation that the server uses. Alternative implementations can greatly reduce the lag caused by redstone dust by optimizing power calculations and reducing the number of block and shape updates emitted. The following implementations are available:\nvanilla: The Vanilla redstone implementation.\neigencraft: The Eigencraft redstone implementation by theosib.\nalternate-current: The Alternate Current redstone implementation by Space Walker.\nnote: Both the Eigencraft and Alternate Current implementations change the behavior of redstone dust. You can read about how behavior is changed in each implementation's respective documention:\nEigencraft: No official documentation available. However, theosib's comments (https://bugs.mojang.com/browse/MC-81098?focusedCommentId=420777#comment-420777) on the Mojira bug tracker give an overview of the Eigencraft implementation.\nAlternate Current (https://github.com/SpaceWalkerRS/alternate-current/blob/main/README.md)",
+          "enum": [
+            "VANILLA",
+            "vanilla",
+            "EIGENCRAFT",
+            "eigencraft",
+            "ALTERNATE-CURRENT",
+            "alternate-current"
+          ]
+        },
+        "shield-blocking-delay": {
+          "type": "number",
+          "description": "The number of ticks between a player activating their shield and it actually blocking damage.",
+          "default": 5
+        },
+        "show-sign-click-command-failure-msgs-to-player": {
+          "type": "boolean",
+          "description": "Whether commands executed by sign click should show failure messages to players.",
+          "default": false
+        },
+        "update-pathfinding-on-block-update": {
+          "type": "boolean",
+          "description": "Controls whether the pathfinding of mobs is updated when a block is updated in the world. Disabling this option can improve the server performance significantly, while there is almost no noticeable effect on the game mechanics. This is recommended when there are lots of entities loaded, and you have automated farms or redstone clocks.",
+          "default": true
+        }
+      }
+    },
+    "scoreboards": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allow-non-player-entities-on-scoreboards": {
+          "type": "boolean",
+          "description": "Instructs the server to always treat non-player entities as if they are never on a team. Disabling this may slightly decrease the amount of time the server spends calculating entity collisions.",
+          "default": true
+        },
+        "use-vanilla-world-scoreboard-name-coloring": {
+          "type": "boolean",
+          "description": "Instructs the server to use the vanilla scoreboard for player nickname coloring. Useful when playing on adventure maps made for the vanilla server and client.",
+          "default": false
+        }
+      }
+    },
+    "spawn": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allow-using-signs-inside-spawn-protection": {
+          "type": "boolean",
+          "description": "Allows players to use signs while inside spawn protection.",
+          "default": false
+        },
+        "keep-spawn-loaded": {
+          "type": "boolean",
+          "description": "Instructs the server to keep the spawn chunks loaded at all times.",
+          "default": true
+        },
+        "keep-spawn-loaded-range": {
+          "type": "number",
+          "description": "The range in chunks around spawn to keep loaded.",
+          "default": 10
+        }
+      }
+    },
+    "tick-rates": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "behavior": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "description": "<entity-type>",
+            "additionalProperties": {
+              "type": "number",
+              "description": "<behavior-name> Sets the behavior tick rate of an entity. -1 uses Vanilla. See timings for the names. Might change between updates!",
+              "default": -1
+            }
+          },
+          "default": {
+            "villager": {
+              "validatenearbypoi": -1
+            }
+          }
+        },
+        "container-update": {
+          "type": "number",
+          "description": "The rate, in ticks, at which the server updates containers and inventories.",
+          "default": 1
+        },
+        "grass-spread": {
+          "type": "number",
+          "description": "Sets the delay, in ticks, at which the server attempts to spread grass. Higher values will result in a slower spread.",
+          "default": 1
+        },
+        "mob-spawner": {
+          "type": "number",
+          "description": "How often mob spawners should tick to calculate available spawn areas and spawn new entities into the world. A value of -1 will disable all spawners.",
+          "default": 1
+        },
+        "sensor": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "description": "<entity-type>",
+            "additionalProperties": {
+              "type": "number",
+              "description": "<sensor-name> Sets the sensor tick rate of an entity. -1 uses Vanilla. See timings for the names. Might change between updates!",
+              "default": -1
+            }
+          }
+        }
+      }
+    },
+    "unsupported-settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fix-invulnerable-end-crystal-exploit": {
+          "type": "boolean",
+          "description": "If set to false, the creation of invulnerable end crystals will be allowed. Fixes MC-108513 (https://bugs.mojang.com/browse/MC-108513).",
+          "default": true
+        }
+      }
+    }
+  },
+  "definitions": {
+    "paper-world-despawn-range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hard",
+        "soft"
+      ],
+      "properties": {
+        "hard": {
+          "type": "integer",
+          "description": "The number of blocks away from a player in which each entity type (set individually) will be forcibly despawned. Takes effect both horizontally and vertically.",
+          "default": 128
+
+        },
+        "soft": {
+          "type": "integer",
+          "description": "The number of blocks away from a player in which each entity type (set individually) will be randomly selected to be despawned. Takes effect both horizontally and vertically.",
+          "default": 32
+        }
+      }
+    },
+    "paper-world-door-breaking-difficulty": {
+      "type": "string",
+      "enum": [
+        "HARD",
+        "NORMAL",
+        "EASY",
+        "PEACEFUL"
+      ]
+    }
+  }
+}

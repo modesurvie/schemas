@@ -1,0 +1,614 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Paper Global Configuration",
+  "description": "Global configuration options in paper-global.yml will affect all worlds on a server, or the server function itself.\nhttps://docs.papermc.io/paper/reference/global-configuration",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "_version": {
+      "type": "number"
+    },
+    "async-chunks": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "threads": {
+          "type": "number",
+          "description": "The number of threads the server should use for world saving and chunk loading. The default (-1) indicates that Paper will utilize half of your system's threads for chunk loading unless otherwise specified. There is also a maximum default of 4 threads used for saving and loading chunks. This can be overridden by adding -Dpaper.maxChunkThreads=[number] to your startup arguments",
+          "default": -1
+        }
+      }
+    },
+    "chunk-loading": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "autoconfig-send-distance": {
+          "type": "boolean",
+          "description": "Whether to use the client's view distance for the chunk send distance of the server. This will exclusively change the radius of chunks sent to the client and will not affect server-side chunk loading or ticking.",
+          "default": true
+        },
+        "enable-frustum-priority": {
+          "type": "boolean",
+          "description": "Whether to attempt to load chunks in front of the player before loading chunks to their sides or behind. Due to the client reacting poorly to receiving chunks out of order, this is disabled by default and not generally recommended for use.",
+          "default": false
+        },
+        "global-max-chunk-load-rate": {
+          "type": "number",
+          "description": "The maximum number of chunks loaded per second for the whole server. Takes priority over player-max-chunk-load-rate.",
+          "default": -1.0
+        },
+        "global-max-chunk-send-rate": {
+          "type": "number",
+          "description": "The maximum number of chunks sent per second for the entire server. This may help with server-side peak bandwidth usage.",
+          "default": -1.0
+        },
+        "global-max-concurrent-loads": {
+          "type": "number",
+          "description": "The maximum number of chunk loads processed for the whole server one time. This will override player-max-concurrent-loads if exceeded.",
+          "default": 500.0
+        },
+        "max-concurrent-sends": {
+          "type": "number",
+          "description": "The maximum number of chunks that will be queued to send at any one time. Lower values will help alleviate server-side networking bottlenecks such as anti-xray or compression; however, it is unlikely to help users with a poor internet connection.",
+          "default": 2
+        },
+        "min-load-radius": {
+          "type": "number",
+          "description": "The radius of chunks around a player that are not throttled for chunk loading. The number of chunks affected is actually the configured value plus one, as this config controls the number of chunks the client will actually be able to render.",
+          "default": 2
+        },
+        "player-max-chunk-load-rate": {
+          "type": "number",
+          "description": "The maximum number of chunks loaded per second per player.",
+          "default": -1.0
+        },
+        "player-max-concurrent-loads": {
+          "type": "number",
+          "description": "The maximum number of chunk loads processed per player at one time.",
+          "default": 20.0
+        },
+        "target-player-chunk-send-rate": {
+          "type": "number",
+          "description": "The maximum number of chunks sent to an individual player within one second.",
+          "default": 100.0
+        }
+      }
+    },
+    "chunk-system": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "gen-parallelism": {
+          "type": "string",
+          "default": "default"
+        },
+        "io-threads": {
+          "type": "integer",
+          "default": -1
+        },
+        "worker-threads": {
+          "type": "integer",
+          "default": -1
+        }
+      }
+    },
+    "collisions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enable-player-collisions": {
+          "type": "boolean",
+          "description": "Sets whether the server should allow players to collide with one another. This option can be broken by plugins interacting with the scoreboard. If you are having trouble with this option, try without plugins installed.",
+          "default": true
+        },
+        "send-full-pos-for-hard-colliding-entities": {
+          "type": "boolean",
+          "description": "Collisions with boats and minecarts are often subject to client/server disagreement, which may cause glitchy behaviour for players. This setting attempts to mitigate this desync by sending precise locations for entities involved in collisions. Having this enabled will use more bandwidth; however, in the majority of cases, this is a worthy tradeoff.",
+          "default": true
+        }
+      }
+    },
+    "commands": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "fix-target-selector-tag-completion": {
+          "type": "boolean",
+          "description": "Workaround for a client bug preventing entity type tag suggestions from functioning in target selectors. Resolves MC-235045 (https://bugs.mojang.com/browse/MC-235045).",
+          "default": true
+        },
+        "suggest-player-names-when-null-tab-completions": {
+          "type": "boolean",
+          "description": "Instructs the server to return a list of players when tab-completing when there are no other completions available.",
+          "default": true
+        },
+        "time-command-affects-all-worlds": {
+          "type": "boolean",
+          "description": "Whether the /time command should act on all worlds or just the sender's current world.",
+          "default": false
+        }
+      }
+    },
+    "console": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enable-brigadier-completions": {
+          "type": "boolean",
+          "description": "Enables Mojang's Brigadier (advanced) command completions in the server console.",
+          "default": true
+        },
+        "enable-brigadier-highlighting": {
+          "type": "boolean",
+          "description": "Enables Mojang's Brigadier highlighting in the server console.",
+          "default": true
+        },
+        "has-all-permissions": {
+          "type": "boolean",
+          "description": "Whether the console command sender has all permissions.",
+          "default": false
+        }
+      }
+    },
+    "item-validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "display-name": {
+          "type": "number",
+          "description": "The maximum length of an item's display name in characters.",
+          "default": 8192
+        },
+        "lore-line": {
+          "type": "number",
+          "description": "The maximum length of a lore line in characters.",
+          "default": 8192
+        },
+        "resolve-selectors-in-books": {
+          "type": "boolean",
+          "description": "Whether to resolve selectors in books. With this enabled, players given creative mode will be able to crash the server in yet another way.",
+          "default": false
+        },
+        "book": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "author": {
+              "type": "number",
+              "description": "The maximum length of a book's author in characters.",
+              "default": 8192
+            },
+            "page": {
+              "type": "number",
+              "description": "The maximum length of a book's page in characters.",
+              "default": 16384
+            },
+            "title": {
+              "type": "number",
+              "description": "The maximum length of a book's title in characters.",
+              "default": 8192
+            }
+          }
+        },
+        "book-size": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "page-max": {
+              "type": "number",
+              "description": "The max number of bytes a single page in a book can contribute to the allowed byte total for a book.",
+              "default": 2560
+            },
+            "total-multiplier": {
+              "type": "number",
+              "description": "Each page has this multiple of bytes from the last page as its contribution to the allowed byte total for a book (with the first page being having a multiplier of 1.0).",
+              "default": 0.98
+            }
+          }
+        }
+      }
+    },
+    "logging": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "deobfuscate-stacktraces": {
+          "type": "boolean",
+          "description": "Whether to remap Spigot mapped stacktraces to Mojang mappings in logging. Has no impact on Mojang mapped servers.",
+          "default": true
+        },
+        "log-player-ip-addresses": {
+          "type": "boolean",
+          "description": "Whether player IP addresses should be logged by the server. This does not impact the ability of plugins to log the IP addresses of players.",
+          "default": true
+        },
+        "use-rgb-for-named-text-colors": {
+          "type": "boolean",
+          "description": "Whether named ANSI colors should be logged with RGB codes.",
+          "default": true
+        }
+      }
+    },
+    "messages": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "no-permission": {
+          "type": "string",
+          "description": "Default message sent to players when they have insufficient permissions for an action. Plugins may override this for their commands.",
+          "default": "<red>I'm sorry, but you do not have permission to perform this command. Please contact the server administrators if you believe that this is in error."
+        },
+        "use-display-name-in-quit-message": {
+          "type": "boolean",
+          "description": "Whether the server should use the player's display name (set by plugins) or actual name in quit messages.",
+          "default": false
+        },
+        "kick": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "authentication-servers-down": {
+              "type": "string",
+              "description": "Message sent to players when Mojang's authentication servers are unreachable.",
+              "default": "<lang:multiplayer.disconnect.authservers_down>"
+            },
+            "connection-throttle": {
+              "type": "string",
+              "description": "sage sent to players when they are unable to join due to having their connection throttled. Throttle configurable in bukkit.yml.",
+              "default": "Connection throttled! Please wait before reconnecting."
+            },
+            "flying-player": {
+              "type": "string",
+              "description": "Message sent to players who are detected flying.",
+              "default": "<lang:multiplayer.disconnect.flying>"
+            },
+            "flying-vehicle": {
+              "type": "string",
+              "description": "Message sent to players who are detected riding a flying vehicle.",
+              "default": "<lang:multiplayer.disconnect.flying>"
+            }
+          }
+        }
+      }
+    },
+    "misc": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "chat-threads": {
+          "type": "object",
+          "properties": {
+            "chat-executor-core-size": {
+              "type": "integer",
+              "default": -1
+            },
+            "chat-executor-max-size": {
+              "type": "integer",
+              "default": -1
+            }
+          }
+        },
+        "fix-entity-position-desync": {
+          "type": "boolean",
+          "description": "Causes the server to lose the same percision that the client does for entities preventing desync. Fixes MC-4 (https://bugs.mojang.com/browse/MC-4).",
+          "default": true
+        },
+        "lag-compensate-block-breaking": {
+          "type": "boolean",
+          "description": "Whether the server should use time or TPS to determine block break duration. The client assumes the server is always running at 20 TPS, causing disagreement when a block is broken during server lag. This setting prevents this desync.",
+          "default": true
+        },
+        "load-permissions-yml-before-plugins": {
+          "type": "boolean",
+          "description": "Loads bukkit's permission.yml file before plugins, allowing them to check information set there immediately on enable.",
+          "default": true
+        },
+        "max-joins-per-tick": {
+          "type": "number",
+          "description": "Sets the maximum amount of players that may join the server in a single tick. If more players join, they will be postponed until later ticks to join but not kicked. This is not related to connection throttling found in bukkit.yml.",
+          "default": 3
+        },
+        "region-file-cache-size": {
+          "type": "number",
+          "description": "The maximum size of the region file cache.",
+          "default": 256
+        },
+        "strict-advancement-dimension-check": {
+          "type": "boolean",
+          "default": false
+        },
+        "use-alternative-luck-formula": {
+          "type": "boolean",
+          "description": "Use an alternative luck formula allowing luck to be applied to items that have no quality defined. Makes major changes to fishing formulas.",
+          "default": false
+        },
+        "use-dimension-type-for-custom-spawners": {
+          "type": "boolean",
+          "description": "Whether phantoms, wandering traders, etc. should be able to spawn in custom overworlds. Defaults to false in order to match vanilla behavior.",
+          "default": false
+        }
+      }
+    },
+    "packet-limiter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "all-packets": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "action",
+            "interval",
+            "max-packet-rate"
+          ],
+          "properties": {
+            "action": {
+              "type": "string",
+              "description": "The action to take once the limit has been violated. Possible values are DROP which will ignore packets over the limit, and KICK which will kick players for exceeding the limit.",
+              "enum": ["DROP", "KICK"],
+              "default": "KICK"
+            },
+            "interval": {
+              "type": "number",
+              "description": "The interval, in seconds, for which max-packet-rate should apply.",
+              "default": 7.0
+            },
+            "max-packet-rate": {
+              "type": "number",
+              "description": "The number of packets allowed per player within the interval.",
+              "default": 500.0
+            }
+          }
+        },
+        "kick-message": {
+          "type": "string",
+          "description": "The message players are kicked with for sending too many packets.",
+          "default": "<red><lang:disconnect.exceeded_packet_rate>"
+        },
+        "overrides": {
+          "type": "object",
+          "description": "Override the global configuration for any individual named packet. You can find the names of every packet as they are displayed on timings. For more experienced users, packets named here use Mojang mappings regardless of the server.",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "action",
+              "interval",
+              "max-packet-rate"
+            ],
+            "properties": {
+              "action": {
+                "type": "string",
+                "description": "The action to take once the limit has been violated. Possible values are DROP which will ignore packets over the limit, and KICK which will kick players for exceeding the limit.",
+                "enum": ["DROP", "KICK"]
+              },
+              "interval": {
+                "type": "number",
+                "description": "The interval, in seconds, for which max-packet-rate should apply."
+              },
+              "max-packet-rate": {
+                "type": "number",
+                "description": "The number of packets allowed per player within the interval."
+              }
+            }
+          },
+          "default": {
+            "ServerboundPlaceRecipePacket": {
+              "action": "DROP",
+              "interval": 4.0,
+              "max-packet-rate": 5.0
+            }
+          }
+        }
+      }
+    },
+    "player-auto-save": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "max-per-tick": {
+          "type": "number",
+          "description": "How many players should be saved at most in a single tick. A value of -1 will set a recommended value based on player-auto-save.rate of either 10 or 20.",
+          "default": -1
+        },
+        "rate": {
+          "type": "number",
+          "description": "How often player data should be saved in ticks. A value of -1 will use ticks-per.autosave in bukkit.yml.",
+          "default": -1
+        }
+      }
+    },
+    "proxies": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "proxy-protocol": {
+          "type": "boolean",
+          "description": "Whether the server should process PROXY Protocol (https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt) messages. This is completely unrelated to Velocity or BungeeCord. Only enable this if you are using HAProxy or similar.",
+          "default": false
+        },
+        "bungee-cord": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "online-mode": {
+              "type": "boolean",
+              "description": ": Instructs the server how to handle player UUIDs and data when behind BungeeCord. Always set to match your proxy's online-mode setting.",
+              "default": true
+            }
+          }
+        },
+        "velocity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Whether the server should accept Velocity Modern Forwarding.",
+              "default": false
+            },
+            "online-mode": {
+              "type": "boolean",
+              "description": "Instructs the server how to handle player UUIDs and data when behind Velocity. Always set to match your proxy's online-mode setting.",
+              "default": false
+            },
+            "secret": {
+              "type": "string",
+              "description": "The secret string that is shared by your Velocity proxy and this server. This needs to match your proxy's forwarding-secret setting.",
+              "default": ""
+            }
+          }
+        }
+      }
+    },
+    "scoreboards": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "save-empty-scoreboard-teams": {
+          "type": "boolean",
+          "description": "Some scoreboard plugins leave hundreds of empty scoreboard teams around, dramatically slowing down login times. This sets whether the server should remove those empty teams automatically.",
+          "default": false
+        },
+        "track-plugin-scoreboards": {
+          "type": "boolean",
+          "description": "Whether the server should track plugin scoreboards with only dummy objectives. This is a breaking change; however, it provides a much more sensible default value. Enabling this with plugins using many scoreboards will incur a performance degradation.",
+          "default": false
+        }
+      }
+    },
+    "spam-limiter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "incoming-packet-threshold": {
+          "type": "number",
+          "description": "Sets the threshold at which the server will consider incoming packets spam and ignore them.",
+          "default": 300
+        },
+        "recipe-spam-increment": {
+          "type": "number",
+          "description": "The number that the recipe spam counter increases by when a player presses a recipe.",
+          "default": 1
+        },
+        "recipe-spam-limit": {
+          "type": "number",
+          "description": "The number that the recipe spam counter can reach until the server kicks the player for spam.",
+          "default": 20
+        },
+        "tab-spam-increment": {
+          "type": "number",
+          "description": "The number that the internal tab spam counter increases by when a player presses tab in the chat window.",
+          "default": 1
+        },
+        "tab-spam-limit": {
+          "type": "number",
+          "description": "The number that the internal tab spam counter can reach until the server kicks the player for spam.",
+          "default": 500
+        }
+      }
+    },
+    "timings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Controls the global enable state of Timings.",
+          "default": true
+        },
+        "hidden-config-entries": {
+          "type": "array",
+          "description": "Configuration entries to hide in Timings reports.",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "database",
+            "settings.bungeecord-address"
+          ]
+        },
+        "history-interval": {
+          "type": "number",
+          "description": "The interval in seconds between individual points in the Timings report.",
+          "default": 300
+        },
+        "history-length": {
+          "type": "number",
+          "description": "The total amount of data to keep for a single report. This value is validated server-side. Large reports will be rejected.",
+          "default": 3600
+        },
+        "server-name": {
+          "type": "string",
+          "description": "Instructs Timings on what to put in for the server name.",
+          "default": "Unknown Server"
+        },
+        "server-name-privacy": {
+          "type": "boolean",
+          "description": "Instructs Timings to hide server name information in reports.",
+          "default": false
+        },
+        "url": {
+          "type": "string",
+          "description": "Specifies the URL of the Timings Viewer (https://github.com/aikar/timings) server where Timings reports are sent.",
+          "default": "https://timings.aikar.co"
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "Instructs Timings to provide more specific information in its reports. For example, specific entity types causing lag rather than just \"entities\".",
+          "default": true
+        }
+      }
+    },
+    "unsupported-settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allow-grindstone-overstacking": {
+          "type": "boolean",
+          "default": false
+        },
+        "allow-headless-pistons": {
+          "type": "boolean",
+          "description": "Whether the server should allow the creation of headless pistons. These are often used to break permanent blocks.",
+          "default": false
+        },
+        "allow-permanent-block-break-exploits": {
+          "type": "boolean",
+          "description": "Whether unbreakable blocks can be broken with vanilla exploits. This includes bedrock, end portal frames, end portal blocks, and more.",
+          "default": false
+        },
+        "allow-piston-duplication": {
+          "type": "boolean",
+          "description": "Whether to allow duplication of TNT, carpets, and rails. This does not control sand duplication.",
+          "default": false
+        },
+        "perform-username-validation": {
+          "type": "boolean",
+          "description": "ther the server should validate usernames. While this may allow users with special characters in their name to join, it can also cause issues with commands and plugins.",
+          "default": true
+        }
+      }
+    },
+    "watchdog": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "early-warning-delay": {
+          "type": "number",
+          "description": "The number of milliseconds before the watchdog thread starts printing thread dumps after the server starts hanging.",
+          "default": 10000
+        },
+        "early-warning-every": {
+          "type": "number",
+          "description": "The interval in milliseconds between printed thread dumps while the server is hanging.",
+          "default": 5000
+        }
+      }
+    }
+  }
+}
