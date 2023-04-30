@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "CraftBukkit Server Configuration (bukkit.yml)",
+  "type": "object",
+  "description": "The bukkit.yml is a file that provides you with a wide variety of options for configuring your CraftBukkit server.\nhttps://bukkit.fandom.com/wiki/Bukkit.yml",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "aliases": {
+      "deprecated": true,
+      "const": "now-in-commands.yml",
+      "description": "(DEPRECATED) In the latest versions, aliases have been moved to the commands.yml file."
+    },
+    "chunk-gc": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "period-in-ticks": {
+          "type": "integer",
+          "description": "The ticks between each chunk garbage collection consideration. If set to 0, chunk gc will be disabled.",
+          "default": 600
+        },
+        "load-threshold": {
+          "type": "integer",
+          "description": "The ticks between each chunk garbage collection consideration. If set to 0, chunk gc will be disabled.",
+          "default": 0
+        }
+      }
+    },
+    "database": {
+      "type": "object",
+      "description": "This section lets you set various database-related configuration options, for the database which will be shared by plugins that use the internal eBeans server. Most plugins do not use this, so whether or not you need to configure it is up to you. Changing these properties will change how all plugins that use the eBeans server integrated with Bukkit connect to their database.\nNote: {USERNAME}, {PASSWORD}, {IP}, {PORT}, and {DATABASENAME} are not actual variable names that Bukkit uses like in the SQLite example. They just represent data you should change to get the MySQL configuration to work correctly.",
+      "additionalProperties": false,
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username to connect to database. May be ignored depending on driver.",
+          "example": "bukkit"
+        },
+        "password": {
+          "type": "string",
+          "description": "Username to connect to database. May be ignored depending on driver.",
+          "example": "walrus"
+        },
+        "isolation": {
+          "type": "string",
+          "description": "(one of SERIALIZABLE, ...) Generally leave this alone unless advised otherwise.",
+          "examples": ["SERIALIZABLE"]
+        },
+        "driver": {
+          "type": "string",
+          "description": "(JDBC class name) The JDBC driver class that should be used. See the documentation for your database's Java driver for this value.",
+          "examples": [
+            "org.sqlite.JDBC",
+            "com.mysql.jdbc.Driver"
+          ]
+        },
+        "url": {
+          "type": "string",
+          "description": "(JDBC database URL) The URL to connect to the database. For MySQL/PostgreSQL or other server-client databases, this will generally include the hostname, port and database name. For file-based databases, such as SQLite, this will usually include the filename.",
+          "examples": [
+            "jdbc:sqlite:{DIR}{NAME}.db",
+            "jdbc:mysql://{IP}:{PORT}/{DATABASENAME}"
+          ]
+        }
+      }
+    },
+    "settings": {
+      "type": "object",
+      "description": "General CraftBukkit server options.",
+      "additionalProperties": false,
+      "properties": {
+        "allow-end": {
+          "type": "boolean",
+          "description": "Is the End enabled. (boolean)",
+          "default": true
+        },
+        "connection-throttle": {
+          "type": "integer",
+          "description": "The delay before a client is allowed to connect again after a recent connection attempt. A value of 0 disables the connection throttle but leaves your server susceptible to attacks (only recommended for test servers). (long, milliseconds)",
+          "default": 0
+        },
+        "deprecated-verbose": {
+          "description": "Does the server show warnings when a plugin registers a deprecated event. A 'true'/'false' value works as a toggle for these warnings, while 'default' will always show a warning unless the event in question has been tagged by a developer as not requiring a warning when it is registered. (string)",
+          "default": "default",
+          "anyOf": [
+            {
+              "const": "default"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "minimum-api": {
+          "type": "string",
+          "description": "Prevent plugins with incompatible API's from loading\nCommit: https://hub.spigotmc.org/stash/projects/SPIGOT/repos/craftbukkit/commits/63cde5caa5d68834ae80a4ec37289452b1404bbf#src/main/resources/configurations/bukkit.yml",
+          "default": "none"
+        },
+        "permissions-file": {
+          "type": "string",
+          "description": "The name of your custom permissions file. (string, filename)",
+          "default": "permissions.yml"
+        },
+        "ping-packet-limit": {
+          "type": "integer",
+          "description": "Currently disabled. Previously: How many packets a second the ingame ping list can use, maximum. (integer, packets/sec)",
+          "default": 100
+        },
+        "plugin-profiling": {
+          "type": "boolean",
+          "description": "Allows the use of the command /timings. Used to measure time taken by plugin for events.",
+          "default": false
+        },
+        "query-plugins": {
+          "type": "boolean",
+          "description": "Does the server return the list of plugins when queried remotely. (boolean)",
+          "default": true
+        },
+        "shutdown-message": {
+          "type": "string",
+          "description": "This is the message displayed to clients when the server stops",
+          "default": "Server closed"
+        },
+        "update-folder": {
+          "type": "string",
+          "description": "The name of the folder to put updated plugins in, which will be moved upon restart. (string, foldername)\nNote: The folder MUST be in the plugins folder. Absolute paths do NOT work.",
+          "default": "update"
+        },
+        "use-exact-login-location": {
+          "type": "boolean",
+          "description": "Since Minecraft added the feature of pushing entities out whenever they are stuck inside a block, players have often found themselves above the location they logged out of when logging back in (especially if they were in a cave). This setting allows servers to disable or enable this behavior. If true, we will bypass Vanilla's behaviour of checking for collisions and moving the player if needed when they login. If false, we will continue to follow Vanilla's behaviour and move players that 'collide' with objects when they login.",
+          "default": false
+        },
+        "use-map-color-cache": {
+          "type": "boolean",
+          "default": true
+        },
+        "warn-on-overload": {
+          "type": "boolean",
+          "description": "Does the server show \"[WARNING] Can't keep up! Did the system time change, or is the server overloaded?\" messages. (boolean)",
+          "default": true
+        },
+        "world-container": {
+          "type": "string",
+          "description": "The name of a folder to store all the world directories in. If not included in your file, defaults to the current working directory. (string, foldername)"
+        }
+      }
+    },
+    "spawn-limits": {
+      "type": "object",
+      "description": "CraftBukkit server options that determine how many animals or mobs can spawn per-world. \nNote: Mob spawned animals or monsters do not follow these limits. They have their own limits they follow. \nNote: These limits only apply to animals or monsters in loaded chunks - it does not account for entities stored in unloaded chunks.",
+      "additionalProperties": false,
+      "properties": {
+        "ambient": {
+          "type": "integer",
+          "description": "This bukkit.yml setting allows servers to set the amount of ambient creatures (aka, bats) that can spawn per-world.\nMinecraft default: 15",
+          "default": 15
+        },
+        "animals": {
+          "type": "integer",
+          "description": "This bukkit.yml setting allows servers to set the amount of animals that can spawn per-world.\nMinecraft default: 15",
+          "default": 10
+        },
+        "axolotls": {
+          "type": "integer",
+          "default": 5
+        },
+        "monsters": {
+          "type": "integer",
+          "description": "This bukkit.yml setting allows servers to set the amount of monsters that can spawn per-world.\nMinecraft default: 70",
+          "default": 70
+        },
+        "water-ambient": {
+          "type": "integer",
+          "default": 20
+        },
+        "water-animals": {
+          "type": "integer",
+          "description": "This bukkit.yml setting allows servers to set the amount of water animals that can spawn per-world.\nMinecraft default: 5",
+          "default": 5
+        },
+        "water-underground-creature": {
+          "type": "integer",
+          "default": 5
+        }
+      }
+    },
+    "ticks-per": {
+      "type": "object",
+      "description": "CraftBukkit server options that determine the tick delay for specific features",
+      "additionalProperties": false,
+      "properties": {
+        "ambient-spawns": {
+          "type": "integer",
+          "default": 1
+        },
+        "animal-spawns": {
+          "type": "integer",
+          "description": "This bukkit.yml setting allows servers to set the tick delay for animal spawns.\nNote: If set to 0, animals spawning will be disabled. We recommend using spawn-animals to control this instead.\nA value of 1 will mean the server will attempt to spawn animals every tick.\nA value of 400 will mean the server will attempt to spawn animals every 400th tick\nA value below 0 will be reset back to Minecraft's default.\nMinecraft default: 400",
+          "default": 400,
+          "examples": [1, 400, 0]
+        },
+        "autosave": {
+          "type": "integer",
+          "description": "This bukkit.yml setting allows servers to set the number of ticks for each save-all event.\nA value of 1 will mean the server will attempt to autosave the world every tick.\nA value of 6000 will mean the server will attempt to autosave the world every 5 minutes.\nA value below 0 will be reset back to Bukkit's default.\nMinecraft default: 900\nBukkit default: 6000",
+          "default": 6000,
+          "examples": [1, 6000, 0]
+        },
+        "axolotl-spawns": {
+          "type": "integer",
+          "default": 1
+        },
+        "monster-spawns": {
+          "type": "integer",
+          "description": "This bukkit.yml setting allows servers to set the tick delay for monster spawns.\nNote: If set to 0, monsters spawning will be disabled. We recommend using spawn-monsters to control this instead.\nA value of 1 will mean the server will attempt to spawn monsters every tick.\nA value of 400 will mean the server will attempt to spawn monsters every 400th tick.\nA value below 0 will be reset back to Minecraft's default.\nMinecraft default: 1",
+          "default": 400,
+          "examples": [1, 400, 0]
+        },
+        "water-ambient-spawns": {
+          "type": "integer",
+          "default": 1
+        },
+        "water-spawns": {
+          "type": "integer",
+          "default": 1
+        },
+        "water-underground-creature-spawns": {
+          "type": "integer",
+          "default": 1
+        }
+      }
+    },
+    "worlds": {
+      "type": "object",
+      "description": "This section lets you define the generators for the worlds that bukkit loads by default. Prereqs: You MUST have the generator installed already, and the generator's developer MUST have 'load: startup' in their plugin.yml.",
+      "additionalProperties": {
+        "$ref": "#/definitions/bukkit-world-generator-object"
+      }
+    }
+  },
+  "definitions": {
+    "bukkit-world-generator-object": {
+      "type": "object",
+      "description": "Bukkit world generator object",
+      "additionalProperties": false,
+      "required": ["generator"],
+      "properties": {
+        "generator": {
+          "type": "string",
+          "description": "Class name of the generator (generator's params can be appended by using \":\" followed by params separated by \",\").",
+          "examples": [
+            "CleanroomGenerator",
+            "CleanroomGenerator:10,stone,20,dirt,1,grass"
+          ]
+        }
+      }
+    }
+  }
+}

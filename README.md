@@ -10,3 +10,15 @@
 * __[server.properties.json](https://raw.githubusercontent.com/modesurvie/schemas/main/mojang/server/server.properties.json) - Minecraft Server Settings (server.properties)__
 * [usercache.json](https://raw.githubusercontent.com/modesurvie/schemas/main/mojang/server/usercache.json) - Minecraft Server Cache of player UUIDs
 * [whitelist.json](https://raw.githubusercontent.com/modesurvie/schemas/main/mojang/server/whitelist.json) - Minecraft Server Whitelist
+
+## [spigotmc/bukkit/](./spigotmc/bukkit/)
+
+* __[bukkit.json](https://raw.githubusercontent.com/modesurvie/schemas/main/spigotmc/bukkit/bukkit.json) - CraftBukkit Server Configuration (bukkit.yml)__
+* [commands.json](https://raw.githubusercontent.com/modesurvie/schemas/main/spigotmc/bukkit/commands.json) - CraftBukkit Server Command Aliases (commands.yml)
+* [help.json](https://raw.githubusercontent.com/modesurvie/schemas/main/spigotmc/bukkit/help.json) - CraftBukkit Server Help (help.yml)
+* [permissions.json](https://raw.githubusercontent.com/modesurvie/schemas/main/spigotmc/bukkit/permissions.json) - CraftBukkit Server Permissions (permissions.yml)
+
+## [spigotmc/spigot/](./spigotmc/spigot/)
+
+* [spigot.jar-cli.json](https://raw.githubusercontent.com/modesurvie/schemas/main/spigotmc/spigot/spigot.jar-cli.json) - Spigot spigot.jar command-line arguments
+* __[spigot.json](https://raw.githubusercontent.com/modesurvie/schemas/main/spigotmc/spigot/spigot.json) - Spigot Server Configuration (spigot.yml)__
