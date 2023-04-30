@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Paper CLI options",
+  "type": "object",
+  "description": "The Paper CLI options available when paper.jar is used to run a Minecraft server.\nhttps://papermc.io/software/paper",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "-?, --help": {
+      "type": "boolean",
+      "description": "Show the help"
+    },
+    "-C, --commands-settings <File: Yml file>": {
+      "type": "string",
+      "description": "File for command settings (default: commands.yml)",
+      "default": "commands.yml"
+    },
+    "-P, --plugins <File: Plugin directory>": {
+      "type": "string",
+      "description": "Plugin directory to use (default: plugins)",
+      "default": "plugins"
+    },
+    "-S, --spigot-settings <File: Yml file>": {
+      "type": "string",
+      "description": "File for spigot settings (default: spigot.yml)",
+      "default": "spigot.yml"
+    },
+    "-W, --universe, --world-container, --world-dir <File: Directory containing worlds>": {
+      "type": "string",
+      "description": "World container (default: .)",
+      "default": "."
+    },
+    "--add-extra-plugin-jar, --add-plugin <File: Jar file>": {
+      "type": "string",
+      "description": "(Paper) Specify paths to extra plugin jars to be loaded in addition to those in the plugins folder. This argument can be specified multiple times, once for each extra plugin jar path."
+    },
+    "-b, --bukkit-settings <File: Yml file>": {
+      "type": "string",
+      "description": "File for bukkit settings (default: bukkit.yml)",
+      "default": "bukkit.yml"
+    },
+    "-c, --config <File: Properties file>": {
+      "type": "string",
+      "description": "Properties file to use (default: server.properties)",
+      "default": "server.properties"
+    },
+    "-d, --date-format <SimpleDateFormat: Log date format>": {
+      "type": "string",
+      "description": "Format of the date to display in the console (for log entries)"
+    },
+    "--demo": {
+      "type": "boolean",
+      "description": "Demo mode"
+    },
+    "--eraseCache": {
+      "type": "boolean",
+      "description": "Whether to force cache erase during world upgrade"
+    },
+    "--forceUpgrade": {
+      "type": "boolean",
+      "description": "Whether to force a world upgrade"
+    },
+    "-h, --host, --server-ip <String: Hostname or IP>": {
+      "type": "string",
+      "description": "Host to listen on"
+    },
+    "--initSettings": {
+      "type": "boolean",
+      "description": "Only create configuration files and exit"
+    },
+    "--jfrProfile": {
+      "type": "boolean",
+      "description": "Enable JFR profiling"
+    },
+    "--log-append <Boolean: Log append>": {
+      "type": "boolean",
+      "description": "Whether to append to the log file (default: true)",
+      "default": true
+    },
+    "--log-count <Integer: Log count>": {
+      "type": "integer",
+      "description": "Specified how many log files to cycle through (default: 1)",
+      "default": 1
+    },
+    "--log-limit <Integer: Max log size>": {
+      "type": "integer",
+      "description": "Limits the maximum size of the log file (0 = unlimited) (default: 0)",
+      "default": 0
+    },
+    "--log-pattern <String: Log filename>": {
+      "type": "string",
+      "description": "Specfies the log filename pattern (default: server.log)",
+      "default": "server.log"
+    },
+    "--log-strip-color": {
+      "type": "boolean",
+      "description": "Strips color codes from log file"
+    },
+    "--noconsole": {
+      "type": "boolean",
+      "description": "Disables the console"
+    },
+    "--nogui": {
+      "type": "boolean",
+      "description": "Disables the graphical console"
+    },
+    "--nojline": {
+      "type": "boolean",
+      "description": "Disables jline and emulates the vanilla console"
+    },
+    "-o, --online-mode <Boolean: Authentication>": {
+      "type": "boolean",
+      "description": "Whether to use online authentication"
+    },
+    "-p, --port, --server-port <Integer: Port>": {
+      "type": "integer",
+      "description": "Port to listen on"
+    },
+    "--paper, --paper-settings <File: Yml file>": {
+      "type": "string",
+      "description": "(Paper) File for Paper settings (default: paper.yml)",
+      "default": "paper.yml"
+    },
+    "--paper-dir, --paper-settings-directory <File: Config directory>": {
+      "type": "string",
+      "description": "(Paper) Directory for Paper settings (default: config)",
+      "default": "config"
+    },
+    "--pidFile <Path>": {
+      "type": "string",
+      "description": "pid File"
+    },
+    "-s, --max-players, --size <Integer: Server size>": {
+      "type": "integer",
+      "description": "Maximum amount of players"
+    },
+    "--server-name <String: Name>": {
+      "type": "string",
+      "description": "(Paper) Name of the server (default: Unknown Server)",
+      "default": "Unknown Server"
+    },
+    "--serverId <String>": {
+      "type": "string",
+      "description": "Server ID"
+    },
+    "-v, --version": {
+      "type": "boolean",
+      "description": "Show the CraftBukkit Version"
+    },
+    "-w, --level-name, --world <String: World name>": {
+      "type": "string",
+      "description": "World name"
+    }
+  }
+}

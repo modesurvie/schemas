@@ -1,0 +1,257 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Paper System Properties",
+  "type": "object",
+  "description": "Paper system properties can be set when you start your server (for example: `java -Dpaper.log-level=FINE -jar paper.jar`) allowing for the configuration of various settings.\nNote: Where a system property is stated as unset, setting it as true will work to enable it.\nhttps://docs.papermc.io/paper/reference/system-properties",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "Link to schema."
+    },
+    "paper.playerconnection.keepalive": {
+      "description": "Controls how long the player connection will wait before closing when not receiving any keepalives, in seconds.",
+      "default": 30,
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "integer" }
+      ]
+    },
+    "timings.bypassMax": {
+      "description": "Allows for bypassing the max amount of data to send to the Aikar's Timings API. Setting this will not permit bypassing the limit unless the API is configured to allow it.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "integer" }
+      ]
+    },
+    "LetMeReload": {
+      "description": "This disables the reload confirmation message when using the /reload command.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "paper.disableChannelLimit": {
+      "description": "Disables the plugin channel limit for the server. This will disable the limit of 128 plugin channels per player.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "net.kyori.adventure.text.warnWhenLegacyFormattingDetected": {
+      "description": "Enables or disables the warning when legacy formatting is detected in a chat component.",
+      "default": false,
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.DisableClassPrioritization": {
+      "description": "Disables the class prioritization system - mostly an issue when failing to relocate or shade properly.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.disableFlushConsolidate": {
+      "description": "Disables the netty flush consolidation system.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.debugDynamicMissingKeys": {
+      "description": "Enables debug logging for missing keys in NBT objects.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "disable.watchdog": {
+      "description": "Disables the watchdog warning system.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "paper.explicit-flush": {
+      "description": "Enables explicit flushing of the network channel.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.enable-sync-chunk-writes": {
+      "description": "Syncs writes on each write call. This has a performance impact, particularly on hard drives.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "paper.debug-sync-loads": {
+      "description": "Enables debug logging for sync chunk loads.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.ignoreWorldDataVersion": {
+      "description": "Ignores the world data version when loading a world. This is not recommended and will likely cause issues.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "debug.entities": {
+      "description": "Enables debug log messages for entity information.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.bypassHostCheck": {
+      "description": "Bypasses the host pattern matching attempt for the client when connecting to the server.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "paper.ticklist-warn-on-excessive-delay": {
+      "description": "Enables the warning when a tick list is scheduled with an excessive delay.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "debug.rewriteForIde": {
+      "description": "Removes the NMS revision from the stack trace to allow for easier debugging in IDEs. It also remaps plugin CB calls to remove the version information.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "convertLegacySigns": {
+      "description": "Converts legacy signs to the new format.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "paper.maxCustomChannelName": {
+      "description": "Sets the largest size that a plugin channel name can take.",
+      "default": 64,
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "integer" }
+      ]
+    },
+    "Paper.maxSignLength": {
+      "description": "Sets the maximum line length for signs.",
+      "default": 80,
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "integer" }
+      ]
+    },
+    "Paper.FilterThreshhold": {
+      "description": "",
+      "default": 8192,
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "integer" }
+      ]
+    },
+    "Paper.minPrecachedDatafixVersion": {
+      "description": "If you are expecting to convert a large number of chunks you might consider setting this to only convert from a point onwards.",
+      "default": "Minecraft world version + 1",
+      "oneOne": [
+        {
+          "const": "unset"
+        },
+        {
+          "type": "integer"
+        }
+      ]
+    },
+    "Paper.WorkerThreadCount": {
+      "description": "Sets the number of worker threads to use for chunk loading (default: 8 or `number of cpus - 2`. Whichever is lower).",
+      "default": 8,
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "integer" }
+      ]
+    },
+    "Paper.excessiveTELimit": {
+      "description": "Splits tile entities into multiple packets if there are more than this many.",
+      "default": 750,
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "integer" }
+      ]
+    },
+    "io.papermc.paper.suppress.sout.nags": {
+      "description": "Suppresses the nag message about using System.out/System.err in a plugin.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "paper.strict-thread-checks": {
+      "description": "This sets the status of the AsyncCatcher so that it will always log an error if code is not run on the main thread.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.skipServerPropertiesComments": {
+      "description": "Skips the comments in the server.properties file.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.debugInvalidSkullProfiles": {
+      "description": "Enables debug logging for invalid skull profiles. This logs any invalid skulls in the world with the appropriate location information.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "paper.alwaysPrintWarningState": {
+      "description": "Always prints the warning state for the particular level.",
+      "default": "unset",
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    },
+    "Paper.parseYamlCommentsByDefault": {
+      "description": "Sets whether to parse comments in YAML files by default.",
+      "default": true,
+      "oneOne": [
+        { "const": "unset" },
+        { "type": "boolean" }
+      ]
+    }
+  }
+}

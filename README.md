@@ -11,6 +11,19 @@
 * [usercache.json](https://raw.githubusercontent.com/modesurvie/schemas/main/mojang/server/usercache.json) - Minecraft Server Cache of player UUIDs
 * [whitelist.json](https://raw.githubusercontent.com/modesurvie/schemas/main/mojang/server/whitelist.json) - Minecraft Server Whitelist
 
+## [papermc/paper/](./papermc/paper/)
+
+* __[paper-global.json](https://raw.githubusercontent.com/modesurvie/schemas/main/papermc/paper/paper-global.json) - Paper Global Configuration__
+* [paper-system-properties.json](https://raw.githubusercontent.com/modesurvie/schemas/main/papermc/paper/paper-system-properties.json) - Paper System Properties
+* __[paper-world.json](https://raw.githubusercontent.com/modesurvie/schemas/main/papermc/paper/paper-world.json) - Paper World Configuration__
+* [paper.jar-cli.json](https://raw.githubusercontent.com/modesurvie/schemas/main/papermc/paper/paper.jar-cli.json) - Paper CLI options
+* [version_history.json](https://raw.githubusercontent.com/modesurvie/schemas/main/papermc/paper/version_history.json) - Paper version history (version_history.json)
+
+## [papermc/velocity/](./papermc/velocity/)
+
+* [velocity.jar-cli.json](https://raw.githubusercontent.com/modesurvie/schemas/main/papermc/velocity/velocity.jar-cli.json) - Velocity CLI options
+* __[velocity.json](https://raw.githubusercontent.com/modesurvie/schemas/main/papermc/velocity/velocity.json) - Velocity Configuration__
+
 ## [spigotmc/bukkit/](./spigotmc/bukkit/)
 
 * __[bukkit.json](https://raw.githubusercontent.com/modesurvie/schemas/main/spigotmc/bukkit/bukkit.json) - CraftBukkit Server Configuration (bukkit.yml)__
