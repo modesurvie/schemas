@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft-07/schema#",
   "title": "Minecraft Server Banned Players",
   "type": "array",
-  "description": "The banned-players.json is a server configuration file that stores UUIDs and usernames of players who have been banned on a server. As well as manually editing the file, the command /ban can also be used by operators.\nhttps://minecraft.fandom.com/wiki/Commands/ban#ban",
+  "description": "The banned-players.json is a server configuration file that stores UUIDs and usernames of players who have been banned on a server. As well as manually editing the file, the command /ban can also be used by operators.\nhttps://minecraft.wiki/w/Commands/ban#ban",
   "items": {
     "$ref": "#/definitions/minecraft-server-banned-players-entry"
   },

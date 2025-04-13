@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft-07/schema#",
   "title": "Minecraft Classic Server Settings (server.properties)",
   "type": "object",
-  "description": "The server.properties is the file that stores all the settings for a multiplayer (Minecraft or Minecraft Classic) server.\nhttps://minecraft.fandom.com/wiki/Server.properties#Minecraft_Classic_server_properties",
+  "description": "The server.properties is the file that stores all the settings for a multiplayer (Minecraft or Minecraft Classic) server.\nhttps://minecraft.wiki/w/Server.properties#Java_Edition_Classic",
   "additionalProperties": false,
   "properties": {
     "$schema": {
@@ -16,21 +16,35 @@
     },
     "grow-trees": {
       "type": "boolean",
-      "description": "Whether or not the server allows planted saplings to grow into trees.\ntrue - the server allows saplings to grow into trees.\nfalse - the server does not allow saplings to grow into trees."
+      "description": "Whether or not the server allows planted saplings to grow into trees.\n\ntrue - the server allows saplings to grow into trees.\nfalse - the server does not allow saplings to grow into trees."
     },
     "max-connections": {
       "type": "integer",
-      "description": "The max number of connections the server accepts from the same IP.\n\nNote: If set higher than 3, it is changed back to 3.",
+      "description": "The max number of connections the server accepts from the same IP address.\n\nNote: If set higher than 3, it is changed back to 3.",
       "minimum": 1,
       "maximum": 3
     },
+    "max-players": {
+      "type": "integer",
+      "description": "The max numbers of players that can play on the server at the same time. Note that if more players are on the server it uses more resources. Note also, admin connections are not counted against the max players.",
+      "minimum": 0,
+      "maximum": 256
+    },
+    "motd": {
+      "type": "string",
+      "description": "MOTD is short for Message of the day, though the player does not need to change it every day. The MOTD is displayed when people join the server."
+    },
     "public": {
       "type": "boolean",
-      "description": "Whether the server should be displayed in the server list, or not.\ntrue - The server appears in the server list - anyone can see it.\nfalse - Only people with the URL that can be found in externalurl.txt and people who know the IP and port can join the server"
+      "description": "Whether the server should be displayed in the server list, or not.\n\ntrue - The server appears in the server list - anyone can see it.\nfalse - Only people with the URL that can be found in externalurl.txt and people who know the IP address and port can join the server"
+    },
+    "server-name": {
+      "type": "string",
+      "description": "The name of the server. This is displayed in the server list and when someone is joining the server\n\nA single line of text. Characters such as ' (apostrophe) may need to be escaped by adding a backslash before them."
     },
     "verify-names": {
       "type": "boolean",
-      "description": "[unofficial name] If enabled, the server ensures that the client is logged in with the same IP address seen on Minecraft.net. This has caused problems for people trying to play on the same computer they are hosting the server on as the server sees the local IP (127.0.0.1) while Minecraft.net sees the external IP. It is recommended that this is enabled unless the player want to play on the player's server from the same computer the player is hosting it on.\ntrue - Enabled. The server checks all names with Minecraft.net\nfalse - Disabled. The server makes sure the IP matches",
+      "description": "If enabled, the server ensures that the client is logged in with the same IP address seen on Minecraft.net. This has caused problems for people trying to play on the same computer they are hosting the server on as the server sees the local IP address (127.0.0.1) while Minecraft.net sees the external IP address. It is recommended that this is enabled unless the player want to play on the player's server from the same computer the player is hosting it on.\n\ntrue - Enabled. The server checks all names with Minecraft.net\nfalse - Disabled. The server makes sure the IP address matches",
       "default": true
     }
   }

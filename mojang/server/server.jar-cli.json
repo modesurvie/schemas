@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft-07/schema#",
   "title": "Minecraft server.jar command-line arguments",
   "type": "object",
-  "description": "The server.jar is the jar file to execute with java to start Minecraft server.\nhttps://minecraft.fandom.com/wiki/Tutorials/Setting_up_a_server#Minecraft_options",
+  "description": "The server.jar is the jar file to execute with java to start Minecraft server.\nhttps://minecraft.wiki/w/Tutorial:Setting_up_a_Java_Edition_server#Server_options",
   "additionalProperties": false,
   "properties": {
     "$schema": {
@@ -11,64 +11,65 @@
     },
     "--bonusChest": {
       "type": "boolean",
-      "description": "If a bonus chest should be generated, when the world is first generated.\nhttps://minecraft.fandom.com/wiki/Bonus_chest"
+      "description": "Enable the bonus chest[1] when generating a world for the first time.\n\n[1]:https://minecraft.wiki/w/Bonus_chest"
     },
     "--demo": {
       "type": "boolean",
-      "description": "If the server is in demo mode. (Shows the players a demo pop-up, and players cannot break or place blocks or eat if the demo time has expired)\nEquivalent to playing minecraft without a account, you have about 5 in-game days before your trial ends.\nhttps://minecraft.fandom.com/wiki/Demo_Mode"
+      "description": "Enable demo mode[1]. Shows the players a demo pop-up, and players cannot break or place blocks after the 5 in-game days demo time has expired, even if they have purchased the game.\n\n[1]:https://minecraft.wiki/w/Demo_mode"
     },
     "--eraseCache": {
       "type": "boolean",
-      "description": "Erases the lighting caches, etc. Same option as when optimizing single player worlds."
+      "description": "Erase cached data like light levels and biome data, which must then be regenerated. Equivalent to the \"Erase Cached Data\" option of \"Optimize World\" in World Options[1] on the client.\n\n[1]:https://minecraft.wiki/w/World_Options"
     },
     "--forceUpgrade": {
       "type": "boolean",
-      "description": "Forces upgrade on all the chunks, such that the data version of all chunks matches the current server version (same as with sp worlds). This option significantly increases the time needed to start the server."
+      "description": "Optimize the world by upgrading the level data to the latest format[1]. Once the world is optimized, it is no longer compatible with older level formats. Equivalent to the \"Optimize World\" option in World Options[2] on the client.\n\n[1]:https://minecraft.wiki/w/Java_Edition_level_format\n[2]:https://minecraft.wiki/w/World_Options"
     },
     "--help": {
       "type": "boolean",
-      "description": "Shows this help."
+      "description": "Print available options without starting the server."
     },
     "--initSettings": {
       "type": "boolean",
-      "description": "Initializes 'server.properties' and 'eula.txt', then quits."
+      "description": "Initialize `server.properties`[1] and `eula.txt` without starting the server. If either file is missing, it creates them with default values.\n\n[1]:https://minecraft.wiki/w/Server.properties"
     },
     "--jfrProfile": {
       "type": "boolean",
-      "description": "Initializes the Java Flight Recorder on the server. Only available on 1.18+."
+      "description": "Initialize Java Flight Recorder[1] profiler for the server. While the server is running, the profiler can be opened using an external tool or software, such as VisualVM[2]. It enables monitoring of the server's CPU, memory, and threads usage. Additionally, it saves a `jfr` file on the `debug` folder of the `server.jar`, containing JVM and operating system events, and several Minecraft-related custom events. Further information on Commands/jfr § Usage[3].\n\n[1]:https://en.wikipedia.org/wiki/Java_Flight_Recorder\n[2]:https://visualvm.github.io/\n[3]:https://minecraft.wiki/w/Commands/jfr#Usage"
     },
     "--nogui": {
       "type": "boolean",
-      "description": "Doesn't open the GUI when launching the server.\nYou will still be able to interact with your server, but you must use the cmd or Terminal if enabled."
+      "description": "Disable GUI[1] when launching the server.\n\n[1]:https://minecraft.wiki/w/Tutorial:Setting_up_a_Java_Edition_server#Interface"
     },
-    "--pidFile": {
-      "type": "string"
+    "--pidFile <Path>": {
+      "type": "string",
+      "description": "Create a text file at path containing the process identifier[1] (PID) of the server process while it's running.\n\n[1]:https://en.wikipedia.org/wiki/process_identifier"
     },
-    "--port": {
+    "--port <Integer>": {
       "type": "integer",
-      "description": "Which port to listen on, overrides the server.properties value (default: -1, read from server.properties). See server.properties for restrictions on this value.\nhttps://minecraft.fandom.com/wiki/Server.properties",
+      "description": "Specify the TCP port to use instead of the value in `server.properties`.",
       "default": -1
+    },
+    "--recreateRegionFiles": {
+      "type": "boolean",
+      "description": "Optimize the world similar to --forceUpgrade, but also rewrites all the chunks independently of whether they have been upgraded, creating a fresh and defragmented region files. Using this option after changing `region-file-compression` in `server.properties` will recompress all region files in the new format."
     },
     "--safeMode": {
       "type": "boolean",
-      "description": "Loads level with vanilla datapack only"
+      "description": "Ensure the server only loads the vanilla datapack."
     },
     "--serverId <String>": {
       "type": "string",
-      "description": "Gives an ID to the server. (??) Gives an ID to the server. (??)"
-    },
-    "--singleplayer <String>": {
-      "type": "string",
-      "description": "Runs the server in offline mode (unknown where <String> is used for, probably used internally by mojang?)"
+      "description": "Specify the \"Server Id\" string used in the crash[1] report details.\n\n[1]:https://minecraft.wiki/w/Crash"
     },
     "--universe <String>": {
       "type": "string",
-      "description": "The folder in which to look for world folders. (default: .)",
+      "description": "Specify the path to the directory `level-name` in `server.properties` is relative to. If empty, it is relative to the working directory.",
       "default": "."
     },
     "--world <String>": {
       "type": "string",
-      "description": "The name of the world folder in which the level.dat resides."
+      "description": "Specify the world name to use instead of the `level-name` value in `server.properties`."
     }
   }
 }

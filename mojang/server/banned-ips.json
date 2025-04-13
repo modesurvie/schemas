@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft-07/schema#",
   "title": "Minecraft Server Banned IPs",
   "type": "array",
-  "description": "The banned-ips.json is a server configuration file that stores the IPs of players who have been banned on a server. As well as manually editing the file, the command /ban-ip can also be used by operators.\nhttps://minecraft.fandom.com/wiki/Commands/ban#ban-ip",
+  "description": "The banned-ips.json is a server configuration file that stores the IPs of players who have been banned on a server. As well as manually editing the file, the command /ban-ip can also be used by operators.\nhttps://minecraft.wiki/w/Commands/ban#ban-ip",
   "items": {
     "$ref": "#/definitions/minecraft-server-banned-ips-entry"
   },
