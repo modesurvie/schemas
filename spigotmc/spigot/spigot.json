@@ -16,27 +16,23 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "disable-saving": {
+          "type": "boolean",
+          "description": "If enabled, the server will not save player advancements that were introduced in 1.12.",
+          "default": false
+        },
         "disabled": {
           "type": "array",
           "description": "A list of disabled advancements. Advancements on this list are unobtainable in the game and will not be shown in the advancement GUI, accessible through the 'advancement' button when pressing escape or when pressing the key bound to open this menu (default = L). Disabling an advancement will lead to errors in the console if all advancements that are children of this advancement are not also disabled. To disable all of the advancements, paste the following list into this option.",
           "items": {
             "anyOf": [
-              {
-                "$ref": "#/definitions/minecraft-advancement"
-              },
-              {
-                "type": "string"
-              }
+              { "$ref": "#/definitions/minecraft-advancement" },
+              { "type": "string" }
             ]
           },
           "default": [
             "minecraft:story/disabled"
           ]
-        },
-        "disable-saving": {
-          "type": "boolean",
-          "description": "If enabled, the server will not save player advancements that were introduced in 1.12.",
-          "default": false
         }
       }
     },
@@ -44,6 +40,10 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "enable-spam-exclusions": {
+          "type": "boolean",
+          "default": false
+        },
         "log": {
           "type": "boolean",
           "description": "Controls whether or not to print player commands to console/log which will be saved in your logs folder in your server's directory.",
@@ -64,7 +64,7 @@
         },
         "send-namespaced": {
           "type": "boolean",
-          "description": "Show commands with <plugin>:<command> syntax when you press tab.. Example: /minecraft:tp",
+          "description": "Show commands with <plugin>:<command> syntax when you press tab. Example: /minecraft:tp.",
           "default": true
         },
         "silent-commandblock-console": {
@@ -79,12 +79,12 @@
             "type": "string"
           },
           "default": [
-            "skill"
+            "/skill"
           ]
         },
         "tab-complete": {
           "type": "integer",
-          "description": "Above #1368: You can now specify how many letters of the command must be typed before it will be tab completed this will help deter people from just spamming round all the commands to see if there is one incorrectly set up.\n0 will tab-complete all commands\n-1 will disable tab completely\n1 will mean you have to type the first letter\n2 will mean you have to type the second letter... etc...",
+          "description": "You can now specify how many letters of the command must be typed before it will be tab completed this will help deter people from just spamming round all the commands to see if there is one incorrectly set up.\n0 will tab-complete all commands\n-1 will disable tab completely\n1 will mean you have to type the first letter\n2 will mean you have to type the second letter... etc...",
           "minimum": -1,
           "default": 0
         }
@@ -98,7 +98,7 @@
         "outdated-client": {
           "type": "string",
           "description": "Message that will be displayed to joining players with an older version of Minecraft than your server. {} will be replaced with the server's current version.",
-          "default": "Outdated client! Please use {}"
+          "default": "Outdated client! Please use {0}"
         },
         "outdated-server": {
           "type": "string",
@@ -133,6 +133,7 @@
       "properties": {
         "disable-saving": {
           "type": "boolean",
+          "description": "Prevents saving player data.",
           "default": false
         }
       }
@@ -144,14 +145,23 @@
         "attribute": {
           "type": "object",
           "properties": {
+            "attackDamage": {
+              "$ref": "#/definitions/spigot-settings-attribute",
+              "description": "Overrides the maximum for the attackDamage attribute."
+            },
+            "maxAbsorption": {
+              "$ref": "#/definitions/spigot-settings-attribute",
+              "description": "Overrides the maximum for the maxAbsorption attribute."
+            },
             "maxHealth": {
-              "$ref": "#/definitions/spigot-settings-attribute"
+              "$ref": "#/definitions/spigot-settings-attribute",
+              "description": "Overrides the maximum for the maxHealth attribute.",
+              "default.paper": 1024.0
             },
             "movementSpeed": {
-              "$ref": "#/definitions/spigot-settings-attribute"
-            },
-            "attackDamage": {
-              "$ref": "#/definitions/spigot-settings-attribute"
+              "$ref": "#/definitions/spigot-settings-attribute",
+              "description": "Overrides the maximum for the movementSpeed attribute.",
+              "default.paper": 1024.0
             }
           }
         },
@@ -162,22 +172,7 @@
         },
         "debug": {
           "type": "boolean",
-          "description": "Seems to toggle whether log levels below Level.INFO (e.g. CONFIG, FINER) are logged to console/file, NEEDS CONFIRMATION! By default only INFO, WARNING, SEVERE are logged.",
-          "default": false
-        },
-        "filter-creative-items": {
-          "type": "boolean",
-          "description": "Controls the vanilla blacklist of items a creative player cannot spawn.",
-          "default": true
-        },
-        "item-dirty-ticks": {
-          "type": "integer",
-          "description": "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.",
-          "default": 20
-        },
-        "late-bind": {
-          "type": "boolean",
-          "description": "This delays players from entering the server until all plugins are loaded. Please note, it is advised to test this before putting it into practice as there may be problems with some plugins.",
+          "description": "Seems to toggle whether log levels below Level.INFO (e.g. CONFIG, FINER) are logged to console/file, needs confirmation! By default only INFO, WARNING, SEVERE are logged.",
           "default": false
         },
         "log-named-deaths": {
@@ -210,15 +205,15 @@
           "description": "This prevents players from 'gaming' the server, and strategically relogging to increase their position in the tick order. Basically, players' packets are processed in order depending on when they joined, relogging changes your position in queue meaning your actions happen before others. Enabling this prevents the relogger from having the advantage. Useful for PVP servers.\nThe value is in ticks, so 20 = shuffle every second. Setting this option lower than 100 may cause performance issues (0 is fine though).",
           "default": 0
         },
-        "restart-script": {
-          "type": "string",
-          "description": "(file path) The location for your server's startup script. This path will be used for the /restart command and for the 'restart-on-crash' option. For Windows, change .sh to .bat extension.",
-          "default": "./start.sh"
-        },
         "restart-on-crash": {
           "type": "boolean",
-          "description": "Controls whether or not the server will automatically ATTEMPT to restart your server when a crash occurs.",
+          "description": "Controls whether or not the server will automatically attempt to restart your server when a crash occurs.",
           "default": true
+        },
+        "restart-script": {
+          "type": "string",
+          "description": "The location for your server's startup script. This path will be used for the /restart command and for the 'restart-on-crash' option. For Windows, change .sh to .bat extension.",
+          "default": "./start.sh"
         },
         "sample-count": {
           "type": "integer",
@@ -237,8 +232,24 @@
         },
         "user-cache-size": {
           "type": "integer",
-          "description": "Description: Controls the maximum number of players stored in usercache.json",
+          "description": "Controls the maximum number of players stored in usercache.json",
           "default": 1000
+        },
+
+        "filter-creative-items": {
+          "type": "boolean",
+          "description": "Controls the vanilla blacklist of items a creative player cannot spawn.",
+          "default": true
+        },
+        "item-dirty-ticks": {
+          "type": "integer",
+          "description": "Controls the interval for the item-dirty check. Minecraft checks an item every tick to see if it was changed. This can be expensive because it also needs to check all NBT data. Spigot only checks for basic count/data/type data and does a deep check every 20 ticks by default.",
+          "default": 20
+        },
+        "late-bind": {
+          "type": "boolean",
+          "description": "This delays players from entering the server until all plugins are loaded. Please note, it is advised to test this before putting it into practice as there may be problems with some plugins.",
+          "default": false
         }
       }
     },
@@ -372,12 +383,8 @@
     },
     "spigot-world-seed": {
       "oneOf": [
-        {
-          "const": "default"
-        },
-        {
-          "type": "integer"
-        }
+        { "const": "default" },
+        { "type": "integer" }
       ]
     },
     "spigot-world-settings": {
@@ -385,142 +392,35 @@
       "description": "Spigot world settings",
       "additionalProperties": false,
       "properties": {
+        "unload-frozen-chunks": {
+          "type": "boolean",
+          "description": "Experimental option that controls whether chunks can unload whilst ticks are frozen via /tick freeze.",
+          "default": false
+        },
+        "arrow-despawn-rate": {
+          "type": "integer",
+          "description": "The number of ticks before an arrow despawns.",
+          "default": 1200
+        },
         "below-zero-generation-in-existing-chunks": {
           "type": "boolean",
           "description": "Whether or not to generate new chunks below to y=0 when upgrade worlds to 1.18+. Can be disabled/enabled globally or per-world.",
           "default": true
         },
-        "verbose": {
+        "dragon-death-sound-radius": {
+          "type": "number",
+          "description": "The number of blocks that the dragon death sound is audible. Set to 0 for global (including cross-dimension).",
+          "default": 0
+        },
+        "enable-zombie-pigmen-portal-spawns": {
           "type": "boolean",
-          "description": "Whether or not to show the detailed report and configuration for each world in console/log on server startup. Can be disabled/enabled globally or per-world.",
+          "description": "When disabled, nether portals will no longer randomly spawn zombie pigmen in them. This can be used to combat large nether portal gold farms and does not affect the movement of entities, including zombie pigmen, through nether portals between dimensions.",
           "default": true
         },
-        "simulation-distance": {
-          "description": "Controls the number of chunks where the entities, blocks and fluids are updated around every player. This value cannot be lower than 5.",
-          "default": "default",
-          "oneOf": [
-            {
-              "const": "default"
-            },
-            {
-              "type": "integer",
-              "minimum": 5
-            }
-          ]
-        },
-        "view-distance": {
-          "description": "Controls the number of chunks that will be loaded around every player. This value cannot be higher than 15 or lower than 1. Lowering this can lower the load on servers if you have a large number of players online.\nNote: As of 1.14.4, the 'global' option is set to \"default\" by default for new installs & upgrades from older versions. When set to default, the server reads the view-distance set in server.properties. This setting can now be used for per-world view distances.",
-          "default": "default",
-          "oneOf": [
-            {
-              "const": "default"
-            },
-            {
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 15,
-              "default": 10
-            }
-          ]
-        },
-        "merge-radius": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "exp": {
-              "type": "number",
-              "description": "Controls the range - in blocks - which experience orbs will \"group\" together when on the ground.",
-              "default": 3.0
-            },
-            "item": {
-              "type": "number",
-              "description": "Controls the range - in blocks - which items will \"group\" together when on the ground.",
-              "default": 2.5
-            }
-          }
-        },
-        "chunks-per-tick": {
-          "deprecated": true,
-          "type": "integer",
-          "description": "(DEPRECATED) Controls the number of chunks that will be updated for growth per tick. Lowering this will potentially make growth slower while saving resources, and vice versa.\nVersions: Before Spigot 1.9",
-          "default": 650
-        },
-        "item-despawn-rate": {
-          "type": "integer",
-          "description": "Controls the number of ticks required before an item entity on the ground will despawn. Lowering this will make items de-spawn faster (potentially saving resources as there are fewer entities to tick) while increasing this will take them longer to de-spawn and use up more resources (as the item entities will have to be ticked for longer until they de-spawn).",
-          "default": 6000
-        },
-        "mob-spawn-range": {
-          "type": "integer",
-          "description": "Radius in chunks around the player in which mobs will spawn. Increasing it will make mobs seem more rare and dispersed, although lowering it may prevent certain spawns as there is not enough spots in which they are allowed to spawn in.\nSee the Minecraft spawn mechanics for more information: https://minecraft.fandom.com/wiki/Spawn?file=Mob_spawning_ranges.png",
-          "default": 8
-        },
-        "growth": {
-          "type": "object",
-          "description": "Controls the speed of growth for each crop/resource as listed above. When at the default value (100), they will grow at 'vanilla' speed, but may appear slower due to other settings (chunks-per-tick).\nDoes not improve performance to change these values. You should only change these away from 100 if you want to change the gameplay behavior of crop growth, and never change this for performance.",
-          "additionalProperties": false,
-          "properties": {
-            "cactus-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "cane-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "melon-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "mushroom-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "pumpkin-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "sapling-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "beetroot-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "carrot-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "potato-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "wheat-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "netherwart-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "vine-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "cocoa-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "bamboo-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "sweetberry-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            },
-            "kelp-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-              },
-            "twistingvines-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-              },
-            "weepingvines-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-              },
-            "cavevines-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-              },
-            "glowberry-modifier": {
-              "$ref": "#/definitions/spigot-world-growth-modifier"
-            }
-          }
+        "end-portal-sound-radius": {
+          "type": "number",
+          "description": "The number of blocks that the end portal opening sound is audible. Set to 0 for global (including cross-dimension).",
+          "default": 0
         },
         "entity-activation-range": {
           "type": "object",
@@ -529,106 +429,130 @@
           "properties": {
             "animals": {
               "type": "integer",
-              "default": 32
-            },
-            "monsters": {
-              "type": "integer",
-              "default": 32
-            },
-            "raiders": {
-              "type": "integer",
-              "default": 48
-            },
-            "misc": {
-              "type": "integer",
-              "default": 16
-            },
-            "water": {
-              "type": "integer",
-              "default": 16
-            },
-            "villagers": {
-              "type": "integer",
+              "description": "The entity activation range for animals.",
               "default": 32
             },
             "flying-monsters": {
               "type": "integer",
+              "description": "The entity activation range for flying monsters.",
               "default": 32
             },
-            "wake-up-inactive": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "animals-max-per-tick": {
-                  "type": "integer",
-                  "default": 4
-                },
-                "animals-every": {
-                  "type": "integer",
-                  "default": 1200
-                },
-                "animals-for": {
-                  "type": "integer",
-                  "default": 100
-                },
-                "monsters-max-per-tick": {
-                  "type": "integer",
-                  "default": 8
-                },
-                "monsters-every": {
-                  "type": "integer",
-                  "default": 400
-                },
-                "monsters-for": {
-                  "type": "integer",
-                  "default": 100
-                },
-                "villagers-max-per-tick": {
-                  "type": "integer",
-                  "default": 4
-                },
-                "villagers-every": {
-                  "type": "integer",
-                  "default": 600
-                },
-                "villagers-for": {
-                  "type": "integer",
-                  "default": 100
-                },
-                "flying-monsters-max-per-tick": {
-                  "type": "integer",
-                  "default": 8
-                },
-                "flying-monsters-every": {
-                  "type": "integer",
-                  "default": 200
-                },
-                "flying-monsters-for": {
-                  "type": "integer",
-                  "default": 100
-                }
-              }
-            },
-            "villagers-work-immunity-after": {
-              "type": "integer",
-              "default": 100
-            },
-            "villagers-work-immunity-for": {
-              "type": "integer",
-              "default": 20
-            },
-            "villagers-active-for-panic": {
+            "ignore-spectators": {
               "type": "boolean",
-              "default": true
+              "description": "Whether spectators activate entities within range.",
+              "default": false
+            },
+            "misc": {
+              "type": "integer",
+              "description": "The entity activation range for misc entities.",
+              "default": 16
+            },
+            "monsters": {
+              "type": "integer",
+              "description": "The entity activation range for monsters.",
+              "default": 32
+            },
+            "raiders": {
+              "type": "integer",
+              "description": "The entity activation range for raiders.",
+              "default": 48,
+              "default.paper": 64
             },
             "tick-inactive-villagers": {
               "type": "boolean",
               "description": "Toggles whether or not villagers should be \"activated\" even if they are outside of the activation range.\nDisabling this means villager will not work as they do in Vanilla and players have to stay near the village for a while for the villager trades to restock.",
               "default": true
             },
-            "ignore-spectators": {
+            "villagers": {
+              "type": "integer",
+              "description": "The entity activation range for villagers.",
+              "default": 32
+            },
+            "villagers-active-for-panic": {
               "type": "boolean",
-              "default": false
+              "description": "Whether to activate villagers when they want to panic.",
+              "default": true
+            },
+            "villagers-work-immunity-after": {
+              "type": "integer",
+              "description": "The time in ticks a villager has to be inactive and working to be woken up.",
+              "default": 100
+            },
+            "villagers-work-immunity-for": {
+              "type": "integer",
+              "description": "How long a villager should be woken up for, in ticks, after villagers-work-immunity-after.",
+              "default": 20
+            },
+            "wake-up-inactive": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "animals-every": {
+                  "type": "integer",
+                  "description": "How often an inactive animal outside of range will be woken up, in ticks. This is a minimum due to being limited to animals-max-per-tick.",
+                  "default": 1200
+                },
+                "animals-for": {
+                  "type": "integer",
+                  "description": "How long to wake an inactive animal up for, in ticks.",
+                  "default": 100
+                },
+                "animals-max-per-tick": {
+                  "type": "integer",
+                  "description": "A limit of how many inactive animals can be woken up on the same tick.",
+                  "default": 4
+                },
+                "flying-monsters-every": {
+                  "type": "integer",
+                  "description": "How often an inactive flying monster outside of range will be woken up, in ticks. This is a minimum due to being limited to flying-monsters-max-per-tick.",
+                  "default": 200
+                },
+                "flying-monsters-for": {
+                  "type": "integer",
+                  "description": "How long to wake an inactive flying monster up for, in ticks.",
+                  "default": 100
+                },
+                "flying-monsters-max-per-tick": {
+                  "type": "integer",
+                  "description": "A limit of how many inactive flying monsters can be woken up on the same tick.",
+                  "default": 8
+                },
+                "monsters-every": {
+                  "type": "integer",
+                  "description": "How often an inactive monster outside of range will be woken up, in ticks. This is a minimum due to being limited to monsters-max-per-tick.",
+                  "default": 400
+                },
+                "monsters-for": {
+                  "type": "integer",
+                  "description": "How long to wake an inactive monster up for, in ticks.",
+                  "default": 100
+                },
+                "monsters-max-per-tick": {
+                  "type": "integer",
+                  "description": "A limit of how many inactive monsters can be woken up on the same tick.",
+                  "default": 8
+                },
+                "villagers-every": {
+                  "type": "integer",
+                  "description": "How often an inactive villager outside of range will be woken up, in ticks. This is a minimum due to being limited to villagers-max-per-tick",
+                  "default": 600
+                },
+                "villagers-for": {
+                  "type": "integer",
+                  "description": "How long to wake an inactive villager up for, in ticks.",
+                  "default": 100
+                },
+                "villagers-max-per-tick": {
+                  "type": "integer",
+                  "description": "A limit of how many inactive villagers can be woken up on the same tick.",
+                  "default": 4
+                }
+              }
+            },
+            "water": {
+              "type": "integer",
+              "description": "The entity activation range for water mobs.",
+              "default": 16
             }
           }
         },
@@ -637,101 +561,115 @@
           "description": "Controls the range in blocks that entities will become \"visible\" or otherwise known as \"tracked\" to the client. Entities outside of this range will be invisible as they are not being rendered to preserve CPU usage and bandwidth. This is particularly useful for PVP servers, as turning down the player range will 'nerf' wallhacks and radar to some extent. Miscellaneous controls the range for item frames, paintings, dropped items, experience orbs, and sign text. Other is a general maximum limit for all entities on your server.\nDoes not impact server performance much to change these values. These will mainly help client-side lag when lowering these.",
           "additionalProperties": false,
           "properties": {
-            "players": {
-              "type": "integer",
-              "default": 48
-            },
             "animals": {
               "type": "integer",
+              "description": "Controls how far in blocks animals are tracked (sent to) the player. This is scaled by the entity-broadcast-range-percentage.",
               "default": 48
-            },
-            "monsters": {
-              "type": "integer",
-              "default": 48
-            },
-            "misc": {
-              "type": "integer",
-              "default": 32
             },
             "display": {
               "type": "integer",
+              "description": "Controls how far in blocks display entities are tracked (sent to) the player. This is scaled by the entity-broadcast-range-percentage.",
               "default": 128
+            },
+            "misc": {
+              "type": "integer",
+              "description": "Controls how far in blocks misc entities are tracked (sent to) the player. This is scaled by the entity-broadcast-range-percentage.",
+              "default": 32
+            },
+            "monsters": {
+              "type": "integer",
+              "description": "Controls how far in blocks monsters are tracked (sent to) the player. This is scaled by the entity-broadcast-range-percentage.",
+              "default": 48
             },
             "other": {
               "type": "integer",
+              "description": "Controls how far in blocks other entities are tracked (sent to) the player. This is scaled by the entity-broadcast-range-percentage.",
               "default": 64
+            },
+            "players": {
+              "type": "integer",
+              "description": "Controls how far in blocks players are tracked (sent to) the player. This is scaled by the entity-broadcast-range-percentage.",
+              "default": 48
             }
           }
         },
-        "save-structure-info": {
-          "type": "boolean",
-          "description": "Toggles whether or not Spigot will save the structure info with the newly introduced saving method in 1.6.3. If disabled, this can cause issues with Eyes of Ender not pointing to strongholds, wither skeletons not spawning in Nether Fortresses, witches not spawning in huts in 1.7.",
-          "default": true
-        },
-        "random-light-updates": {
-          "type": "boolean",
-          "description": "Controls whether or not the server will randomly sample chunks in order to verify and fix lighting. As of 1.7, also controls whether or not the server will relight a chunk on its first tick.",
-          "default": false
-        },
-        "nerf-spawner-mobs": {
-          "type": "boolean",
-          "description": "When enabled, mobs which originate from a mob spawner will not have any AI. They will generally only be affected by water movement, with the exception of blazes which will still emit fireballs and float up and down.",
-          "default": false
-        },
-        "zombie-aggressive-towards-villager": {
-          "type": "boolean",
-          "description": "When disabled, zombies will no longer attempt to kill villagers, changing gameplay. But in return zombies use less time in order to process their AI, creating less lag as a result.",
-          "default": true
-        },
-        "enable-zombie-pigmen-portal-spawns": {
-          "type": "boolean",
-          "description": "When disabled, nether portals will no longer randomly spawn zombie pigmen in them. This can be used to combat large nether portal gold farms and does not affect the movement of entities, including zombie pigmen, through nether portals between dimensions.",
-          "default": true
-        },
-        "max-entity-collisions": {
-          "type": "integer",
-          "description": "Limit a single entity to colliding x number of configurable times per tick. This setting lowers the performance impact of entities trapped in a 1x1 pen.",
-          "default": 8
-        },
-        "dragon-death-sound-radius": {
-          "type": "number",
-          "description": "Limit the sound of the dragon's death.",
-          "default": 0
-        },
-        "wither-spawn-sound-radius": {
-          "type": "number",
-          "description": "Limit the sound of spawning withers.",
-          "default": 0
-        },
-        "max-bulk-chunks": {
-          "type": "integer",
-          "description": "Set how many chunks are sent per packet.\nVersions: Before Spigot 1.9",
-          "default": 10
-        },
-        "max-tick-time": {
+        "growth": {
           "type": "object",
-          "description": "The time - in ms - that (tile) entity operations can consume to calculate before the server skips on to the next task. Values between 10 - 20 for tiles and 20 - 25 for entities have been reported to provide a good performance increase.\nLowering these values can give a major boost to performance, but at the cost of affecting gameplay behavior. Lowering these for entities could lead to them to appear to lag/stutter but should have no other impact on normal behavior.",
+          "description": "Controls the speed of growth for each crop/resource as listed above. When at the default value (100), they will grow at 'vanilla' speed, but may appear slower due to other settings (chunks-per-tick).\nDoes not improve performance to change these values. You should only change these away from 100 if you want to change the gameplay behavior of crop growth, and never change this for performance.",
           "additionalProperties": false,
           "properties": {
-            "tile": {
-              "type": "integer",
-              "default": 50
+            "bamboo-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
             },
-            "entity": {
-              "type": "integer",
-              "default": 50
+            "beetroot-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "cactus-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "cane-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "carrot-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "cavevines-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "cocoa-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "glowberry-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "kelp-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "melon-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "mushroom-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "netherwart-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "pitcherplant-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "potato-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "pumpkin-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "sapling-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "sweetberry-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "torchflower-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "twistingvines-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "vine-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "weepingvines-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
+            },
+            "wheat-modifier": {
+              "$ref": "#/definitions/spigot-world-growth-modifier"
             }
           }
         },
-        "clear-tick-list": {
-          "type": "boolean",
-          "description": "Can potentially prevent the possibility of the tick list increasing over time but introduces several issues, namely, growth slow-downs and modifications to the values many of you have fine-tuned. This option is here only for those who absolutely need it and are completely understanding of the consequences. It is NOT recommended for the majority of server owners and should be left at the default.",
-          "default": false
-        },
-        "hopper-alt-ticking": {
-          "type": "boolean",
-          "description": "Dynamically ticks hoppers so as to mirror vanilla behavior and provide a potential ticks per second boost. Best set to true for lots of idle hoppers. Enabling this option disables hopper-check.\nVersions: Before Spigot 1.8.3",
-          "default": false
+        "hanging-tick-frequency": {
+          "type": "integer",
+          "description": "Controls the tick update interval for hanging entities (Paintings, Item-frames, LeashKnot, etc)",
+          "default": 100
         },
         "hopper-amount": {
           "type": "integer",
@@ -740,82 +678,105 @@
         },
         "hopper-can-load-chunks": {
           "type": "boolean",
+          "description": "Whether to prevent hoppers from loading chunks.",
           "default": false
         },
-        "seed-village": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of villages in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 10387312
+        "hunger": {
+          "type": "object",
+          "description": "Controls the amount of hunger points to subtract upon performing the corresponding action.",
+          "additionalProperties": false,
+          "properties": {
+            "combat-exhaustion": {
+              "type": "number",
+              "description": "How much exhaustion to give from attacking.",
+              "default": 0.1
+            },
+            "jump-sprint-exhaustion": {
+              "type": "number",
+              "description": "How much exhaustion to give from sprint jumping.",
+              "default": 0.2
+            },
+            "jump-walk-exhaustion": {
+              "type": "number",
+              "description": "How much exhaustion to give from jump walking.",
+              "default": 0.05
+            },
+            "other-multiplier": {
+              "type": "number",
+              "description": "The exhaustion multiplier for normal walking and crouching.",
+              "default": 0.0
+            },
+            "regen-exhaustion": {
+              "type": "number",
+              "description": "How much exhaustion to give from regenerating health.",
+              "default": 6.0
+            },
+            "sprint-multiplier": {
+              "type": "number",
+              "description": "The exhaustion multiplier for sprinting on the ground.",
+              "default": 0.1
+            },
+            "swim-multiplier": {
+              "type": "number",
+              "description": "The exhaustion multiplier for when \"swimming\". This occurs when the player is:\n\nactually swimming\nwalking underwater (eyes below surface)\nwalking on water (eyes above surface)",
+              "default": 0.01
+            }
+          }
         },
-        "seed-desert": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of deserts in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 14357617
+        "item-despawn-rate": {
+          "type": "integer",
+          "description": "Controls the number of ticks required before an item entity on the ground will despawn. Lowering this will make items de-spawn faster (potentially saving resources as there are fewer entities to tick) while increasing this will take them longer to de-spawn and use up more resources (as the item entities will have to be ticked for longer until they de-spawn).",
+          "default": 6000
         },
-        "seed-igloo": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of igloos in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 14357618
+        "max-tick-time": {
+          "type": "object",
+          "description": "The time - in ms - that (tile) entity operations can consume to calculate before the server skips on to the next task. Values between 10 - 20 for tiles and 20 - 25 for entities have been reported to provide a good performance increase.\nLowering these values can give a major boost to performance, but at the cost of affecting gameplay behavior. Lowering these for entities could lead to them to appear to lag/stutter but should have no other impact on normal behavior.",
+          "additionalProperties": false,
+          "properties": {
+            "entity": {
+              "type": "integer",
+              "description": "This option does not operate, and is non-functional upstream.",
+              "default": 50
+            },
+            "tile": {
+              "type": "integer",
+              "description": "This option does not operate, as it is disabled by a Paper patch.",
+              "default": 50
+            }
+          }
         },
-        "seed-jungle": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of jungles in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 14357619
+        "max-tnt-per-tick": {
+          "type": "integer",
+          "description": "How many TNT to process per server tick. Set to 0 or less to disable.",
+          "default": 100
         },
-        "seed-swamp": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of swamps in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 14357620
+        "merge-radius": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "exp": {
+              "type": "number",
+              "description": "The range, in blocks, that exp orbs will combine at on initial spawn. This behavior is not present in Vanilla and doesn't impact the usual merge range once spawned. Set to 0 or less to disable.",
+              "default": 3.0,
+              "default.paper": -1.0
+            },
+            "item": {
+              "type": "number",
+              "description": "The range, in blocks, that items will combine within.",
+              "default": 2.5,
+              "default.papier": 0.5
+            }
+          }
         },
-        "seed-monument": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of monuments in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 10387313
+        "mob-spawn-range": {
+          "type": "integer",
+          "description": "Radius in chunks around the player in which mobs will spawn. Increasing it will make mobs seem more rare and dispersed, although lowering it may prevent certain spawns as there is not enough spots in which they are allowed to spawn in.\nSee the Minecraft spawn mechanics for more information: https://minecraft.fandom.com/wiki/Spawn?file=Mob_spawning_ranges.png",
+          "default": 6
         },
-        "seed-shipwreck": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of shipwrecks in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 165745295
-        },
-        "seed-ocean": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of oceans in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 14357621
-        },
-        "seed-outpost": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of outposts in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 165745296
-        },
-        "seed-endcity": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of endcitys in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 10387313
-        },
-        "seed-slime": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of slimes in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 987234911
-        },
-        "seed-nether": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of nethers in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 30084232
-        },
-        "seed-mansion": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of mansions in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 10387319
-        },
-        "seed-fossil": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of fossils in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 14357921
-        },
-        "seed-portal": {
-          "$ref": "#/definitions/spigot-world-seed",
-          "description": "Controls the seed used for the placement of portals in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
-          "default": 34222645
+        "nerf-spawner-mobs": {
+          "type": "boolean",
+          "description": "When enabled, mobs which originate from a mob spawner will not have any AI. They will generally only be affected by water movement, with the exception of blazes which will still emit fireballs and float up and down.",
+          "default": false
         },
         "seed-ancientcity": {
           "$ref": "#/definitions/spigot-world-seed",
@@ -827,88 +788,131 @@
           "description": "Controls the seed used for the placement of buriedtreasures in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
           "default": 10387320
         },
+        "seed-endcity": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of endcitys in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 10387313
+        },
+        "seed-desert": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of deserts in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 14357617
+        },
+        "seed-fossil": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of fossils in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 14357921
+        },
+        "seed-igloo": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of igloos in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 14357618
+        },
+        "seed-jungle": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of jungles in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 14357619
+        },
+        "seed-mansion": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of mansions in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 10387319
+        },
         "seed-mineshaft": {
           "$ref": "#/definitions/spigot-world-seed",
           "default": "default"
+        },
+        "seed-monument": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of monuments in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 10387313
+        },
+        "seed-nether": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of nethers in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 30084232
+        },
+        "seed-ocean": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of oceans in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 14357621
+        },
+        "seed-outpost": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of outposts in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 165745296
+        },
+        "seed-portal": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of portals in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 34222645
+        },
+        "seed-shipwreck": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of shipwrecks in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 165745295
+        },
+        "seed-slime": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of slimes in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 987234911
         },
         "seed-stronghold": {
           "$ref": "#/definitions/spigot-world-seed",
           "default": "default"
         },
-        "max-tnt-per-tick": {
-          "type": "integer",
-          "default": 100
+        "seed-swamp": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of swamps in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 14357620
         },
-        "arrow-despawn-rate": {
-          "type": "integer",
-          "default": 1200
+        "seed-trialchambers": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "The per-structure seed for trial chambers.",
+          "default": 94251327
         },
-        "trident-despawn-rate": {
-          "type": "integer",
-          "default": 1200
+        "seed-trailruins": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "The per-structure seed for trail ruins.",
+          "default": 83469867
         },
-        "end-portal-sound-radius": {
-          "type": "number",
-          "default": 0
+        "seed-village": {
+          "$ref": "#/definitions/spigot-world-seed",
+          "description": "Controls the seed used for the placement of villages in your world, allowing for further customisation of their spawning. Default value represents vanilla. When left at vanilla values, it is possible someone can brute force discover your worlds seed. It is recommended to change these values to any other random number BEFORE generating your world if you wish to keep the seed secret at all cost.",
+          "default": 10387312
+        },
+        "simulation-distance": {
+          "description": "Controls the number of chunks where the entities, blocks and fluids are updated around every player. This value cannot be lower than 5.",
+          "oneOf": [
+            {
+              "const": "default"
+            },
+            {
+              "type": "integer",
+              "minimum": 5
+            }
+          ],
+          "default": "default"
         },
         "thunder-chance": {
           "type": "integer",
+          "description": "The chance of lightning occurring during a thunderstorm, as a probability of 1/<thunder-chance> per chunk, every tick.",
           "default": 100000
-        },
-        "hunger": {
-          "type": "object",
-          "description": "Controls the amount of hunger points to subtract upon performing the corresponding action.",
-          "additionalProperties": false,
-          "properties": {
-            "jump-walk-exhaustion": {
-              "type": "number",
-              "default": 0.05
-            },
-            "jump-sprint-exhaustion": {
-              "type": "number",
-              "default": 0.2
-            },
-            "combat-exhaustion": {
-              "type": "number",
-              "default": 0.1
-            },
-            "regen-exhaustion": {
-              "type": "number",
-              "default": 6.0
-            },
-            "swim-multiplier": {
-              "type": "number",
-              "default": 0.01
-            },
-            "sprint-multiplier": {
-              "type": "number",
-              "default": 0.1
-            },
-            "other-multiplier": {
-              "type": "number",
-              "default": 0.0
-            }
-          }
-        },
-        "hanging-tick-frequency": {
-          "type": "integer",
-          "description": "Controls the tick update interval for hanging entities (Paintings, Item-frames, LeashKnot, etc)",
-          "default": 100
         },
         "ticks-per": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
+            "hopper-check": {
+              "deprecated": true,
+              "type": "integer",
+              "description": "The time - in server ticks - hoppers attempt to push/pull items since the last attempt. For example, a value of 8 means an empty hopper looks for item entities above, inventories above, etc. every 8 ticks. A value of 0 or 1 mirrors vanilla behavior. This option is disabled when hopper-alt-ticking is set to true. Changing this value will break most hopper contraptions due to desyncs.",
+              "default": 1
+            },
             "hopper-transfer": {
               "type": "integer",
               "description": "The time - in server ticks - between when a hopper pushes/pulls/receives items and when the hopper pushes/pulls more items. A value of 8 mirrors vanilla behavior.",
               "default": 8
-            },
-            "hopper-check": {
-              "deprecated": true,
-              "type": "integer",
-              "description": "(DEPRECATED) Removed in this[1] 1.8.3 commit from March, 8th 2015, readded in this[2] 1.11.2 commit from February, 10th 2017) The time - in server ticks - hoppers attempt to push/pull items since the last attempt. For example, a value of 8 means an empty hopper looks for item entities above, inventories above, etc. every 8 ticks. A value of 0 or 1 mirrors vanilla behavior. This option is disabled when hopper-alt-ticking is set to true. Changing this value will break most hopper contraptions due to desyncs.\n[1]:https://hub.spigotmc.org/stash/projects/SPIGOT/repos/spigot/commits/26dfd01a77a7c77c7f253652e75d8404#CraftBukkit-Patches/0025-Hopper-Customisations.patch\n[2]:https://hub.spigotmc.org/stash/projects/SPIGOT/repos/spigot/commits/65a03470106fdceec943006e8b9b1cb3f5b89235#CraftBukkit-Patches/0024-Hopper-Customisations.patch",
-              "default": 1
             }
           },
           "examples": [
@@ -917,6 +921,79 @@
               "hopper-check": 1
             }
           ]
+        },
+        "trident-despawn-rate": {
+          "type": "integer",
+          "description": "The number of ticks before a trident despawns.",
+          "default": 1200
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "Whether or not to show the detailed report and configuration for each world in console/log on server startup. Can be disabled/enabled globally or per-world.",
+          "default": true,
+          "default.paper": false
+        },
+        "view-distance": {
+          "description": "Controls the number of chunks that will be loaded around every player. This value cannot be higher than 15 or lower than 1. Lowering this can lower the load on servers if you have a large number of players online.\nNote: As of 1.14.4, the 'global' option is set to \"default\" by default for new installs & upgrades from older versions. When set to default, the server reads the view-distance set in server.properties. This setting can now be used for per-world view distances.",
+          "oneOf": [
+            {
+              "const": "default"
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 15,
+              "default": 10
+            }
+          ],
+          "default": "default"
+        },
+        "wither-spawn-sound-radius": {
+          "type": "number",
+          "description": "Limit the sound of spawning withers.",
+          "default": 0
+        },
+        "zombie-aggressive-towards-villager": {
+          "type": "boolean",
+          "description": "When disabled, zombies will no longer attempt to kill villagers, changing gameplay. But in return zombies use less time in order to process their AI, creating less lag as a result.",
+          "default": true
+        },
+
+        "chunks-per-tick": {
+          "deprecated": true,
+          "type": "integer",
+          "description": "(DEPRECATED) Controls the number of chunks that will be updated for growth per tick. Lowering this will potentially make growth slower while saving resources, and vice versa.\nVersions: Before Spigot 1.9",
+          "default": 650
+        },
+        "save-structure-info": {
+          "type": "boolean",
+          "description": "Toggles whether or not Spigot will save the structure info with the newly introduced saving method in 1.6.3. If disabled, this can cause issues with Eyes of Ender not pointing to strongholds, wither skeletons not spawning in Nether Fortresses, witches not spawning in huts in 1.7.",
+          "default": true
+        },
+        "random-light-updates": {
+          "type": "boolean",
+          "description": "Controls whether or not the server will randomly sample chunks in order to verify and fix lighting. As of 1.7, also controls whether or not the server will relight a chunk on its first tick.",
+          "default": false
+        },
+        "max-entity-collisions": {
+          "type": "integer",
+          "description": "Limit a single entity to colliding x number of configurable times per tick. This setting lowers the performance impact of entities trapped in a 1x1 pen.",
+          "default": 8
+        },
+        "max-bulk-chunks": {
+          "type": "integer",
+          "description": "Set how many chunks are sent per packet.\nVersions: Before Spigot 1.9",
+          "default": 10
+        },
+        "clear-tick-list": {
+          "type": "boolean",
+          "description": "Can potentially prevent the possibility of the tick list increasing over time but introduces several issues, namely, growth slow-downs and modifications to the values many of you have fine-tuned. This option is here only for those who absolutely need it and are completely understanding of the consequences. It is NOT recommended for the majority of server owners and should be left at the default.",
+          "default": false
+        },
+        "hopper-alt-ticking": {
+          "type": "boolean",
+          "description": "Dynamically ticks hoppers so as to mirror vanilla behavior and provide a potential ticks per second boost. Best set to true for lots of idle hoppers. Enabling this option disables hopper-check.\nVersions: Before Spigot 1.8.3",
+          "default": false
         }
       }
     }

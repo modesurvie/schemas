@@ -78,22 +78,32 @@
           "description": "Is the End enabled. (boolean)",
           "default": true
         },
+        "compatibility": {
+          "type": "object",
+          "properties": {
+            "allow-old-keys-in-registry": {
+              "type": "boolean",
+              "default": false
+            },
+            "enum-compatibility-mode": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "is-spigot-only": true
+        },
         "connection-throttle": {
           "type": "integer",
           "description": "The delay before a client is allowed to connect again after a recent connection attempt. A value of 0 disables the connection throttle but leaves your server susceptible to attacks (only recommended for test servers). (long, milliseconds)",
-          "default": 0
+          "default": 4000
         },
         "deprecated-verbose": {
           "description": "Does the server show warnings when a plugin registers a deprecated event. A 'true'/'false' value works as a toggle for these warnings, while 'default' will always show a warning unless the event in question has been tagged by a developer as not requiring a warning when it is registered. (string)",
-          "default": "default",
-          "anyOf": [
-            {
-              "const": "default"
-            },
-            {
-              "type": "boolean"
-            }
-          ]
+          "oneOf": [
+            { "const": "default" },
+            { "type": "boolean" }
+          ],
+          "default": "default"
         },
         "minimum-api": {
           "type": "string",
@@ -137,6 +147,7 @@
         },
         "use-map-color-cache": {
           "type": "boolean",
+          "description": "Whether to build and save mappings from RGB colors to the closest map palette color.",
           "default": true
         },
         "warn-on-overload": {
@@ -217,7 +228,7 @@
         "monster-spawns": {
           "type": "integer",
           "description": "This bukkit.yml setting allows servers to set the tick delay for monster spawns.\nNote: If set to 0, monsters spawning will be disabled. We recommend using spawn-monsters to control this instead.\nA value of 1 will mean the server will attempt to spawn monsters every tick.\nA value of 400 will mean the server will attempt to spawn monsters every 400th tick.\nA value below 0 will be reset back to Minecraft's default.\nMinecraft default: 1",
-          "default": 400,
+          "default": 1,
           "examples": [1, 400, 0]
         },
         "water-ambient-spawns": {

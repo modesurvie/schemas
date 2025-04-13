@@ -35,7 +35,15 @@
           "type": "string"
         },
         "default": {
-          "type": "boolean"
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "string",
+              "enum": ["op", "not-op"]
+            }
+          ]
         },
         "children": {
           "type": "object",
