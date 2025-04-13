@@ -15,7 +15,7 @@
     },
     "bind": {
       "$ref": "#/definitions/Address",
-      "description": "This tells the proxy to accept connections on a specific IP. By default, Velocity will listen for connections on all IP addresses on the computer on port 25577.",
+      "description": "This tells the proxy to accept connections on a specific IP. By default, Velocity will listen for connections on all IP addresses on the computer on port 25565.",
       "default": "0.0.0.0:25577"
     },
     "motd": {
@@ -58,15 +58,9 @@
       ],
       "default": "NONE"
     },
-    "forwarding-secret": {
-      "deprecated": true,
-      "type": "string",
-      "description": "(DEPRECATED) This setting is used as a secret to ensure that player info forwarded by Velocity comes from your proxy and not from someone pretending to run Velocity. See the \"Player info forwarding\" section for more info.\nhttps://docs.papermc.io/velocity/player-information-forwarding",
-      "default": "randomly_generated_string"
-    },
     "forwarding-secret-file": {
       "type": "string",
-      "description": "If you are using modern or BungeeGuard IP forwarding, configure a file that contains a unique secret here. The file is expected to be UTF-8 encoded and not empty.",
+      "description": "The name of the file in which the forwarding secret is stored. This secret is used to ensure that player info forwarded by Velocity comes from your proxy and not from someone pretending to run Velocity. See Configuring player information forwarding for more information: https://docs.papermc.io/velocity/player-information-forwarding.",
       "default": "forwarding.secret"
     },
     "announce-forge": {
@@ -76,7 +70,7 @@
     },
     "kick-existing-players": {
       "type": "boolean",
-      "description": "Allows restoring the vanilla behavior of kicking users on the proxy if they try to reconnect (e.g. lost internet connection briefly).",
+      "description": "Allows restoring the Vanilla behavior of kicking users on the proxy if they try to reconnect (e.g. lost internet connection briefly).",
       "default": false
     },
     "ping-passthrough": {
@@ -94,9 +88,14 @@
       ],
       "default": "DISABLED"
     },
+    "sample-players-in-ping": {
+      "type": "boolean",
+      "description": "If enabled (default is false), then a sample of the online players on the proxy will be visible when hovering over the player count in the server list.\nThis doesn't have any effect when ping passthrough is set to either \"description\" or \"all\".",
+      "default": false
+    },
     "enable-player-address-logging": {
       "type": "boolean",
-      "description": "If not enabled (default is true) player IP addresses will be replaced by <ip address withheld> in logs",
+      "description": "If disabled (default is true), player IP addresses will be replaced by <ip address withheld> in logs.",
       "default": true
     },
     "servers": {
@@ -192,15 +191,15 @@
           "description": "This setting allows you to log ping requests sent by clients to the proxy.",
           "default": false
         },
+        "failover-on-unexpected-server-disconnect": {
+          "type": "boolean",
+          "description": "This setting allows you to determine if the proxy should failover or disconnect the user in the event of an unclean disconnect.",
+          "default": true
+        },
         "announce-proxy-commands": {
           "type": "boolean",
           "description": "This setting allows you to enable or disable explicitly sending proxy commands to the client (for Minecraft 1.13+ tab completion).",
           "default": true
-        },
-        "failover-on-unexpected-server-disconnect": {
-          "type": "boolean",
-          "description": "This setting allows you to determine if the proxy should failover or disconnect the user in the event of an unclean disconnect.",
-          "default": false
         },
         "log-command-executions": {
           "type": "boolean",
@@ -211,6 +210,41 @@
           "type": "boolean",
           "description": "Enables logging of player connections when connecting to the proxy, switching servers and disconnecting from the proxy.",
           "default": true
+        },
+        "accepts-transfers": {
+          "type": "boolean",
+          "description": "Determines whether or not the proxy accepts incoming transfers from other servers. If disabled, the proxy will disconnect transferred clients.",
+          "default": false
+        },
+        "enable-reuse-port": {
+          "type": "boolean",
+          "description": "Enables support for SO_REUSEPORT. This may help the proxy scale better on multicore systems with a lot of incoming connections, and provide better CPU utilization than the existing strategy of having a single thread accepting connections and distributing them to worker threads. Disabled by default. Requires Linux or macOS.",
+          "default": false
+        },
+        "command-rate-limit": {
+          "type": "integer",
+          "description": "How fast (in milliseconds) are clients allowed to send commands after the last command. By default this is 50ms (20 commands per second).",
+          "default": 50
+        },
+        "forward-commands-if-rate-limited": {
+          "type": "boolean",
+          "description": "Should we forward commands to the backend upon being rate limited? This will forward the command to the server instead of processing it on the proxy. Since most server implementations have a rate limit, this will prevent the player from being able to send excessive commands to the server.",
+          "default": true
+        },
+        "kick-after-rate-limited-commands": {
+          "type": "integer",
+          "description": "How many commands are allowed to be sent after the rate limit is hit before the player is kicked? Setting this to 0 or lower will disable this feature.",
+          "default": 0
+        },
+        "tab-complete-rate-limit": {
+          "type": "integer",
+          "description": "How fast (in milliseconds) are clients allowed to send tab completions after the last tab completion",
+          "default": 10
+        },
+        "kick-after-rate-limited-tab-completes": {
+          "type": "integer",
+          "description": "How many tab completions are allowed to be sent after the rate limit is hit before the player is kicked? Setting this to 0 or lower will disable this feature.",
+          "default": 0
         }
       }
     },

@@ -11,7 +11,91 @@
     "_version": {
       "type": "number"
     },
+    "anticheat": {
+      "$comment": "Added since Paper 1.20",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "obfuscation": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "all-models": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "also-obfuscate": {
+                      "type": "array",
+                      "description": "Controls additional data components which should be hidden for all items from other players. It's generally not recommended to configure this unless you know what you are doing, as you may change how items look to other players.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": []
+                    },
+                    "dont-obfuscate": {
+                      "type": "array",
+                      "description": "Controls which data components should not be hidden for all items from other players. This is because they may slightly change the item's appearance, so hiding it isn't warranted. In this example, lodestone trackers may reveal critical locations, but hiding the location causes the compass to shake around for other players. It's up to your digression whether you think this tradeoff is important.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": [],
+                      "examples": [["minecraft:lodestone_tracker"]]
+                    },
+                    "sanitize-count": {
+                      "type": "boolean",
+                      "description": "Controls whether the item's count should be hidden from other players.",
+                      "default": true
+                    }
+                  }
+                },
+                "enable-item-obfuscation": {
+                  "type": "boolean",
+                  "description": "Controls whether unnecessary item information (such as enchantments, lore, etc.) that can give cheat clients an advantage should be sent to other players' clients. This may break resource packs that rely on information such as enchantments, lore or item names when observing other players. The hidden data components can be extended or reduced via also-obfuscate and dont-obfuscate respectively.",
+                  "default": false
+                },
+                "model-overrides": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "also-obfuscate": {
+                        "type": "array",
+                        "description": "Controls the components that should also be obfuscated for items with the item model of minecraft:elytra. This may be useful if you want to hide certain components not important to other players.",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": []
+                      },
+                      "dont-obfuscate": {
+                        "type": "array",
+                        "description": "Controls the components that should not be obfuscated for items with the item model of minecraft:elytra. This defaults to minecraft:damage as elytras with 1 durability have a special texture.",
+                        "items": {
+                          "type": "string"
+                        },
+                        "default": [],
+                        "examples": [["minecraft:damage"]]
+                      },
+                      "sanitize-count": {
+                        "type": "boolean",
+                        "description": "Controls whether the item count of items with the model minecraft:elytra should be hidden from other players.",
+                        "default": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "async-chunks": {
+      "$comment": "Removed since Paper 1.19",
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -22,7 +106,34 @@
         }
       }
     },
+    "block-updates": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "disable-chorus-plant-updates": {
+          "type": "boolean",
+          "description": "Whether to disable any form of block updates for chorus plants on the server. Disabling block updates leads to chorus plants no longer updating their block state, allowing for technically invalid chorus plants to remain in the world, which might be useful for mapmakers.",
+          "default": false
+        },
+        "disable-mushroom-block-updates": {
+          "type": "boolean",
+          "description": "Whether to disable any form of block updates for mushroom blocks on the server. Disabling block updates leads to mushroom blocks no longer updating their block state, allowing for technically invalid mushroom blocks to remain in the world, which might be useful for mapmakers.",
+          "default": false
+        },
+        "disable-noteblock-updates": {
+          "type": "boolean",
+          "description": "Whether to disable any form of block updates for note blocks on the server. Disabling block updates leads to note blocks no longer updating their block state, allowing for technically invalid note blocks to remain in the world, which might be useful for mapmakers.",
+          "default": false
+        },
+        "disable-tripwire-updates": {
+          "type": "boolean",
+          "description": "Whether to disable any form of block updates for tripwires on the server. Disabling block updates leads to tripwires no longer updating their block state, allowing for technically invalid tripwires to remain in the world, which might be useful for mapmakers.",
+          "default": false
+        }
+      }
+    },
     "chunk-loading": {
+      "$comment": "Removed since Paper 1.20",
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -78,20 +189,67 @@
         }
       }
     },
+    "chunk-loading-advanced": {
+      "$comment": "Added since Paper 1.20",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "auto-config-send-distance": {
+          "type": "boolean",
+          "description": "Set to true if the server will match the chunk send radius that clients have configured in their view distance settings if the client is less-than the server's send distance.",
+          "default": true
+        },
+        "player-max-concurrent-chunk-generates": {
+          "type": "number",
+          "description": "Specifies the maximum amount of concurrent chunk generations that an individual player can have. Set to 0 to let the server configure it automatically per player, or set it to -1 to disable the limit.",
+          "default": 0
+        },
+        "player-max-concurrent-chunk-loads": {
+          "type": "number",
+          "description": "Specifies the maximum amount of concurrent chunk loads that an individual player can have. Set to 0 to let the server configure it automatically per player, or set it to -1 to disable the limit.",
+          "default": 0
+        }
+      }
+    },
+    "chunk-loading-basic": {
+      "$comment": "Added since Paper 1.20",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "player-max-chunk-generate-rate": {
+          "type": "number",
+          "description": "The maximum rate at which chunks will generate for any individual player. Set to -1 to disable this limit.",
+          "default": -1.0
+        },
+        "player-max-chunk-load-rate": {
+          "type": "number",
+          "description": "The maximum rate at which chunks will load for any individual player. Note that this setting also affects chunk generations, since a chunk load is always first issued to test if a chunk is already generated. Set to -1 to disable this limit.",
+          "default": 100
+        },
+        "player-max-chunk-send-rate": {
+          "type": "number",
+          "description": "The maximum rate in chunks per second that the server will send to any individual player. Set to -1 to disable this limit.",
+          "default": 75
+        }
+      }
+    },
     "chunk-system": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "gen-parallelism": {
           "type": "string",
+          "description": "Sets whether the server should use parallel chunk generation. The default value will be used as true. Possible options are true, on and enable to make the server use the system and false, off or disabled to disable.",
           "default": "default"
         },
         "io-threads": {
           "type": "integer",
+          "description": "Sets the number of threads to be used for read and write operations with chunks. If any value below zero is set, only one thread will be used.",
           "default": -1
         },
         "worker-threads": {
           "type": "integer",
+          "description": "Sets the number of threads to be used for parallel chunk generation. If a value below zero is set, the server will automatically determine the optimal number of threads based on the available physical CPU cores (not logical cores). For systems with 3 or fewer physical cores, only 1 thread will be used. In all other cases, the number of threads is capped at half of the physical cores.",
           "default": -1
         }
       }
@@ -117,9 +275,16 @@
       "additionalProperties": false,
       "properties": {
         "fix-target-selector-tag-completion": {
+          "$comment": "Removed since Paper 1.20",
           "type": "boolean",
           "description": "Workaround for a client bug preventing entity type tag suggestions from functioning in target selectors. Resolves MC-235045 (https://bugs.mojang.com/browse/MC-235045).",
           "default": true
+        },
+        "ride-command-allow-player-as-vehicle": {
+          "$comment": "Added since Paper 1.20",
+          "type": "boolean",
+          "description": "Allow mounting entities to a player in the Vanilla /ride command.",
+          "default": false
         },
         "suggest-player-names-when-null-tab-completions": {
           "type": "boolean",
@@ -222,11 +387,13 @@
           "default": true
         },
         "log-player-ip-addresses": {
+          "$comment": "Removed since Paper 1.20",
           "type": "boolean",
           "description": "Whether player IP addresses should be logged by the server. This does not impact the ability of plugins to log the IP addresses of players.",
           "default": true
         },
         "use-rgb-for-named-text-colors": {
+          "$comment": "Removed since Paper 1.20",
           "type": "boolean",
           "description": "Whether named ANSI colors should be logged with RGB codes.",
           "default": true
@@ -284,13 +451,33 @@
           "properties": {
             "chat-executor-core-size": {
               "type": "integer",
+              "description": "The minimum number of threads to keep in the chat thread pool",
               "default": -1
             },
             "chat-executor-max-size": {
               "type": "integer",
+              "description": "The maximum number of threads to allow in the chat thread pool. The default value is -1, which means no maximum",
               "default": -1
             }
           }
+        },
+        "client-interaction-leniency-distance": {
+          "$comment": "Added since Paper 1.20",
+          "oneOf": [
+            { "const": "default" },
+            { "type": "number" }
+          ],
+          "description": "Defines the leniency distance added on the server to the interaction range of a player when validating interact packets.",
+          "default": "default"
+        },
+        "compression-level": {
+          "$comment": "Added since Paper 1.20",
+          "oneOf": [
+            { "const": "default" },
+            { "type": "number" }
+          ],
+          "description": "A higher compression level means less data transmitted at the cost of more CPU time. The default value is -1, which means that the server will use the default value of the defined compressor. Note that Paper is currently using the Velocity compressor, which uses a default compression level of 6 as a middle ground between performance and data transmission.",
+          "default": "default"
         },
         "fix-entity-position-desync": {
           "type": "boolean",
@@ -310,7 +497,7 @@
         "max-joins-per-tick": {
           "type": "number",
           "description": "Sets the maximum amount of players that may join the server in a single tick. If more players join, they will be postponed until later ticks to join but not kicked. This is not related to connection throttling found in bukkit.yml.",
-          "default": 3
+          "default": 5
         },
         "region-file-cache-size": {
           "type": "number",
@@ -319,6 +506,7 @@
         },
         "strict-advancement-dimension-check": {
           "type": "boolean",
+          "description": "Disables the attempts to translate worlds that use the same generation as the Overworld, The Nether, or The End to general dimensions rather than the specific dimension key of the world.",
           "default": false
         },
         "use-alternative-luck-formula": {
@@ -454,7 +642,7 @@
             "online-mode": {
               "type": "boolean",
               "description": "Instructs the server how to handle player UUIDs and data when behind Velocity. Always set to match your proxy's online-mode setting.",
-              "default": false
+              "default": true
             },
             "secret": {
               "type": "string",
@@ -472,7 +660,7 @@
         "save-empty-scoreboard-teams": {
           "type": "boolean",
           "description": "Some scoreboard plugins leave hundreds of empty scoreboard teams around, dramatically slowing down login times. This sets whether the server should remove those empty teams automatically.",
-          "default": false
+          "default": true
         },
         "track-plugin-scoreboards": {
           "type": "boolean",
@@ -509,6 +697,23 @@
           "type": "number",
           "description": "The number that the internal tab spam counter can reach until the server kicks the player for spam.",
           "default": 500
+        }
+      }
+    },
+    "spark": {
+      "$comment": "Added since Paper 1.20",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether the bundled spark profiler should be enabled.",
+          "default": true
+        },
+        "enable-immediately": {
+          "type": "boolean",
+          "description": "Whether the bundled spark profiler should be enabled as soon as possible. This can be useful for profiling the server during startup. By default, spark is enabled once the server has finished starting up (when the Done (X.XXXs)! For help, type \"help\" message is sent in the console).",
+          "default": false
         }
       }
     },
@@ -566,12 +771,9 @@
     },
     "unsupported-settings": {
       "type": "object",
+      "description": "The following settings are provided by Paper but are not officially supported. Use them at your own risk and they may be removed at any time.",
       "additionalProperties": false,
       "properties": {
-        "allow-grindstone-overstacking": {
-          "type": "boolean",
-          "default": false
-        },
         "allow-headless-pistons": {
           "type": "boolean",
           "description": "Whether the server should allow the creation of headless pistons. These are often used to break permanent blocks.",
@@ -587,9 +789,49 @@
           "description": "Whether to allow duplication of TNT, carpets, and rails. This does not control sand duplication.",
           "default": false
         },
+        "allow-unsafe-end-portal-teleportation": {
+          "type": "boolean",
+          "description": "This setting allows for exploits related to end portal teleportation to be possible, for example sand duplication. This setting is not recommended to be enabled, but is provided for those who wish to use it.",
+          "default": false
+        },
+        "compression-format": {
+          "$comment": "Added since Paper 1.20",
+          "type": "string",
+          "description": "Allows the server to customize the format of saved region files. This supports ZLIB, GZIP, LZ4 and NONE, where None namely allows for compression to be disabled",
+          "enum": [
+            "GZIP",
+            "LZ4",
+            "NONE",
+            "ZLIB"
+          ],
+          "default": "ZLIB"
+        },
         "perform-username-validation": {
           "type": "boolean",
           "description": "ther the server should validate usernames. While this may allow users with special characters in their name to join, it can also cause issues with commands and plugins.",
+          "default": true
+        },
+        "simplify-remote-item-matching": {
+          "$comment": "Added since Paper 1.20",
+          "type": "boolean",
+          "default": false
+        },
+        "skip-tripwire-hook-placement-validation": {
+          "$comment": "Added since Paper 1.20",
+          "type": "boolean",
+          "description": "This setting allows for exploits related to tripwire hook duping to be enabled.",
+          "default": false
+        },
+        "skip-vanilla-damage-tick-when-shield-blocked": {
+          "$comment": "Added since Paper 1.20",
+          "type": "boolean",
+          "description": "Whether the server should skip damage ticks when entities are blocking damage via a shield. While Vanilla does process a damage tick, this behavior was a long standing bug in Paper. Enabling this option means that the damage tick will be skipped, which may result in rapid damage on shields due to the missing invulnerability.",
+          "default": false
+        },
+        "update-equipment-on-player-actions": {
+          "$comment": "Added since Paper 1.20",
+          "type": "boolean",
+          "description": "This setting controls if equipment should be updated when handling certain player actions. If set to false this will allow players to exploit attributes by e.g. switching equipment before using it.",
           "default": true
         }
       }

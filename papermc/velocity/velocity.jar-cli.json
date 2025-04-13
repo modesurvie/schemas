@@ -9,9 +9,21 @@
       "type": "string",
       "description": "Link to schema."
     },
+    "--add-server <name>:<address>": {
+      "type": "string",
+      "description": "Define a server mapping. You must ensure that server name is not also registered in the config or use -- ignore-config-servers."
+    },
     "-h, --help": {
       "type": "boolean",
       "description": "Print help"
+    },
+    "--haproxy, --haproxy-protocol <Boolean>": {
+      "type": "boolean",
+      "description": "Choose whether to enable haproxy protocol. The configuration haproxy protocol will be ignored."
+    },
+    "--ignore-config-servers": {
+      "type": "boolean",
+      "description": "Skip registering servers from the config file. Useful in dynamic setups or with the --add-server flag."
     },
     "-p, --port <Integer>": {
       "type": "integer",

@@ -137,6 +137,10 @@
       "type": "integer",
       "description": "Maximum amount of players"
     },
+    "--safeMode": {
+      "type": "boolean",
+      "description": "Loads level with vanilla datapack only"
+    },
     "--server-name <String: Name>": {
       "type": "string",
       "description": "(Paper) Name of the server (default: Unknown Server)",

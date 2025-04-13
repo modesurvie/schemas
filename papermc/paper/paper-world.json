@@ -32,7 +32,7 @@
             },
             "max-block-height": {
               "type": "number",
-              "description": "Sets the maximum height (y coordinate, starting from the bottom of the world) to which anti-xray will operate. Only integer multiples of 16 are accepted. All other values will be rounded down. The Minecraft Wiki page about Ore (https://minecraft.fandom.com/wiki/Ore) may be helpful in determining the best value for you.",
+              "description": "Sets the maximum height (y coordinate, starting from the bottom of the world) to which anti-xray will operate. Only integer multiples of 16 are accepted. All other values will be rounded down. The Minecraft Wiki page about Ore (https://minecraft.wiki/w/Ore) may be helpful in determining the best value for you.",
               "default": 64
             },
             "update-radius": {
@@ -59,10 +59,12 @@
               "default": [
                 "copper_ore",
                 "deepslate_copper_ore",
+                "raw_copper_block",
                 "gold_ore",
                 "deepslate_gold_ore",
                 "iron_ore",
                 "deepslate_iron_ore",
+                "raw_iron_block",
                 "coal_ore",
                 "deepslate_coal_ore",
                 "lapis_ore",
@@ -95,6 +97,7 @@
           }
         },
         "obfuscation": {
+          "$comment": "Removed since 1.20",
           "type": "object",
           "additionalProperties": false,
           "properties": {
@@ -129,15 +132,11 @@
       "properties": {
         "auto-save-interval": {
           "description": "Configures the world saving interval in ticks. Overrides ticks-per.autosave in bukkit.yml for this world. A value of -1 will use the global ticks-per.autosave in bukkit.yml.",
-          "default": -1,
           "oneOf": [
-            {
-              "const": "default"
-            },
-            {
-              "type": "integer"
-            }
-          ]
+            { "const": "default" },
+            { "type": "integer" }
+          ],
+          "default": "default"
         },
         "delay-chunk-unloads-by": {
           "type": "string",
@@ -164,6 +163,12 @@
           "description": "If 0 or greater, set the chunk inhabited time to a fixed number. Fixed in this instance means static or unchanging. This is not fixing a bug. The timer is increased when chunks are kept loaded because of player activity.",
           "default": -1
         },
+        "flush-regions-on-save": {
+          "$comment": "Added since 1.20",
+          "type": "boolean",
+          "description": "Sets whether the server will flush chunks to disk when they are saved. This may have a performance impact",
+          "default": false
+        },
         "max-auto-save-chunks-per-tick": {
           "type": "number",
           "description": "The maximum number of chunks the auto-save system will save in a single tick.",
@@ -188,7 +193,7 @@
         "allow-vehicle-collisions": {
           "type": "boolean",
           "description": "Whether vehicles should also be able to collide while only-players-collide is enabled.",
-          "default": false
+          "default": true
         },
         "fix-climbing-bypassing-cramming-rule": {
           "type": "boolean",
@@ -204,6 +209,23 @@
           "type": "boolean",
           "description": "Only calculate collisions if a player is one of the two entities colliding.",
           "default": false
+        }
+      }
+    },
+    "command-blocks": {
+      "$comment": "Added since 1.20",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "permissions-level": {
+          "type": "number",
+          "description": "Default Vanilla permission level for command blocks.",
+          "default": 2
+        },
+        "force-follow-perm-level": {
+          "type": "boolean",
+          "description": "Require that command blocks meet both the Bukkit permission requirements and the Vanilla permission level. Otherwise, only 1 of those is required.",
+          "default": true
         }
       }
     },
@@ -246,6 +268,12 @@
               "type": "number",
               "description": "Modifies the speed that baby zombies move at, where 0.5 is 50% faster than the mob base speed, and -0.4 would be 40% slower.",
               "default": 0.5
+            },
+            "cooldown-failed-beehive-releases": {
+              "$comment": "Added since 1.20",
+              "type": "boolean",
+              "description": "Adds a cooldown to bees being released after a failed release, which can occur if the hive is blocked or it being night.",
+              "default": true
             },
             "disable-chest-cat-detection": {
               "type": "boolean",
@@ -357,6 +385,12 @@
               "description": "Removes AI from pigmen spawned via nether portals",
               "default": false
             },
+            "only-merge-items-horizontally": {
+              "$comment": "Added since 1.20",
+              "type": "boolean",
+              "description": "Prevents merging items that are not on the same y level, preventing potential visual artifacts.",
+              "default": false
+            },
             "parrots-are-unaffected-by-player-movement": {
               "type": "boolean",
               "description": "Makes parrots \"sticky\" so they do not fall off a player's shoulder when they move. Use crouch to shake them off.",
@@ -448,9 +482,12 @@
               "default": false
             },
             "zombie-villager-infection-chance": {
-              "type": "number",
               "description": "Sets the chance for villager conversion to zombie villager. Set to -1.0 for default behavior based on game difficulty. Set to 0.0 to always have villagers die when killed by zombies. Set to 100.0 to always convert villagers to zombie villagers.",
-              "default": -1
+              "oneOf": [
+                { "const": "default" },
+                { "type": "number" }
+              ],
+              "default": "default"
             },
             "zombies-target-turtle-eggs": {
               "type": "boolean",
@@ -488,6 +525,29 @@
               "type": "boolean",
               "description": "If undead mobs should be immune to regeneration and poison.",
               "default": true
+            }
+          }
+        },
+        "sniffer": {
+          "$comment": "Added since 1.20",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "boosted-hatch-time": {
+              "description": "The boosted hatch time, in ticks, a sniffer egg requires to hatch. Boosted hatching occurs when planted on specific blocks.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "number" }
+              ],
+              "default": "default"
+            },
+            "hatch-time": {
+              "description": "The non-boosted hatch time, in ticks, a sniffer egg requires to hatch.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "number" }
+              ],
+              "default": "default"
             }
           }
         },
@@ -530,13 +590,19 @@
               "description": "The rate, in ticks, at which arrows shot from players in creative mode are despawned.",
               "default": -1,
               "oneOf": [
-                {
-                  "const": "default"
-                },
-                {
-                  "type": "integer"
-                }
+                { "const": "default" },
+                { "type": "integer" }
               ]
+            },
+            "despawn-range-shape": {
+              "$comment": "Added since 1.20",
+              "type": "string",
+              "description": "The shape of the despawn range. Can be one of the following values:\n\nELLIPSOID: The despawn range is an ellipsoid, with the horizontal and vertical despawn ranges being separate. This is the default Minecraft behavior.\nCYLINDER: The vertical despawn range is checked separately from the horizontal despawn range, but the horizontal despawn range is a circle.",
+              "enum": [
+                "ELLIPSOID",
+                "CYLINDER"
+              ],
+              "default": "ELLIPSOID"
             },
             "despawn-ranges": {
               "type": "object",
@@ -561,15 +627,22 @@
                   "$ref": "#/definitions/paper-world-despawn-range"
                 },
                 "water_ambient": {
-                  "$ref": "#/definitions/paper-world-despawn-range",
-                  "default": {
-                    "hard": 64,
-                    "soft": 32
-                  }
+                  "$ref": "#/definitions/paper-world-despawn-range"
                 },
                 "water_creature": {
                   "$ref": "#/definitions/paper-world-despawn-range"
                 }
+              }
+            },
+            "despawn-time": {
+              "$comment": "Added since 1.20",
+              "type": "object",
+              "additionalProperties": {
+                "description": "A server-introduced despawn time after which the entity is forcefully despawned. If disabled or not specified, the entity will simply despawn according to Vanilla rules.",
+                "oneOf": [
+                  { "const": "disabled" },
+                  { "type": "integer" }
+                ]
               }
             },
             "disable-mob-spawner-spawn-egg-transformation": {
@@ -585,6 +658,8 @@
                   "type": "string",
                   "description": "Specifies the method the server uses to resolve entities with duplicate UUIDs. This can be one of the following values:\nsaferegen: Regenerate a UUID for the entity, or delete it if they are close.\ndelete: Delete the entity.silent: Does nothing, not printing logs.warn: Does nothing, printing logs.",
                   "enum": [
+                    "SAFE_REGEN",
+                    "safe_regen",
                     "SAFEREGEN",
                     "saferegen",
                     "DELETE",
@@ -628,13 +703,19 @@
               "default": false
             },
             "monster-spawn-max-light-level": {
-              "type": "number",
               "description": "When set to -1, the Vanilla default will be used (=0). Set to 15 or greater to revert to pre-1.18 behavior.",
-              "default": -1
+              "oneOf": [
+                { "const": "default" },
+                { "type": "number" }
+              ],
+              "default": "default"
             },
             "non-player-arrow-despawn-rate": {
-              "type": "string",
               "description": "The rate, in ticks, at which arrows shot from non-player entities are despawned. The default value instructs the server to use the same default arrow despawn rate from spigot.yml that is used for all arrows.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "number" }
+              ],
               "default": "default"
             },
             "per-player-mob-spawns": {
@@ -695,6 +776,22 @@
             "spawn-limits": {
               "type": "object",
               "description": "The constant used to determine how many of each entity type (set individually) will be naturally spawned per world. This is identical to the value set in bukkit.yml, except that it can be configured per world. A value of -1 will use the value in bukkit.yml.",
+              "additionalProperties": {
+                "type": "number",
+                "default": -1
+              },
+              "default": {
+                "ambient": -1,
+                "axolotls": -1,
+                "creature": -1,
+                "monster": -1,
+                "underground_water_creature": -1,
+                "water_ambient": -1,
+                "water_creature": -1
+              }
+            },
+            "ticks-per-spawn": {
+              "type": "object",
               "additionalProperties": {
                 "type": "number",
                 "default": -1
@@ -771,6 +868,60 @@
               }
             }
           }
+        },
+        "tracking-range-y": {
+          "$comment": "Added since 1.20",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enables separate ranges for tracking ranges in the vertical (Y) direction.",
+              "default": false
+            },
+            "animal": {
+              "description": "Controls how far vertically in blocks animals are tracked (sent to) the player.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "integer" }
+              ]
+            },
+            "display": {
+              "description": "Controls how far vertically in blocks display entities are tracked (sent to) the player.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "integer" }
+              ]
+            },
+            "monster": {
+              "description": "Controls how far vertically in blocks monsters are tracked (sent to) the player.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "integer" }
+              ]
+            },
+            "player": {
+              "description": "Controls how far vertically in blocks players are tracked (sent to) the player.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "integer" }
+              ]
+            },
+            "misc": {
+              "description": "Controls how far vertically in blocks miscellaneous are tracked (sent to) the player.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "integer" }
+              ]
+            },
+            "other": {
+              "description": "Controls how far vertically in blocks other entities are tracked (sent to) the player.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "integer" }
+              ]
+            }
+          }
         }
       }
     },
@@ -834,6 +985,24 @@
           "description": "Instructs the server to generate bedrock as a single flat layer.",
           "default": false
         },
+        "locate-structures-outside-world-border": {
+          "$comment": "Added since 1.20",
+          "type": "boolean",
+          "description": "If the server should be able to locate structures in chunks that are outside the world border.",
+          "default": false
+        },
+        "max-block-ticks": {
+          "$comment": "Added since 1.20",
+          "type": "integer",
+          "description": "The maximum number of block ticks that can be processed in a single tick. This is a safety measure to prevent the server from hanging when there is a large amount of block updates.",
+          "default": 65536
+        },
+        "max-fluid-ticks": {
+          "$comment": "Added since 1.20",
+          "type": "integer",
+          "description": "The maximum number of fluid ticks that can be processed in a single tick. This is a safety measure to prevent the server from hanging when there is a large number of fluid updates.",
+          "default": 65536
+        },
         "nether-ceiling-void-damage-height": {
           "type": "string",
           "description": "Sets the level above which players in the nether will take void damage. This is a vanilla-friendly way to restrict players from using the nether ceiling as a buildable area. Setting to disabled disables this feature.",
@@ -885,6 +1054,18 @@
               }
             }
           }
+        },
+        "void-damage-amount": {
+          "$comment": "Added since 1.20",
+          "type": "number",
+          "description": "The amount of void damage dealt per void damage attempt. May be set to disabled to completely disable void damage in the world.",
+          "default": 4.0
+        },
+        "void-damage-min-build-height-offset": {
+          "$comment": "Added since 1.20",
+          "type": "number",
+          "description": "The offset from a world's minimum build height at which entities should receive void damage.",
+          "default": -64.0
         },
         "water-over-lava-flow-speed": {
           "type": "number",
@@ -1019,6 +1200,21 @@
           "type": "boolean",
           "description": "Prevents the same players from coming back and re-looting the same containers over and over.",
           "default": true
+        },
+        "restrict-player-reloot-time": {
+          "$comment": "Added since 1.20",
+          "description": "Per-player cooldown between reloots. Formatted as a duration with a single unit e.g. 10h or 25m. Supports d, h, m, and s.",
+          "anyOf": [
+            { "const": "disabled" },
+            { "type": "string" }
+          ],
+          "default": "disabled"
+        },
+        "retain-unlooted-shulker-box-loot-table-on-non-player-break": {
+          "$comment": "Added since 1.20",
+          "type": "boolean",
+          "description": "Configures if breaking a shulker box via non-player means, e.g. a piston, should retain the shulker box's loot table if the shulker box has not been looted yet. Setting this option to false prevents players from moving shulker boxes with potentially refilling loot tables to new locations by breaking them via the likes of pistons.",
+          "default": true
         }
       }
     },
@@ -1074,6 +1270,18 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "alternate-current-update-order": {
+          "$comment": "Added since 1.20",
+          "type": "string",
+          "description": "Controls the order in which Alternate Current updates wires and neighboring blocks. Only has an effect when using the \"ALTERNATE_CURRENT\" redstone implementation. This can be one of the following values:\n\nHORIZONTAL_FIRST_OUTWARD\nHORIZONTAL_FIRST_INWARD\nVERTICAL_FIRST_OUTWARD\nVERTICAL_FIRST_INWARD",
+          "enum": [
+            "HORIZONTAL_FIRST_OUTWARD",
+            "HORIZONTAL_FIRST_INWARD",
+            "VERTICAL_FIRST_OUTWARD",
+            "VERTICAL_FIRST_INWARD"
+          ],
+          "default": "HORIZONTAL_FIRST_OUTWARD"
+        },
         "disable-end-credits": {
           "type": "boolean",
           "description": "Instructs the server to never send the end game credits when leaving the end.",
@@ -1089,15 +1297,24 @@
           "description": "Determines if the server will interrupt a sprinting player if they are attacked.",
           "default": false
         },
+        "legacy-ender-pearl-behavior": {
+          "$comment": "Added since 1.20",
+          "type": "boolean",
+          "description": "Determines if the server uses legacy (pre-1.21.2) ender pearl behavior. If enabled, ender pearls will no longer load chunks and will be saved with the launching player instead of being saved as independent entities in the world.",
+          "default": false
+        },
         "light-queue-size": {
           "type": "number",
           "description": "Sets how large the queue of light updates off the main thread for each world should be. Vanilla uses 5, but this causes issues especially with plugins such as WorldEdit.",
           "default": 20
         },
         "max-leash-distance": {
-          "type": "number",
           "description": "Configure the maximum distance of a leash. If the distance to the leashed entity is greater, the leash will break.",
-          "default": 10
+          "oneOf": [
+            { "const": "default" },
+            { "type": "number" }
+          ],
+          "default": "default"
         },
         "redstone-implementation": {
           "type": "string",
@@ -1191,6 +1408,11 @@
           "description": "The rate, in ticks, at which the server updates containers and inventories.",
           "default": 1
         },
+        "dry-farmland": {
+          "$comment": "Added since 1.20",
+          "type": "number",
+          "default": 1
+        },
         "grass-spread": {
           "type": "number",
           "description": "Sets the delay, in ticks, at which the server attempts to spread grass. Higher values will result in a slower spread.",
@@ -1212,6 +1434,11 @@
               "default": -1
             }
           }
+        },
+        "wet-farmland": {
+          "$comment": "Added since 1.20",
+          "type": "number",
+          "default": 1
         }
       }
     },
@@ -1219,6 +1446,11 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "disable-world-ticking-when-empty": {
+          "type": "boolean",
+          "description": "Stops the ticking of the world when there are no players or force loaded chunks present in the world.",
+          "default": false
+        },
         "fix-invulnerable-end-crystal-exploit": {
           "type": "boolean",
           "description": "If set to false, the creation of invulnerable end crystals will be allowed. Fixes MC-108513 (https://bugs.mojang.com/browse/MC-108513).",
@@ -1229,25 +1461,88 @@
   },
   "definitions": {
     "paper-world-despawn-range": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "hard",
-        "soft"
-      ],
-      "properties": {
-        "hard": {
-          "type": "integer",
-          "description": "The number of blocks away from a player in which each entity type (set individually) will be forcibly despawned. Takes effect both horizontally and vertically.",
-          "default": 128
-
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "hard",
+            "soft"
+          ],
+          "properties": {
+            "hard": {
+              "description": "The horizontal and vertical number of blocks away from a player in which each monster type (set individually) will be forcibly despawned.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "integer" }
+              ],
+              "default": "default"
+            },
+            "soft": {
+              "description": "The horizontal and vertical number of blocks away from a player in which each monster type (set individually) will be randomly selected to be despawned.",
+              "oneOf": [
+                { "const": "default" },
+                { "type": "integer" }
+              ],
+              "default": "default"
+            }
+          }
         },
-        "soft": {
-          "type": "integer",
-          "description": "The number of blocks away from a player in which each entity type (set individually) will be randomly selected to be despawned. Takes effect both horizontally and vertically.",
-          "default": 32
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "hard",
+            "soft"
+          ],
+          "properties": {
+            "hard": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "horizontal": {
+                  "description": "The horizontal number of blocks away from a player in which each entity type (set individually) will be forcibly despawned.",
+                  "oneOf": [
+                    { "const": "default" },
+                    { "type": "integer" }
+                  ],
+                  "default": "default"
+                },
+                "vertical": {
+                  "description": "The vertical number of blocks away from a player in which each entity type (set individually) will be forcibly despawned.",
+                  "oneOf": [
+                    { "const": "default" },
+                    { "type": "integer" }
+                  ],
+                  "default": "default"
+                }
+              }
+            },
+            "soft": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "horizontal": {
+                  "description": "The horizontal number of blocks away from a player in which each entity type (set individually) will be randomly selected to be despawned.",
+                  "oneOf": [
+                    { "const": "default" },
+                    { "type": "integer" }
+                  ],
+                  "default": "default"
+                },
+                "vertical": {
+                  "description": "The vertical number of blocks away from a player in which each entity type (set individually) will be randomly selected to be despawned.",
+                  "oneOf": [
+                    { "const": "default" },
+                    { "type": "integer" }
+                  ],
+                  "default": "default"
+                }
+              }
+            }
+          }
         }
-      }
+      ]
     },
     "paper-world-door-breaking-difficulty": {
       "type": "string",

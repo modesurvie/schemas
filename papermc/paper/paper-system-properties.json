@@ -11,247 +11,295 @@
     },
     "paper.playerconnection.keepalive": {
       "description": "Controls how long the player connection will wait before closing when not receiving any keepalives, in seconds.",
-      "default": 30,
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "integer" }
-      ]
+      ],
+      "default": 30
     },
     "timings.bypassMax": {
       "description": "Allows for bypassing the max amount of data to send to the Aikar's Timings API. Setting this will not permit bypassing the limit unless the API is configured to allow it.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "integer" }
-      ]
+      ],
+      "default": "unset"
     },
     "LetMeReload": {
       "description": "This disables the reload confirmation message when using the /reload command.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "paper.disableChannelLimit": {
       "description": "Disables the plugin channel limit for the server. This will disable the limit of 128 plugin channels per player.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "net.kyori.adventure.text.warnWhenLegacyFormattingDetected": {
       "description": "Enables or disables the warning when legacy formatting is detected in a chat component.",
-      "default": false,
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": false
     },
     "Paper.DisableClassPrioritization": {
       "description": "Disables the class prioritization system - mostly an issue when failing to relocate or shade properly.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "Paper.disableFlushConsolidate": {
       "description": "Disables the netty flush consolidation system.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "Paper.debugDynamicMissingKeys": {
       "description": "Enables debug logging for missing keys in NBT objects.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "disable.watchdog": {
       "description": "Disables the watchdog warning system.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "paper.explicit-flush": {
       "description": "Enables explicit flushing of the network channel.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "Paper.enable-sync-chunk-writes": {
       "description": "Syncs writes on each write call. This has a performance impact, particularly on hard drives.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "paper.debug-sync-loads": {
       "description": "Enables debug logging for sync chunk loads.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "Paper.ignoreWorldDataVersion": {
       "description": "Ignores the world data version when loading a world. This is not recommended and will likely cause issues.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "debug.entities": {
+      "$comment": "Removed since Paper 1.21",
       "description": "Enables debug log messages for entity information.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "Paper.bypassHostCheck": {
       "description": "Bypasses the host pattern matching attempt for the client when connecting to the server.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "paper.ticklist-warn-on-excessive-delay": {
       "description": "Enables the warning when a tick list is scheduled with an excessive delay.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "debug.rewriteForIde": {
       "description": "Removes the NMS revision from the stack trace to allow for easier debugging in IDEs. It also remaps plugin CB calls to remove the version information.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "convertLegacySigns": {
       "description": "Converts legacy signs to the new format.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "paper.maxCustomChannelName": {
       "description": "Sets the largest size that a plugin channel name can take.",
-      "default": 64,
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "integer" }
-      ]
+      ],
+      "default": 64
     },
     "Paper.maxSignLength": {
       "description": "Sets the maximum line length for signs.",
-      "default": 80,
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "integer" }
-      ]
+      ],
+      "default": 80
     },
     "Paper.FilterThreshhold": {
-      "description": "",
-      "default": 8192,
-      "oneOne": [
+      "$comment": "Removed since Paper 1.21",
+      "description": "Sets the maximum size of a packet to be filtered.",
+      "oneOf": [
         { "const": "unset" },
         { "type": "integer" }
-      ]
+      ],
+      "default": 8192
     },
     "Paper.minPrecachedDatafixVersion": {
       "description": "If you are expecting to convert a large number of chunks you might consider setting this to only convert from a point onwards.",
-      "default": "Minecraft world version + 1",
-      "oneOne": [
-        {
-          "const": "unset"
-        },
-        {
-          "type": "integer"
-        }
-      ]
-    },
-    "Paper.WorkerThreadCount": {
-      "description": "Sets the number of worker threads to use for chunk loading (default: 8 or `number of cpus - 2`. Whichever is lower).",
-      "default": 8,
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "integer" }
-      ]
+      ],
+      "default": "Minecraft world version + 1"
+    },
+    "Paper.WorkerThreadCount": {
+      "description": "Sets the number of worker threads to use for chunk loading (default: 8 or `number of cpus - 2`. Whichever is lower). See here for more info: https://docs.papermc.io/paper/reference/global-configuration#chunk_system_worker_threads.",
+      "oneOf": [
+        { "const": "unset" },
+        { "type": "integer" }
+      ],
+      "default": 8
     },
     "Paper.excessiveTELimit": {
       "description": "Splits tile entities into multiple packets if there are more than this many.",
-      "default": 750,
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "integer" }
-      ]
+      ],
+      "default": 750
     },
     "io.papermc.paper.suppress.sout.nags": {
       "description": "Suppresses the nag message about using System.out/System.err in a plugin.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "paper.strict-thread-checks": {
       "description": "This sets the status of the AsyncCatcher so that it will always log an error if code is not run on the main thread.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "Paper.skipServerPropertiesComments": {
       "description": "Skips the comments in the server.properties file.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "Paper.debugInvalidSkullProfiles": {
       "description": "Enables debug logging for invalid skull profiles. This logs any invalid skulls in the world with the appropriate location information.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "paper.alwaysPrintWarningState": {
       "description": "Always prints the warning state for the particular level.",
-      "default": "unset",
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": "unset"
     },
     "Paper.parseYamlCommentsByDefault": {
       "description": "Sets whether to parse comments in YAML files by default.",
-      "default": true,
-      "oneOne": [
+      "oneOf": [
         { "const": "unset" },
         { "type": "boolean" }
-      ]
+      ],
+      "default": true
+    },
+    "paperclip.patchonly": {
+      "type": "boolean",
+      "description": "If the server is started via the Paperclip patch utility (the default distribution on the downloads page) then this sets whether it should only patch the Vanilla server and download libraries without starting the server.",
+      "default": false
+    },
+    "Paper.IgnoreJavaVersion": {
+      "type": "boolean",
+      "description": "Allows you to bypass the Java version check. See here for more info: https://docs.papermc.io/paper/faq#unsupported-java-detected-what-do-i-do.",
+      "default": false
+    },
+    "paper.useLegacyPluginLoading": {
+      "type": "boolean",
+      "description": "Allows cyclic plugin loading. See here for more info: https://docs.papermc.io/paper/reference/paper-plugins#cyclic-plugin-loading.",
+      "default": false
+    },
+    "Paper.DisableCommandConverter": {
+      "type": "boolean",
+      "description": "Disables Paper's automatic upgrading of commands, including items with custom data defined in command blocks and other places that may contain commands, to the new component format introduced in version 1.20.5.",
+      "default": false
+    },
+    "paper.disableOldApiSupport": {
+      "type": "boolean",
+      "description": "Disables plugin compatibility measures that can otherwise result in a considerable delay of class loading (also known as \"Commodore\" plugin rewriting). This generally requires all of your plugins to be compiled against a recent API version.",
+      "default": false
+    },
+    "paper.disablePluginRemapping": {
+      "type": "boolean",
+      "description": "Disables plugin remapping introduced in 1.20.5. For more information see the userdev documentation and the official announcement.",
+      "default": false
+    },
+    "paper.preferSparkPlugin": {
+      "type": "boolean",
+      "description": "Whether the bundled spark profiler should be disabled in favor of a standalone plugin. If the spark plugin is not found, the bundled version will be loaded regardless of the setting, unless it is explicitly disabled.",
+      "default": false
+    },
+    "paper.disableWorldSymlinkValidation": {
+      "type": "boolean",
+      "description": "Disables the folder walk and symlink validation when loading a world. Significantly improves world loading speed on massive worlds (>1TB). This does not disable symlink verification of datapacks.",
+      "default": false
+    },
+    "minecraft.api.session.host": {
+      "type": "string",
+      "description": "Allows specifying of a custom session server URL e.g. for caching. minecraft.api.services.host needs to be set too for this to apply.",
+      "default": "https://sessionserver.mojang.com"
+    },
+    "minecraft.api.services.host": {
+      "type": "string",
+      "description": "Allows specifying of a custom services API URL e.g. for caching. minecraft.api.session.host needs to be set too for this to apply.",
+      "default": "https://api.minecraftservices.com"
     }
   }
 }
